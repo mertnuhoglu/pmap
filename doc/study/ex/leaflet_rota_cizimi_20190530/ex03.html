@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Quick start. Publishing an interactive map on a page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="http://api-maps.yandex.ru/2.1/?lang=en_US"
+type="text/javascript"></script>
+<script type="text/javascript">
+ymaps.ready(init);
+var myMap,
+myPlacemark;
+ function init() {
+ myMap = new ymaps.Map("map", {
+ center: [59.93328, 30.342791],
+ zoom: 7
+ });
+ymaps.route([
+'Yakornaya square, Kronshtadt',
+{
+type: 'wayPoint',
+point: [59.93328, 30.342791]// or 'Anichkov bridge'
+},
+'Finlyandskiy train station, Saint Petersburg', // or [59.956084,
+30.356849]
+[59.998084, 30.556849],
+[59.823084, 30.126849],
+[59.769084, 30.002349],
+[59.228084, 29.986849],
+[59.333084, 30.756849],
+[59.779084, 30.433849],
+[59.394084, 30.756849],
+[59.903084, 30.566849],
+[59.123084, 30.116849],
+[59.321084, 30.446849],
+[59.290084, 31.643849]
+]).then(
+function (route) {
+// Functional part of the routing
+myMap.geoObjects.add(route);
+var routeLength = route.getLength();
+var routeTime = route.getTime(); </head>
+</script>
+);
+}
+document.getElementById('distance').innerHTML += (routeLength /
+ 1000) + " kilometers";
+ document.getElementById('time').innerHTML += (routeTime / 3600) +
+" hours";   },
+ function (error) {
+ alert("Error occurred: " + error.message);
+  
+}
+   <body>
+ <div id="map" style="width: 600px; height: 400px"></div>
+ <div id="distance">Distance: </div>
+ <div id="time">Distance: </div>
+ </body>
+</html>
