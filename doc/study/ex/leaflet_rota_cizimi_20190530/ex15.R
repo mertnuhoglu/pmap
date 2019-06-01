@@ -19,5 +19,5 @@ server <- function(input, output) {
   })
 }
 
-runApp(shinyApp(ui, server), launch.browser = TRUE)
+runApp(shinyApp(ui, server), host="0.0.0.0",port=5050)
 
