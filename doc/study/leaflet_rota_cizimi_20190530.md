@@ -211,7 +211,7 @@ cs <- read.csv(text=ps, header = T)
 ``` 
 
 ``` r
-# Travel path between points - output a SpatialLinesDataFrame
+  # Travel path between points - output a SpatialLinesDataFrame
 route <- osrmRoute(src=c("Depo", cs$lng[1], cs$lat[1]),
                     dst = c("Market 01", cs$lng[2], cs$lat[2]),
                     sp = TRUE, overview = "full")
@@ -231,16 +231,16 @@ Error:
 opt02:
 
 ``` r
-# Display the path
+  # Display the path
 plot(com[c(1,4),3:4], asp =1, col = "red", pch = 20, cex = 1.5)
 plot(route, lty = 1,lwd = 4, add = TRUE)
 plot(route, lty = 1, lwd = 1, col = "white", add=TRUE)
 text(com[c(1,4),3:4], labels = com[c(1,4),2], pos = 2)
 ``` 
 
-## Examples:
+### Tüm rotaları çizdirme
 
-### ex05: Birden çok noktayı koyma
+#### ex05: Birden çok noktayı koyma
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex05.R`
 
@@ -272,9 +272,9 @@ m <- leaflet(width="100%") %>%
 m
 ``` 
 
-### ex06: Noktaları bir fonksiyon haline getirme
+#### ex06: Noktaları bir fonksiyon haline getirme
 
-#### Error: All columns in a tibble must be 1d or 2d objects:
+##### Error: All columns in a tibble must be 1d or 2d objects:
 
 ``` r
 rs = dplyr::tibble( path = w1, route = r1)
@@ -283,11 +283,11 @@ rs = dplyr::tibble( path = w1, route = r1)
 		Error: All columns in a tibble must be 1d or 2d objects:
 		* Column `path` is SpatialLines
 
-### ex07: SpatialLines ile dataframe oluşturma
+#### ex07: SpatialLines ile dataframe oluşturma
 
 https://gis.stackexchange.com/questions/163286/how-do-i-create-a-spatiallinesdataframe-from-a-dataframe
 
-### ex08: 2d object as a column in a tibble
+#### ex08: 2d object as a column in a tibble
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex08.R`
 
@@ -322,7 +322,7 @@ df$x3
   ##> 9  3  9  9
 ``` 
 
-### ex09: for loop ile leaflet addPolylines çağır
+#### ex09: for loop ile leaflet addPolylines çağır
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex09.R`
 
@@ -344,7 +344,7 @@ m = m %>%
 m
 ``` 
 
-### ex10: color palet kullanımını test et
+#### ex10: color palet kullanımını test et
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex10.R`
 
@@ -354,7 +354,7 @@ pal(1:10)
   ##>  [1] "#FF0000" "#EB7000" "#D0A100" "#AAC900" "#6AEE00" "#52E74B" "#77B785" "#7C87B0" "#6754D8" "#0000FF"
 ``` 
 
-### ex11: renk paletini rotalarda kullan
+#### ex11: renk paletini rotalarda kullan
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex11.R`
 
@@ -366,7 +366,7 @@ col = pal(1:no_routes)
 		addPolylines(data = ph, popup = route_label(rt), color = col[i], opacity=1, weight = 3) %>%
 ``` 
 
-### ex12: bir satıcının tüm rotalarını çizdir
+#### ex12: bir satıcının tüm rotalarını çizdir
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex12.R`
 
@@ -383,7 +383,9 @@ depot = rt07[1, ]
 cs = dplyr::bind_rows(rt07, depot)
 ``` 
 
-### ex13: leaflet shiny basic app
+### Uygulama haline getirme
+
+#### ex13: leaflet shiny basic app
 
 https://rstudio.github.io/leaflet/shiny.html
 
@@ -401,14 +403,226 @@ Run from terminal:
 Rscript ex13.R
 ``` 
 
-### ex14: leaflet height full screen
+#### ex14: leaflet height full screen
 
 https://stackoverflow.com/questions/36469631/how-to-get-leaflet-for-r-use-100-of-shiny-dashboard-height
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex14.R`
 
-### ex15: Kendi rotalarımızı bu appte gösterelim
+#### ex15: Kendi rotalarımızı bu appte gösterelim
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex15.R`
 
+#### ex16: Temel bir shiny uygulaması
 
+Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex16.R`
+
+Her yerden erişilebilir olması için: `host="0.0.0.0"` olmalı
+
+``` r
+runApp(shinyApp(ui, server), host="0.0.0.0",port=5050)
+``` 
+
+### Navigatör özellikleri
+
+#### Filtreleme özellikleri
+
+##### ex17: basit bir filtreleme uygulaması örneği
+
+https://stackoverflow.com/questions/50128349/filtering-leaflet-map-data-in-shiny
+
+##### ex18: sadece sözel bilgiyi kullanarak kendi rotamızı filtreleme
+
+Datayı hazırla verbal df olarak:
+
+###### Error: nothing happens
+
+``` r
+source("get_routes.R")
+
+routes = get_routes_verbal()
+get_route_for_sequence_no(routes, 2)
+  ##> all rows
+``` 
+
+``` r
+sequence_no = 2
+routes %>%
+	dplyr::filter(sequence_no %in% c(sequence_no, sequence_no + 1))
+  ##> all rows
+``` 
+
+``` r
+routes %>%
+	dplyr::filter(sequence_no %in% c(2,3))
+  ##> two rows only
+c(sequence_no, sequence_no + 1)
+``` 
+
+``` r
+sequence_no = 2
+sq = c(sequence_no, sequence_no + 1)
+  ##> [1] 2 3
+routes %>%
+	dplyr::filter(sequence_no %in% sq)
+  ##> two rows only
+``` 
+
+``` r
+routes %>%
+	dplyr::filter(sequence_no %in% (c(sequence_no, sequence_no + 1)))
+``` 
+
+Cause: sequence_no is implicit variable. `c(sequence_no, sequence_no + 1)` is interpreted as `routes$sequence_no`.
+
+###### Error: non-numeric argument to binary operator
+
+		Warning: Error in +: non-numeric argument to binary operator
+			97: get_route_for_sequence_no [get_routes.R#47]
+
+``` r
+get_route_for_sequence_no = function(routes, sequence_no) {
+	sq = c(sequence_no, sequence_no + 1)
+	routes %>%
+		dplyr::filter(sequence_no %in% sq)
+}
+get_route_for_sequence_no(routes, 2)
+  ##>     lat   lng sequence_no
+  ##>   <dbl> <dbl>       <dbl>
+  ##> 1  41.0  29.0           2
+  ##> 2  41.0  29.0           3
+``` 
+
+opt01: return data.frame instead of tibble
+
+``` r
+get_route_for_sequence_no = function(routes, sequence_no) {
+	sq = c(sequence_no, sequence_no + 1)
+	routes %>%
+		dplyr::filter(sequence_no %in% sq) %>%
+		as.data.frame()
+}
+``` 
+
+Same error.
+
+opt02: create it as data.frame from start
+
+Location:
+
+``` r
+get_route_for_sequence_no = function(routes, seq) {
+	print(seq)
+  ##> 2
+	print(str(seq))
+  ##>  num 2
+	seq + 1
+``` 
+
+Warning: Error in +: non-numeric argument to binary operator
+
+Wrap all input data inside `reactive`
+
+Experiment in `ex21: non-numeric argument problemi <url:/Users/mertnuhoglu/projects/itr/peyman/pmap/doc/study/leaflet_rota_cizimi_20190530.md#tn=ex21: non-numeric argument problemi>`
+
+Use `as.numeric`
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18a.R`
+
+Still the same error.
+
+Clean the code to isolate the problem. 
+
+Debug with `class`
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18b.R`
+
+``` r
+get_route_for_sequence_no = function(routes, seq) {
+	print(class(seq))
+  ##> [1] "reactiveExpr" "reactive"
+``` 
+
+Don't use `reactive`
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18c.R`
+
+``` r
+  output$routes <- renderTable({
+		get_route_for_sequence_no(routes, as.numeric(input$sequence_no))
+		...
+get_route_for_sequence_no = function(routes, seq) {
+	print(class(seq))
+  ##> [1] "numeric"
+``` 
+
+Works. 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18d.R`
+
+Works. 
+
+##### ex19: kendi rotalarımızı bir tablo ve widgetla birlikte gösterme
+
+Sadece verbal data. 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex19.R`
+
+##### ex21: non-numeric argument problemi
+
+Problemi en basit haliyle reproduce edelim.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21.R`
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21a.R`
+
+Seçilen öğeyi print et:
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21b.R`
+
+Seçilen öğeyle bir işlem yap
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21c.R`
+
+Error:
+
+		Warning: Error in +: non-numeric argument to binary operator
+			96: renderText [#3]
+
+Debug the problem with `class`
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21d.R`
+
+``` r
+		print(class(input$numara))
+		##> character
+``` 
+
+Convert to numeric
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21e.R`
+
+Problem solved.
+
+##### ex22: sözel bilgiye geometriyi de ekle
+
+Previous step: ex18
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex22.R`
+
+Test `get_route_geometry`
+
+``` r
+t0 = get_route_for_sequence_no(routes, 2)
+get_route_geometry(t0, 2)
+``` 
+
+It works.
+
+`render` it in shiny
+
+##### ex23: sequence_no değişince haritadaki rota da değişsin
+
+Use `reactive` expression
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex23.R`
