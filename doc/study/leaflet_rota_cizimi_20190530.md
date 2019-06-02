@@ -626,3 +626,181 @@ It works.
 Use `reactive` expression
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex23.R`
+
+#### Navigasyon özellikleri
+
+##### Bir satıcının gün içindeki rotaları arasında
+
+###### ex24: iki buton koy. sequence_no dolaş.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex24.R`
+
+Counter örneği: https://gist.github.com/aagarw30/69feeeb7e813788a753b71ef8c0877eb as `counter`
+
+###### ex25: bir satıcının rotalarını dolaş
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex25.R`
+
+###### ex26: hızlı zıplama select ile
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26.R`
+
+####### Error: başlangıçta NA dönüyor selectInput
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26a.R`
+
+Default value belirt
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26b.R`
+
+``` r
+      , selectInput("sequence_no", 'Rota sırası', choices = routes$sequence_no, selected = "0")
+``` 
+
+Map olmadan düzeni test et:
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26c.R`
+
+``` r
+	observeEvent(input$sequence_no, {
+		seq_counter$seq_value = as.numeric(input$sequence_no)
+		#as.numeric(input$sequence_no)
+	})
+	...
+  route_input <- reactive({
+		get_route_for_sequence_no(routes, 0)
+	})
+``` 
+
+Başlangıç değeri: `NA` yine `seq_value` için
+
+selectize = F ile test et:
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26d.R`
+ 
+Ok, çalıştı.
+
+Haritayı da bağla.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26e.R`
+ 
+###### ex27: selectInput da güncellensin butona basılınca
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex27.R`
+
+``` bash
+	observe({
+		updateSelectInput(session, "sequence_no",
+			selected = seq_counter$seq_value
+	)})
+``` 
+
+Follow https://stackoverflow.com/questions/21465411/r-shiny-passing-reactive-to-selectinput-choices
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex27a.R`
+
+##### Satıcılar arasında dolaşma
+
+###### ex28: satıcı listesi ve rota listesi birlikte bulunsun
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28.R`
+
+Tüm satıcıları listele:
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28a.R`
+
+``` r
+			, actionButton("prev_salesman", "Önceki Satıcı")
+			, actionButton("next_salesman", "Sonraki Satıcı")
+      , selectInput("salesman_id", "Satıcı", choices = get_salesman()$salesman_id %>% unique, selected = "7", selectize = F)
+``` 
+
+Refactoring: consistent names for all related variables
+
+		seq_no
+			textOutput("seq_no")
+		selectInput("sequence_no",
+		actionButton("prev_route", "Önceki")
+		seq_counter <- reactiveValues(seq_value = 0) 
+
+->
+
+		seq_no_out
+		seq_no_select
+		seq_no_prev
+		seq_no_counter -> state
+		seq_value -> seq_no
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28b.R`
+
+Salesman değişince haritadaki rotalar da değişsin
+
+Bu durumda `routes` objesi de reactive bir state olmalı
+
+``` r
+routes = get_routes_verbal()
+``` 
+
+->
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28c.R`
+
+`routes` tüm rotaları içersin. `filter()` yaparız her girdi eyleminde.
+
+Mevcut hali yeniden üret:
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28d.R`
+
+`routes` tümüyle reaktif olsun:
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28e.R`
+
+Bu durumda öncelikle selectInput içindeki routes reaktif olmalı:
+
+``` r
+      , selectInput("sqn_select", "Rota sırası", choices = routes$sequence_no, selected = "0", selectize = F)
+``` 
+
+->
+
+``` r
+	observe({
+		updateSelectInput(session, "sqn_select",
+			choices = state$routes$sequence_no
+			, selected = state$sqn
+	)})
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28f.R`
+
+Satıcı seçilince, `routes` değişmeli.
+
+Bunun için observeEvent kullan:
+
+``` r
+	observeEvent(input$smi_select, {
+		state$smi = as.numeric(input$smi_select)
+		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, sqn_selected)
+	})
+  route_input = reactive({
+		get_route_for_sequence_no(state$routes, state$sqn)
+  })
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28g.R`
+
+Satıcı seçilince, rota sırası seçimi sıfırlansın.
+
+``` r
+	observeEvent(input$smi_select, {
+		state$smi = as.numeric(input$smi_select)
+		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, sqn_selected)
+		state$sqn = 0
+	})
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28h.R`
+
+Satıcı dolaşma butonları da çalışsın
+
+Önce salesman_no listesi oluşturalım
