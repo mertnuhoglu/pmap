@@ -804,3 +804,41 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28h.
 Satıcı dolaşma butonları da çalışsın
 
 Önce salesman_no listesi oluşturalım
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28i.R`
+
+Unduplicate code for `smi` and `smn`
+
+``` r
+  smn_next_action <- eventReactive(input$smn_next, {
+		state$smn = state$smn + 1
+  })
+	smn_next = reactive({
+		state$smi = (dplyr::filter(salesman, salesman_no == state$smn))$salesman_id
+		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, sqn_selected)
+		state$sqn = 0
+	})
+	observeEvent(smn_next, {
+	})
+``` 
+
+Nothing happens. 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28j.R`
+
+``` r
+	refresh_salesman = function() {
+		state$smi = (dplyr::filter(salesman, salesman_no == state$smn))$salesman_id
+		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, sqn_selected)
+		state$sqn = 0
+		return(state)
+	}
+	observeEvent(input$smn_next, {
+		state$smn = state$smn + 1
+		refresh_salesman()
+	})
+``` 
+
+This works.
+
+

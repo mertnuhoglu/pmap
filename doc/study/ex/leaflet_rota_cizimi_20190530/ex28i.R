@@ -58,30 +58,30 @@ server = function(input, output, session) {
   output$smn_out = renderText({
 		state$smn
   })
-	refresh_salesman_no = function() {
+  smn_next_action <- eventReactive(input$smn_next, {
+		state$smn = state$smn + 1
+  })
+	smn_next = reactive({
 		state$smi = (dplyr::filter(salesman, salesman_no == state$smn))$salesman_id
-		refresh_salesman_routes()
-	}
-	refresh_salesman_id = function() {
-		state$smn = (dplyr::filter(salesman, salesman_id == state$smi))$salesman_no
-		refresh_salesman_routes()
-	}
-	refresh_salesman_routes = function() {
 		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, sqn_selected)
 		state$sqn = 0
-		return(state)
-	}
-	observeEvent(input$smn_next, {
-		state$smn = state$smn + 1
-		refresh_salesman_no()
+	})
+	smn_prev = reactive({
+		state$smn = state$smn - 1
+	})
+	observeEvent(smn_next, {
 	})
 	observeEvent(input$smn_prev, {
 		state$smn = state$smn - 1
-		refresh_salesman_no()
+		state$smi = (dplyr::filter(salesman, salesman_no == state$smn))$salesman_id
+		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, sqn_selected)
+		state$sqn = 0
 	})
 	observeEvent(input$smi_select, {
 		state$smi = as.numeric(input$smi_select)
-		refresh_salesman_id()
+		state$smn = (dplyr::filter(salesman, salesman_id == state$smi))$salesman_no
+		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, sqn_selected)
+		state$sqn = 0
 	})
   route_input = reactive({
 		get_route_for_sequence_no(state$routes, state$sqn)
