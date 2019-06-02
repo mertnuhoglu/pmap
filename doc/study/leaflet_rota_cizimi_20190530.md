@@ -860,3 +860,63 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex29b.
 Yeni butonları ekle
 
 Select öğesini de senkronize et
+
+### Birikimsel Navigasyon 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30.R`
+
+Önce `get_route_geometry` fonksiyonunu birikimsel harita üretecek şekilde güncelleyelim
+
+Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/get_routes_ex30.R`
+
+``` r
+get_routes_all = function(routes) {
+	cs = routes
+	no_routes = nrow(cs) - 1
+	pal <- colorNumeric(c('#7b241c' , '#FF69B4' , '#d4efdf' , '#f39c12' , '#9b59b6' , '#5499c7'), 1:6)
+	col = rep(pal(1:6), times = 1 + (no_routes / 6))
+
+	m <- leaflet(width="100%") %>% 
+		addTiles()  
+
+	for (i in 1:no_routes) {
+		p1 = cs[i, ]
+		p2 = cs[i+1, ]
+		rt = route(p1, p2)
+		ph = path(rt)
+		m = m %>% 
+			addPolylines(data = ph, label = route_label(rt), color = col[i], opacity=1, weight = 3) %>%
+			addMarkers(lng=p1$lng, lat=p1$lat, popup=glue("Market {i}"), label = glue("{i}")) 
+	}
+	m = m %>%
+		addMarkers(lng=p2$lng, lat=p2$lat, popup=glue("Market {i+1}"), label = glue("{i+1}")) 
+	return(m)
+}
+``` 
+
+Test it:
+
+``` r
+source("get_routes_ex30.R")
+routes_all = get_routes_verbal()
+r0 = get_routes_by_smi_wkd(routes_all, 7, 0)
+get_routes_all(r0)
+``` 
+
+Bunu kullanalım. İlk etapta `get_routes_all()` fonksiyonuyla haritayı çizdirelim.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30a.R`
+
+``` r
+  output$map = renderLeaflet({ get_routes_all(routeS()) })
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30b.R`
+
+Şimdi birden çok rotayı state içinde tutalım. Rotalar `routeS` tarafından oluşturuluyor.
+
+``` r
+  routeS = reactive({ get_route_upto_sequence_no(state$routes, state$sqn) })
+``` 
+
+Fakat tüm rotaları döndürdü bize.
