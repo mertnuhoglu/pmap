@@ -920,3 +920,14 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30b.
 ``` 
 
 Fakat tüm rotaları döndürdü bize.
+
+### Deploy et
+
+tsv dosyalarını yukarı yükle.
+
+``` bash
+scp ~/gdrive/mynotes/prj/itr/iterative_mert/peyman/*.tsv itr01:~/peyman
+``` 
+
+
+
