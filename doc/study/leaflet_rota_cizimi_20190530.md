@@ -841,4 +841,22 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28j.
 
 This works.
 
+##### Günler arasında dolaşma
 
+###### ex29: aynı satıcının farklı günleri arasında dolaşma
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex29.R`
+
+Refactoring: `route_input` yerine bir stream ismi olsun aynı `route$` gibi.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex29a.R`
+
+``` r
+  routeS = reactive({ get_route_for_sequence_no(state$routes, state$sqn) })
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex29b.R`
+
+Yeni butonları ekle
+
+Select öğesini de senkronize et
