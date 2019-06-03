@@ -929,5 +929,388 @@ tsv dosyalarını yukarı yükle.
 scp ~/gdrive/mynotes/prj/itr/iterative_mert/peyman/*.tsv itr01:~/peyman
 ``` 
 
+``` bash
+vim ~/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/pvrp.r
+vim ~/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/get_routes_ex30.R
+``` 
 
+çalıştır:
+
+``` r
+source("ex30b.R")
+``` 
+
+### Error: Son adım olarak depo tüm rotalara ekleniyor
+
+`get_routes_by_smi_wkd()` tarafından ekleniyor:
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31a.R`
+
+``` r
+get_routes_by_smi_wkd = function(routes, smi, wkd) {
+	rt01 = routes %>%
+		dplyr::filter(salesman_id == smi & week_day == wkd) 
+	depot = rt01[1, ]
+	cs = dplyr::bind_rows(rt01, depot)
+
+	return(cs)
+}
+``` 
+
+->
+
+``` r
+get_routes_by_smi_wkd = function(routes, smi, wkd) {
+	rt01 = routes %>%
+		dplyr::filter(salesman_id == smi & week_day == wkd) 
+
+	return(rt01)
+}
+``` 
+
+Şimdi de depo yok rotalarda. 
+
+Cause: get_routes_verbal girdi veriyi trips_with_costs.tsv dosyasından alıyor. twc dosyasında her satırda bir path tarif ediliyor: from_point_id to_point_id ile. Dolayısıyla son adımda, dönüş noktası to_point_id ile tanımlanıyor. Bu yüzden bu dönüş noktası yeni bir nokta olarak eklenmiyor. 
+
+Çözüm:
+
+opt01: get_routes_verbal fonksiyonuna her bir rota dizisi için bir satır ekleyebilirim. ama to_point_id NA olacağından hoş olmaz. 
+
+opt02: get_routes.R içinde from_point_id ve to_point_id kullanarak rotaları tanımla. Böylece girdi verimizle pmap uygulaması birbiriyle daha uyumlu hale de gelir hem.
+
+#### opt02: get_routes.R içinde from_point_id ve to_point_id kullanarak rotaları tanımla
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31b.R`
+
+Test manually
+
+``` r
+source("get_routes_ex31b.R")
+routes_all = get_routes_verbal()
+r0 = get_routes_by_smi_wkd(routes_all, 7, 0)
+get_route_upto_sequence_no(r0, 1)
+  ##>   salesman_id week_day from_point_id to_point_id from_lat from_lng to_lat to_lng sequence_no
+  ##>         <dbl>    <dbl>         <dbl>       <dbl>    <dbl>    <dbl>  <dbl>  <dbl>       <dbl>
+  ##> 1           7        0             1         183     40.9     29.2   41.0   29.1           0
+  ##> 2           7        0           183         595     41.0     29.1   41.0   29.0           1
+  ##> 2           7        0           183         595     41.0     29.1   41.0   29.0           2
+``` 
+
+`get_route_upto_sequence_no` mantığı eski mantıkta kalmış. Her bir satır artık bir rota. Fazladan satır döndürmemeli.
+
+``` r
+get_route_upto_sequence_no = function(routes, sqn) {
+	routes %>%
+		dplyr::filter(sequence_no <= sqn) 
+}
+``` 
+
+``` r
+get_route_upto_sequence_no(r0, 1)
+  ##>   salesman_id week_day from_point_id to_point_id from_lat from_lng to_lat to_lng sequence_no
+  ##>         <dbl>    <dbl>         <dbl>       <dbl>    <dbl>    <dbl>  <dbl>  <dbl>       <dbl>
+  ##> 1           7        0             1         183     40.9     29.2   41.0   29.1           0
+  ##> 2           7        0           183         595     41.0     29.1   41.0   29.0           1
+``` 
+
+Fakat şimdi de sequence_no 0'dan başladığı için yine iki adım geliyor. Neden öyle yapmışız?
+
+Kaynak veri `trips_with_costs.tsv` bu şekilde.
+
+Muhtemelen `sequence_no`yu `from_point_id` satış noktasının sıra numarası olarak yorumlamışım.
+
+``` r
+get_route_upto_sequence_no = function(routes, sqn) {
+	routes %>%
+		dplyr::filter(sequence_no < sqn) 
+}
+``` 
+
+Fakat böyle yaparsam da son adımı hiçbir zaman ekleyemeyeceğiz. `<=` olması lazım.
+
+##### Error: Warning: Error in file: invalid 'description' argument
+
+		105: file
+		104: readLines
+		102: fromJSON
+		101: route [decode.R#38]
+		100: get_routes_all [get_routes_ex31b.R#23]
+
+Adım adım debug edelim.
+
+``` r
+source("get_routes_ex31b.R")
+routes_all = get_routes_verbal()
+r0 = get_routes_by_smi_wkd(routes_all, 7, 0)
+r1 = get_route_upto_sequence_no(r0, 0)
+  ##>   salesman_id week_day from_point_id to_point_id from_lat from_lng to_lat to_lng sequence_no
+  ##>         <dbl>    <dbl>         <dbl>       <dbl>    <dbl>    <dbl>  <dbl>  <dbl>       <dbl>
+  ##> 1           7        0             1         183     40.9     29.2   41.0   29.1           0
+get_routes_all(r1)
+  ##> Error in file(con, "r") : invalid 'description' argument
+  ##> 6: file(con, "r")
+  ##> 5: readLines(file, warn = FALSE)
+  ##> 4: paste(readLines(file, warn = FALSE), collapse = "")
+  ##> 3: fromJSON(file = url) at decode.R#38
+  ##> 2: route(orig, dest) at get_routes_ex31b.R#23
+``` 
+
+Elle çalıştır url'yi
+
+``` r
+sqn = 1
+routes = r1
+orig = routes[sqn, ] %>%
+	dplyr::select(lng = from_lng, lat = from_lat)
+dest = routes[sqn, ] %>%
+	dplyr::select(lng = to_lng, lat = to_lat)
+url = glue::glue("http://{osrm_server}/route/v1/driving/{orig$lng},{orig$lat};{dest$lng},{dest$lat}?overview=full")
+  ##> http://35.204.111.216:5000/route/v1/driving/29.208498,40.890795;29.05508,40.97364?overview=full
+``` 
+
+Sorun yok düzgün çalışıyor. 
+
+O zaman, belirli bir parametrede hata meydana geliyor olmalı. print edelim url'yi.
+
+``` r
+route = function(orig, dest) {
+	url = glue::glue("http://{osrm_server}/route/v1/driving/{orig$lng},{orig$lat};{dest$lng},{dest$lat}?overview=full")
+	print(url)
+	return(fromJSON(file=url))
+}
+get_routes_all(r1)
+``` 
+
+Sorun response dosyasını okurken meydana geliyor olabilir. 
+
+``` r
+rjson::fromJSON(file=url)
+  ##> düzgün
+``` 
+
+Düzgün çalışıyor. Tek başına çalıştırınca. Fakat `get_routes_all` hata veriyor:
+
+``` r
+get_routes_all(r1)
+  ##> Error in file(con, "r") : invalid 'description' argument
+  ##> 6: file(con, "r")
+  ##> 5: readLines(file, warn = FALSE)
+  ##> 4: paste(readLines(file, warn = FALSE), collapse = "")
+  ##> 3: rjson::fromJSON(file = url) at decode.R#38
+  ##> 2: route(orig, dest) at get_routes_ex31b.R#23
+  ##> 1: get_routes_all(r1)
+``` 
+
+Muhtemelen implicit bir variable olabilir.
+
+Print edilen url'yi direk gönder:
+
+``` r
+url = "http://35.204.111.216:5000/route/v1/driving/29.208498,40.890795;29.05508,40.97364?overview=full"
+rjson::fromJSON(file=url)
+rjson::fromJSON(file= "http://35.204.111.216:5000/route/v1/driving/29.208498,40.890795;29.05508,40.97364?overview=full")
+``` 
+
+Yine düzgün çalışıyor.
+
+opt01: Önceki örnekler çalışıyor mu?
+
+``` r
+  ##> http://35.204.111.216:5000/route/v1/driving/29.208498,40.890795;29.05508,40.97364?overview=full
+	##> http://35.204.111.216:5000/route/v1/driving/29.208498,40.890795;29.05508,40.97364?overview=full
+``` 
+
+url'ler tıpatıp aynı. 
+
+O zaman import ettiğimiz kütüphaneler bir şeyleri yanlışlıkla eziyor olabilir.
+
+opt02: hard code et url'yi.
+
+``` r
+route = function(orig, dest) {
+	url = glue::glue("http://{osrm_server}/route/v1/driving/{orig$lng},{orig$lat};{dest$lng},{dest$lat}?overview=full")
+	url = "http://35.204.111.216:5000/route/v1/driving/29.208498,40.890795;29.05508,40.97364?overview=full"
+	print(url)
+	return(rjson::fromJSON(file=url))
+}
+``` 
+
+``` r
+get_routes_all(r1)
+``` 
+
+Şimdi çalıştı. Bu ne anlama geliyor?
+
+``` r
+route = function(orig, dest) {
+	url = glue::glue("http://{osrm_server}/route/v1/driving/{orig$lng},{orig$lat};{dest$lng},{dest$lat}?overview=full")
+	#url = "http://35.204.111.216:5000/route/v1/driving/29.208498,40.890795;29.05508,40.97364?overview=full"
+	print(url)
+  ##> http://35.204.111.216:5000/route/v1/driving/29.208498,40.890795;29.05508,40.97364?overview=full
+	return(rjson::fromJSON(file=url))
+}
+``` 
+
+``` r
+get_routes_all(r1)
+``` 
+
+Şimdi hata veriyor. 
+
+Kendi çıktısıyla hard code et
+
+``` r
+route = function(orig, dest) {
+	url = glue::glue("http://{osrm_server}/route/v1/driving/{orig$lng},{orig$lat};{dest$lng},{dest$lat}?overview=full")
+  url = "http://35.204.111.216:5000/route/v1/driving/29.208498,40.890795;29.05508,40.97364?overview=full"
+	print(url)
+	return(rjson::fromJSON(file=url))
+}
+``` 
+
+Yine çalıştı.
+
+opt03: sprintf kullan
+
+``` r
+route = function(orig, dest) {
+	url = sprintf("http://%s/route/v1/driving/%s,%s;%s,%s?overview=full", osrm_server, orig$lng, orig$lat, dest$lng, dest$lat)
+	print(url)
+	return(rjson::fromJSON(file=url))
+}
+``` 
+
+Hata veriyor.
+
+opt04: route fonksiyonuyla debug et
+
+``` r
+r1
+routes = r1
+sqn = 1
+orig = routes[sqn, ] %>%
+	dplyr::select(lng = from_lng, lat = from_lat)
+dest = routes[sqn, ] %>%
+	dplyr::select(lng = to_lng, lat = to_lat)
+rt = route(orig, dest)
+``` 
+
+Çalışıyor. 
+
+Bu ne anlama geliyor?
+
+opt05: Sistematik eleme yöntemiyle get_routes_all fonksiyonunu inceleyelim.
+
+``` r
+f1 = function(routes) {
+	no_routes = nrow(routes) - 1
+	pal <- colorNumeric(c('#2e86c1' , '#5dade2' , '#8e44ad' , '#9b59b6' , '#a93226' , '#ec7063'), 1:6)
+	col = rep(pal(1:6), times = 1 + (no_routes / 6))
+
+	m <- leaflet(width="100%") %>% 
+		addTiles()  
+
+	for (sqn in 1:no_routes) {
+		orig = routes[sqn, ] %>%
+			dplyr::select(lng = from_lng, lat = from_lat)
+		dest = routes[sqn, ] %>%
+			dplyr::select(lng = to_lng, lat = to_lat)
+		rt = route(orig, dest)
+		ph = path(rt)
+		m = m %>% 
+			addPolylines(data = ph, label = route_label(rt), color = col[sqn], opacity=1, weight = 3) %>%
+			addMarkers(lng=orig$lng, lat=orig$lat, popup=glue("Market {sqn-1}"), label = glue("{sqn-1}")) %>%
+			addMarkers(lng=dest$lng, lat=dest$lat, popup=glue("Market {sqn}"), label = glue("{sqn}")) 
+	}
+	return(m)
+}
+f1(r1)
+  ##> hata
+``` 
+
+``` r
+f2 = function(routes) {
+	sqn = 1
+	orig = routes[sqn, ] %>%
+		dplyr::select(lng = from_lng, lat = from_lat)
+	dest = routes[sqn, ] %>%
+		dplyr::select(lng = to_lng, lat = to_lat)
+	rt = route(orig, dest)
+}
+f2(r1)
+  ##> çalışıyor
+``` 
+
+``` r
+f3 = function(routes) {
+	no_routes = nrow(routes) - 1
+	pal <- colorNumeric(c('#2e86c1' , '#5dade2' , '#8e44ad' , '#9b59b6' , '#a93226' , '#ec7063'), 1:6)
+	col = rep(pal(1:6), times = 1 + (no_routes / 6))
+
+	m <- leaflet(width="100%") %>% 
+		addTiles()  
+	sqn = 1
+	orig = routes[sqn, ] %>%
+		dplyr::select(lng = from_lng, lat = from_lat)
+	dest = routes[sqn, ] %>%
+		dplyr::select(lng = to_lng, lat = to_lat)
+	rt = route(orig, dest)
+}
+f3(r1)
+  ##> çalışıyor
+``` 
+
+``` r
+f4 = function(routes) {
+	no_routes = nrow(routes) - 1
+	pal <- colorNumeric(c('#2e86c1' , '#5dade2' , '#8e44ad' , '#9b59b6' , '#a93226' , '#ec7063'), 1:6)
+	col = rep(pal(1:6), times = 1 + (no_routes / 6))
+
+	m <- leaflet(width="100%") %>% 
+		addTiles()  
+	for (sqn in 1:no_routes) {
+		orig = routes[sqn, ] %>%
+			dplyr::select(lng = from_lng, lat = from_lat)
+		dest = routes[sqn, ] %>%
+			dplyr::select(lng = to_lng, lat = to_lat)
+		rt = route(orig, dest)
+	}	
+}
+f4(r1)
+  ##> hata
+``` 
+
+Demek sorun `for` satırından kaynaklanıyor
+
+``` r
+f5 = function(routes) {
+	for (sqn in 1:nrow(routes) - 1 ) {
+		print(sqn)
+		##> 0
+		orig = routes[sqn, ] %>%
+			dplyr::select(lng = from_lng, lat = from_lat)
+		dest = routes[sqn, ] %>%
+			dplyr::select(lng = to_lng, lat = to_lat)
+		rt = route(orig, dest)
+	}	
+}
+f5(r1)
+  ##> hata
+``` 
+
+`sqn = 0` olunca, orig ve dest doğal olarak empty tibble objeleri oluyor.
+
+Peki bu durumda route() içinde nasıl url oluşturulabiliyor?
+
+``` r
+sqn = 0
+routes = r1
+orig = routes[sqn, ] %>%
+	dplyr::select(lng = from_lng, lat = from_lat)
+dest = routes[sqn, ] %>%
+	dplyr::select(lng = to_lng, lat = to_lat)
+rt = route(orig, dest)
+``` 
+
+Sebebi: `for (sqn in 1:0)` aslında iki tane döngü çalıştırıyor. İlkinde `sqn = 1` ikincisinde `sqn = 0`. Bizim gördüğümüz url, ilk döngü çalışmasına dair.
 

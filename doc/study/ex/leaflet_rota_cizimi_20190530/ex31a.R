@@ -1,12 +1,19 @@
 library(shiny)
 library(leaflet)
-source("get_routes_ex30.R")
+source("get_routes_ex31.R")
 source("pvrp.R")
 
 # name mappings:
 # sequence_no = sqn
 # salesman_id = smi
 # salesman_no = smn
+
+get_routes_by_smi_wkd = function(routes, smi, wkd) {
+	rt01 = routes %>%
+		dplyr::filter(salesman_id == smi & week_day == wkd) 
+
+	return(rt01)
+}
 
 routes_all = get_routes_verbal()
 salesman = get_salesman()

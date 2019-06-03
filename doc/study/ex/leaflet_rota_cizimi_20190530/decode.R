@@ -35,7 +35,7 @@ decode <- function(str, multiplier=1e5){
 
 route = function(orig, dest) {
 	url = glue::glue("http://{osrm_server}/route/v1/driving/{orig$lng},{orig$lat};{dest$lng},{dest$lat}?overview=full")
-	return(fromJSON(file=url))
+	return(rjson::fromJSON(file=url))
 }
 
 path = function(route) {
