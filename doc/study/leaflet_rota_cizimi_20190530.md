@@ -942,6 +942,8 @@ source("ex30b.R")
 
 ### Error: Son adım olarak depo tüm rotalara ekleniyor
 
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31.R`
+
 `get_routes_by_smi_wkd()` tarafından ekleniyor:
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31a.R`
@@ -1313,4 +1315,26 @@ rt = route(orig, dest)
 ``` 
 
 Sebebi: `for (sqn in 1:0)` aslında iki tane döngü çalıştırıyor. İlkinde `sqn = 1` ikincisinde `sqn = 0`. Bizim gördüğümüz url, ilk döngü çalışmasına dair.
+
+### Dosya path'lerini env var'dan alalım
+
+``` r
+PEYMAN_PROJECT_DIR = Sys.getenv("PEYMAN_PROJECT_DIR")
+if (PEYMAN_PROJECT_DIR == "") {
+	PEYMAN_PROJECT_DIR = "~"
+}
+``` 
+
+localhost:
+
+``` bash
+export PEYMAN_PROJECT_DIR="$HOME/projects/itr/peyman"
+``` 
+
+server:
+
+``` bash
+export PEYMAN_PROJECT_DIR="$HOME"
+``` 
+
 
