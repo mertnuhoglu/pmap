@@ -1337,4 +1337,12 @@ server:
 export PEYMAN_PROJECT_DIR="$HOME"
 ``` 
 
+### Tam ekran yapalım
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex32.R`
+
+``` r
+    tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}")
+``` 
+
 
