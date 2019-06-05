@@ -104,3 +104,6 @@ https://auth0.com/blog/adding-authentication-to-shiny-open-source-edition/
 
 https://auth0.com/blog/adding-authentication-to-shiny-server/
 
+## Examples
+
+

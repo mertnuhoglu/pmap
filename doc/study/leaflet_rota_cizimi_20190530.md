@@ -1345,4 +1345,217 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex32.R
     tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}")
 ``` 
 
+### login ekranı koyalım
+
+``` r
+install.packages(c("shinyjs"))
+devtools::install_github("paulc91/shinyauthr")
+``` 
+
+``` bash
+wget https://raw.githubusercontent.com/PaulC91/shinyauthr/master/inst/shiny-examples/shinyauthr_example/returnClick.js
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33.R`
+
+shinyauthr örneğindeki gibi yapalım:
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33a.R`
+
+user_info tablosunu kaldıralım. 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33b.R`
+
+fluidRow olmasa ne olur?
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33c.R`
+
+Harita objesini de login arkasına koyalım. `testUI` içine ekleyelim.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d.R`
+
+Error: harita görünmüyor
+
+opt01: renderUI tek başına haritayı gösteriyor mu?
+
+Dışarı da koyalım `map` objesini.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d01.R`
+
+Bir tane daha `uiOutput` yapalım
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d02.R`
+
+Diğer renderUI'ları kaldıralım
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d03.R`
+
+``` r
+	output$testUI2 = renderUI({
+		textOutput("ui2")
+		leafletOutput("map")
+		textOutput("ui2e")
+	})
+  output$ui2 = renderText({ "ui2 start" })
+  output$ui2e = renderText({ "ui2 end" })
+``` 
+
+`ui2 end` görünüyor, ama `start` görünmüyor.
+
+loginUI objesini kaldıralım
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d04.R`
+
+Yine aynı sadece `end` görünüyor.
+
+Neden leafletOutput öncesi görünmüyor, sonrası görünüyor?
+
+end objesini de leafletOutput öncesine koyalım.
+
+``` r
+	output$testUI2 = renderUI({
+		textOutput("ui3")
+		textOutput("ui4")
+		leafletOutput("map")
+		textOutput("ui5")
+		textOutput("ui6")
+	})
+  output$ui3 = renderText({ "ui3" })
+  output$ui4 = renderText({ "ui4" })
+  output$ui5 = renderText({ "ui5" })
+  output$ui6 = renderText({ "ui6" })
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d05.R`
+
+Sadece en sonuncusunu gösteriyor.
+
+Bu davranış `leafletOutput`'tan mı kaynaklanıyor?
+
+``` r
+	output$testUI2 = renderUI({
+		textOutput("ui3")
+		textOutput("ui4")
+		textOutput("ui5")
+		textOutput("ui6")
+	})
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d06.R`
+
+Hayır, leafletOutput'u kaldırınca da aynı durumu gözlemledim.
+
+O yüzden mi fluidRow kullanmıştı acaba?
+
+``` r
+	output$testUI2 = renderUI({
+    fluidRow(
+      column( width = 12
+				, textOutput("ui3")
+				, textOutput("ui4")
+				, textOutput("ui5")
+				, textOutput("ui6")
+      )
+    )
+	})
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d07.R`
+
+Tamam şimdi hepsi görünüyor.
+
+Şimdi haritayı koyalım. 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d08.R`
+
+Şimdi login arkasına atalım bunu.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d09.R`
+
+sidebar komponentini de arkaya alalım.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e.R`
+
+Öbür kısımdaki gibi fluidRow kullanalım:
+
+``` r
+		, uiOutput("sidebar")
+		...
+	output$sidebar = renderUI({
+    req(credentials()$user_auth)
+    fluidRow(
+      column( width = 3
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e01.R`
+
+Error: sidebar tamamen kayboldu
+
+Tek bir `actionButton` koyalım sadece
+
+sidebar hiç görünmüyor hala.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e02.R`
+
+Aynı authr02 örneğindeki gibi yapalım. `div` içinde saralım komponenti
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e03.R`
+
+Yine olmadı.
+
+server tarafını da yapalım aynı şekilde.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e04.R`
+
+Yine olmadı. 
+
+Tüm kodu taşı birebir aynı şekilde. 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e05.R`
+
+Fazla kısımları silip dene
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e06.R`
+
+``` r
+  , dashboardSidebar(collapsed = TRUE
+		, actionButton("sqn_prev", "Önceki")
+	)
+server = ...
+  observe({
+    if(credentials()$user_auth) {
+      shinyjs::removeClass(selector = "body", class = "sidebar-collapse")
+    } else {
+      shinyjs::addClass(selector = "body", class = "sidebar-collapse")
+    }
+  })
+``` 
+
+Şimdi tüm `, uiOutput("sidebar")` komponentini koyalım
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e07.R`
+
+Error: `selectInput` objeleri minicik hale gelmiş.
+
+Tek başına onları dene
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e08.R`
+
+``` r
+	output$sidebar = renderUI({
+    req(credentials()$user_auth)
+		selectInput("sqn_select", "Rota sırası", choices = sqn_init, selected = sqn_selected, selectize = F)
+``` 
+
+Bu sefer düzgün gösterdi.
+
+column sayısını artır.
+
+``` r
+		fluidRow(
+			column( width = 12
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e09.R`
+
 
