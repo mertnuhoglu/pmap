@@ -1349,6 +1349,11 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex32.R
 
 ``` r
 install.packages(c("shinyjs"))
+install.packages(c("sodium"))
+sudo apt-get install libcurl4-openssl-dev
+sudo apt-get install libssl-dev
+install.packages("curl")
+install.packages("devtools")
 devtools::install_github("paulc91/shinyauthr")
 ``` 
 
