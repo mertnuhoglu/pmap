@@ -1,11 +1,9 @@
 
 # leaflet ile rota çizimi
 
-## Logs
+## Örnek shiny uygulaması: 086-bus-dashboard
 
-### Örnek shiny uygulaması: 086-bus-dashboard
-
-#### shiny-examples nasıl çalıştırılıyor?
+### shiny-examples nasıl çalıştırılıyor?
 
 https://github.com/rstudio/shiny-examples
 
@@ -45,7 +43,7 @@ cd /Users/mertnuhoglu/codes/rr/shiny-examples/086-bus-dashboard
 shiny::runApp(".")
 ``` 
 
-#### Error
+### Error
 
 Warning: Error in n: argument "x" is missing, with no default
 
@@ -67,7 +65,7 @@ Fix:
 		->
     summarise(n = dplyr::n()) %>%
 
-### Article: Routing in R using the open source routing machine (OSRM)
+## Article: Routing in R using the open source routing machine (OSRM)
 
 https://cmhh.github.io/post/routing/
 
@@ -159,17 +157,17 @@ m <- leaflet(width="100%") %>%
 m
 ``` 
 
-#### ex01: makaledeki uygulamayı yapma
+### ex01: makaledeki uygulamayı yapma
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex01.R`
 
-#### ex04: Kendi noktalarımızla rota çizimi
+### ex04: Kendi noktalarımızla rota çizimi
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex04.R`
 
 Best solution so far.
 
-### Article: rCarto/osrm
+## Article: rCarto/osrm
 
 https://github.com/rCarto/osrm
 
@@ -182,7 +180,7 @@ install.packages("osrm")
 install.packages("cartography")
 ``` 
 
-#### Setup OSRM Settings
+### Setup OSRM Settings
 
 Put `OSRM_SERVER` into `.bashrc`
 
@@ -238,9 +236,9 @@ plot(route, lty = 1, lwd = 1, col = "white", add=TRUE)
 text(com[c(1,4),3:4], labels = com[c(1,4),2], pos = 2)
 ``` 
 
-### Tüm rotaları çizdirme
+## Tüm rotaları çizdirme
 
-#### ex05: Birden çok noktayı koyma
+### ex05: Birden çok noktayı koyma
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex05.R`
 
@@ -272,9 +270,9 @@ m <- leaflet(width="100%") %>%
 m
 ``` 
 
-#### ex06: Noktaları bir fonksiyon haline getirme
+### ex06: Noktaları bir fonksiyon haline getirme
 
-##### Error: All columns in a tibble must be 1d or 2d objects:
+#### Error: All columns in a tibble must be 1d or 2d objects:
 
 ``` r
 rs = dplyr::tibble( path = w1, route = r1)
@@ -283,11 +281,11 @@ rs = dplyr::tibble( path = w1, route = r1)
 		Error: All columns in a tibble must be 1d or 2d objects:
 		* Column `path` is SpatialLines
 
-#### ex07: SpatialLines ile dataframe oluşturma
+### ex07: SpatialLines ile dataframe oluşturma
 
 https://gis.stackexchange.com/questions/163286/how-do-i-create-a-spatiallinesdataframe-from-a-dataframe
 
-#### ex08: 2d object as a column in a tibble
+### ex08: 2d object as a column in a tibble
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex08.R`
 
@@ -322,7 +320,7 @@ df$x3
   ##> 9  3  9  9
 ``` 
 
-#### ex09: for loop ile leaflet addPolylines çağır
+### ex09: for loop ile leaflet addPolylines çağır
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex09.R`
 
@@ -344,7 +342,7 @@ m = m %>%
 m
 ``` 
 
-#### ex10: color palet kullanımını test et
+### ex10: color palet kullanımını test et
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex10.R`
 
@@ -354,7 +352,7 @@ pal(1:10)
   ##>  [1] "#FF0000" "#EB7000" "#D0A100" "#AAC900" "#6AEE00" "#52E74B" "#77B785" "#7C87B0" "#6754D8" "#0000FF"
 ``` 
 
-#### ex11: renk paletini rotalarda kullan
+### ex11: renk paletini rotalarda kullan
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex11.R`
 
@@ -366,7 +364,7 @@ col = pal(1:no_routes)
 		addPolylines(data = ph, popup = route_label(rt), color = col[i], opacity=1, weight = 3) %>%
 ``` 
 
-#### ex12: bir satıcının tüm rotalarını çizdir
+### ex12: bir satıcının tüm rotalarını çizdir
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex12.R`
 
@@ -383,9 +381,9 @@ depot = rt07[1, ]
 cs = dplyr::bind_rows(rt07, depot)
 ``` 
 
-### Uygulama haline getirme
+## Uygulama haline getirme
 
-#### ex13: leaflet shiny basic app
+### ex13: leaflet shiny basic app
 
 https://rstudio.github.io/leaflet/shiny.html
 
@@ -403,17 +401,17 @@ Run from terminal:
 Rscript ex13.R
 ``` 
 
-#### ex14: leaflet height full screen
+### ex14: leaflet height full screen
 
 https://stackoverflow.com/questions/36469631/how-to-get-leaflet-for-r-use-100-of-shiny-dashboard-height
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex14.R`
 
-#### ex15: Kendi rotalarımızı bu appte gösterelim
+### ex15: Kendi rotalarımızı bu appte gösterelim
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex15.R`
 
-#### ex16: Temel bir shiny uygulaması
+### ex16: Temel bir shiny uygulaması
 
 Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex16.R`
 
@@ -423,19 +421,19 @@ Her yerden erişilebilir olması için: `host="0.0.0.0"` olmalı
 runApp(shinyApp(ui, server), host="0.0.0.0",port=5050)
 ``` 
 
-### Navigatör özellikleri
+## Navigatör özellikleri
 
-#### Filtreleme özellikleri
+### Filtreleme özellikleri
 
-##### ex17: basit bir filtreleme uygulaması örneği
+#### ex17: basit bir filtreleme uygulaması örneği
 
 https://stackoverflow.com/questions/50128349/filtering-leaflet-map-data-in-shiny
 
-##### ex18: sadece sözel bilgiyi kullanarak kendi rotamızı filtreleme
+#### ex18: sadece sözel bilgiyi kullanarak kendi rotamızı filtreleme
 
 Datayı hazırla verbal df olarak:
 
-###### Error: nothing happens
+##### Error: nothing happens
 
 ``` r
 source("get_routes.R")
@@ -475,7 +473,7 @@ routes %>%
 
 Cause: sequence_no is implicit variable. `c(sequence_no, sequence_no + 1)` is interpreted as `routes$sequence_no`.
 
-###### Error: non-numeric argument to binary operator
+##### Error: non-numeric argument to binary operator
 
 		Warning: Error in +: non-numeric argument to binary operator
 			97: get_route_for_sequence_no [get_routes.R#47]
@@ -562,13 +560,13 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18d.
 
 Works. 
 
-##### ex19: kendi rotalarımızı bir tablo ve widgetla birlikte gösterme
+#### ex19: kendi rotalarımızı bir tablo ve widgetla birlikte gösterme
 
 Sadece verbal data. 
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex19.R`
 
-##### ex21: non-numeric argument problemi
+#### ex21: non-numeric argument problemi
 
 Problemi en basit haliyle reproduce edelim.
 
@@ -604,7 +602,7 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21e.
 
 Problem solved.
 
-##### ex22: sözel bilgiye geometriyi de ekle
+#### ex22: sözel bilgiye geometriyi de ekle
 
 Previous step: ex18
 
@@ -621,31 +619,31 @@ It works.
 
 `render` it in shiny
 
-##### ex23: sequence_no değişince haritadaki rota da değişsin
+#### ex23: sequence_no değişince haritadaki rota da değişsin
 
 Use `reactive` expression
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex23.R`
 
-#### Navigasyon özellikleri
+### Navigasyon özellikleri
 
-##### Bir satıcının gün içindeki rotaları arasında
+#### Bir satıcının gün içindeki rotaları arasında
 
-###### ex24: iki buton koy. sequence_no dolaş.
+##### ex24: iki buton koy. sequence_no dolaş.
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex24.R`
 
 Counter örneği: https://gist.github.com/aagarw30/69feeeb7e813788a753b71ef8c0877eb as `counter`
 
-###### ex25: bir satıcının rotalarını dolaş
+##### ex25: bir satıcının rotalarını dolaş
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex25.R`
 
-###### ex26: hızlı zıplama select ile
+##### ex26: hızlı zıplama select ile
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26.R`
 
-####### Error: başlangıçta NA dönüyor selectInput
+###### Error: başlangıçta NA dönüyor selectInput
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26a.R`
 
@@ -684,7 +682,7 @@ Haritayı da bağla.
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26e.R`
  
-###### ex27: selectInput da güncellensin butona basılınca
+##### ex27: selectInput da güncellensin butona basılınca
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex27.R`
 
@@ -699,9 +697,9 @@ Follow https://stackoverflow.com/questions/21465411/r-shiny-passing-reactive-to-
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex27a.R`
 
-##### Satıcılar arasında dolaşma
+#### Satıcılar arasında dolaşma
 
-###### ex28: satıcı listesi ve rota listesi birlikte bulunsun
+##### ex28: satıcı listesi ve rota listesi birlikte bulunsun
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28.R`
 
@@ -841,9 +839,9 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28j.
 
 This works.
 
-##### Günler arasında dolaşma
+#### Günler arasında dolaşma
 
-###### ex29: aynı satıcının farklı günleri arasında dolaşma
+##### ex29: aynı satıcının farklı günleri arasında dolaşma
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex29.R`
 
@@ -861,7 +859,7 @@ Yeni butonları ekle
 
 Select öğesini de senkronize et
 
-### Birikimsel Navigasyon 
+## Birikimsel Navigasyon
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30.R`
 
@@ -921,7 +919,7 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30b.
 
 Fakat tüm rotaları döndürdü bize.
 
-### Deploy et
+## Deploy et
 
 tsv dosyalarını yukarı yükle.
 
@@ -940,7 +938,7 @@ vim ~/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/get_routes_ex30.R
 source("ex30b.R")
 ``` 
 
-### Error: Son adım olarak depo tüm rotalara ekleniyor
+## Error: Son adım olarak depo tüm rotalara ekleniyor
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31.R`
 
@@ -980,7 +978,7 @@ opt01: get_routes_verbal fonksiyonuna her bir rota dizisi için bir satır ekley
 
 opt02: get_routes.R içinde from_point_id ve to_point_id kullanarak rotaları tanımla. Böylece girdi verimizle pmap uygulaması birbiriyle daha uyumlu hale de gelir hem.
 
-#### opt02: get_routes.R içinde from_point_id ve to_point_id kullanarak rotaları tanımla
+### opt02: get_routes.R içinde from_point_id ve to_point_id kullanarak rotaları tanımla
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31b.R`
 
@@ -1030,7 +1028,7 @@ get_route_upto_sequence_no = function(routes, sqn) {
 
 Fakat böyle yaparsam da son adımı hiçbir zaman ekleyemeyeceğiz. `<=` olması lazım.
 
-##### Error: Warning: Error in file: invalid 'description' argument
+#### Error: Warning: Error in file: invalid 'description' argument
 
 		105: file
 		104: readLines
@@ -1316,7 +1314,7 @@ rt = route(orig, dest)
 
 Sebebi: `for (sqn in 1:0)` aslında iki tane döngü çalıştırıyor. İlkinde `sqn = 1` ikincisinde `sqn = 0`. Bizim gördüğümüz url, ilk döngü çalışmasına dair.
 
-### Dosya path'lerini env var'dan alalım
+## Dosya path'lerini env var'dan alalım
 
 ``` r
 PEYMAN_PROJECT_DIR = Sys.getenv("PEYMAN_PROJECT_DIR")
@@ -1337,7 +1335,7 @@ server:
 export PEYMAN_PROJECT_DIR="$HOME"
 ``` 
 
-### Tam ekran yapalım
+## Tam ekran yapalım
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex32.R`
 
@@ -1345,7 +1343,9 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex32.R
     tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}")
 ``` 
 
-### login ekranı koyalım
+## login ekranı koyalım
+
+### Result
 
 ``` r
 install.packages(c("shinyjs"))
@@ -1362,6 +1362,73 @@ wget https://raw.githubusercontent.com/PaulC91/shinyauthr/master/inst/shiny-exam
 ``` 
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33.R`
+
+`ui` side doesn't contain actual ui widgets anymore:
+
+``` r
+ui <- dashboardPage(
+  dashboardHeader(title = "Rota Navigatör"
+		, tags$li(class = "dropdown", style = "padding: 8px;",
+			shinyauthr::logoutUI("Çıkış")
+		)
+		...
+  , dashboardSidebar(collapsed = TRUE
+		, uiOutput("sidebar")
+	)
+  , dashboardBody(
+    tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}")
+    , shinyjs::useShinyjs()
+    , tags$head(tags$style(".table{margin: 0 auto;}"),
+			tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.contentWindow.min.js", type="text/javascript"), includeScript("returnClick.js")
+    )
+    , shinyauthr::loginUI("login")
+    , uiOutput("body")
+  )
+``` 
+
+`server` side contains all the actual ui widgets now:
+
+``` r
+server = function(input, output, session) {
+  
+  credentials <- callModule(shinyauthr::login, "login", 
+                            data = user_base,
+                            user_col = user,
+                            pwd_col = password_hash,
+                            sodium_hashed = TRUE,
+                            log_out = reactive(logout_init()))
+  logout_init <- callModule(shinyauthr::logout, "logout", reactive(credentials()$user_auth))
+  user_info <- reactive({credentials()$info})
+
+  observe({
+    if(credentials()$user_auth) {
+      shinyjs::removeClass(selector = "body", class = "sidebar-collapse")
+    } else {
+      shinyjs::addClass(selector = "body", class = "sidebar-collapse")
+    }
+  })
+
+	output$sidebar = renderUI({
+    req(credentials()$user_auth)
+		fluidRow(
+			column( width = 12
+				, actionButton("sqn_prev", "Önceki")
+				, actionButton("sqn_next", "Sonraki")
+				...
+			)
+		)
+	})
+	output$body = renderUI({
+    req(credentials()$user_auth)
+    fluidRow(
+      column( width = 12
+				, leafletOutput("map")
+      )
+    )
+	})
+``` 
+
+### Logs
 
 shinyauthr örneğindeki gibi yapalım:
 
@@ -1563,4 +1630,20 @@ column sayısını artır.
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e09.R`
 
+#### Refactoring: login kodlarını sadeleştirelim
 
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33f.R`
+
+user_base değişkenini dışarı al
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33f01.R`
+
+Check `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/login.R`
+
+credentials fonksiyonunu da dışarı al.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33f02.R`
+
+Bu durumda çalışmıyor
+
+O zaman başka da yapılabilecek bir şey yok.

@@ -4,7 +4,7 @@ library(leaflet)
 library(dplyr)
 source("get_routes_ex31b.R")
 source("pvrp.R")
-source("login.R")
+source("login_33f02.R")
 
 # name mappings:
 # sequence_no = sqn
@@ -48,15 +48,6 @@ ui <- dashboardPage(
 
 server = function(input, output, session) {
   
-  credentials <- callModule(shinyauthr::login, "login", 
-                            data = user_base,
-                            user_col = user,
-                            pwd_col = password_hash,
-                            sodium_hashed = TRUE,
-                            log_out = reactive(logout_init()))
-  logout_init <- callModule(shinyauthr::logout, "logout", reactive(credentials()$user_auth))
-  user_info <- reactive({credentials()$info})
-
   observe({
     if(credentials()$user_auth) {
       shinyjs::removeClass(selector = "body", class = "sidebar-collapse")
@@ -96,53 +87,24 @@ server = function(input, output, session) {
 
 	state = reactiveValues(sqn = sqn_selected, routes = get_routes_by_smi_wkd(routes_all, smi_selected, wkd_selected), smn = smn_selected, wkd = wkd_selected, smi = smi_selected)
 	observeEvent(input$sqn_next, { state$sqn = state$sqn + 1 })
-	observeEvent(input$sqn_prev, { state$sqn = state$sqn - 1 })
+	#observeEvent(input$sqn_prev, { state$sqn = state$sqn - 1 })
 	observeEvent(input$sqn_select, { state$sqn = as.numeric(input$sqn_select) })
 	observe({
 		updateSelectInput(session, "sqn_select",
 			choices = state$routes$sequence_no
 			, selected = state$sqn
 	)})
-	observeEvent(input$smn_next, {
-		state$smn = state$smn + 1
-		refresh_salesman_no()
-	})
-	observeEvent(input$smn_prev, {
-		state$smn = state$smn - 1
-		refresh_salesman_no()
-	})
-	observeEvent(input$smi_select, {
-		state$smi = as.numeric(input$smi_select)
-		refresh_salesman_id()
-	})
 	observe({
 		updateSelectInput(session, "smi_select",
 			selected = state$smi
 	)})
-	observeEvent(input$wkd_next, {
-		state$wkd = state$wkd + 1
-		refresh_salesman_routes()
-	})
-	observeEvent(input$wkd_prev, {
-		state$wkd = state$wkd - 1
-		refresh_salesman_routes()
-	})
-	observeEvent(input$wkd_select, {
-		state$wkd = as.numeric(input$wkd_select)
-		refresh_salesman_routes()
-	})
 	observe({
 		updateSelectInput(session, "wkd_select",
 			selected = state$wkd
 	)})
-  routeS = reactive({ get_route_upto_sequence_no(state$routes, state$sqn) })
-  output$routes = renderTable({ routeS() })
-  output$map = renderLeaflet({ get_routes_all(routeS()) })
-
   output$sqn_out = renderText({ state$sqn })
   output$smn_out = renderText({ state$smn })
   output$wkd_out = renderText({ state$wkd })
-
 	refresh_salesman_no = function() {
 		state$smi = (dplyr::filter(salesman, salesman_no == state$smn))$salesman_id
 		refresh_salesman_routes()
@@ -156,6 +118,33 @@ server = function(input, output, session) {
 		state$sqn = 0
 		return(state)
 	}
+	observeEvent(input$smn_next, {
+		state$smn = state$smn + 1
+		refresh_salesman_no()
+	})
+	observeEvent(input$smn_prev, {
+		state$smn = state$smn - 1
+		refresh_salesman_no()
+	})
+	observeEvent(input$smi_select, {
+		state$smi = as.numeric(input$smi_select)
+		refresh_salesman_id()
+	})
+	observeEvent(input$wkd_next, {
+		state$wkd = state$wkd + 1
+		refresh_salesman_routes()
+	})
+	observeEvent(input$wkd_prev, {
+		state$wkd = state$wkd - 1
+		refresh_salesman_routes()
+	})
+	observeEvent(input$wkd_select, {
+		state$wkd = as.numeric(input$wkd_select)
+		refresh_salesman_routes()
+	})
+  routeS = reactive({ get_route_upto_sequence_no(state$routes, state$sqn) })
+  output$routes = renderTable({ routeS() })
+  output$map = renderLeaflet({ get_routes_all(routeS()) })
 }
 
 runApp(shinyApp(ui, server), host="0.0.0.0",port=5050)
