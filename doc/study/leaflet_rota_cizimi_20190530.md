@@ -1647,3 +1647,86 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33f0
 Bu durumda çalışmıyor
 
 O zaman başka da yapılabilecek bir şey yok.
+
+## farklı marker iconları kullan
+
+### addAwesomeMarcers kullan
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34.R`
+
+#### Logs
+
+Rakam kullan
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a01.R`
+
+``` r
+		icon_num <- makeAwesomeIcon(text = (sqn - 1))
+		m = m %>% 
+			...
+			addAwesomeMarkers(lng=orig$lng, lat=orig$lat, text = (sqn-1), popup=glue("Market {sqn-1}"), label = glue("{sqn-1}")) %>%
+``` 
+
+Error: Şekil çıkıyor, sayı çıkmıyor.
+
+Başka bir ikon dene
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a02.R`
+
+``` r
+	icon_num = makeAwesomeIcon(icon = "flag", markerColor = "red", library = "fa", iconColor = "black", text = "1")
+``` 
+
+Düzgün çalışıyor. Bunun üzerinde değişiklik yap.
+
+Şimdi çalıştı.
+
+Fazlalıkları sil.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a03.R`
+
+``` r
+		icon_num = makeAwesomeIcon(text = 1)
+``` 
+
+Şimdi çalışıyor. Tuhaf.
+
+Sayıları dinamik olarak oluştur.
+ 
+``` r
+		icon_num = makeAwesomeIcon(text = sqn)
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a04.R`
+
+Sayılar kayboluyor şöyle yapınca:
+
+``` r
+		icon_num = makeAwesomeIcon(text = (sqn - 1))
+``` 
+
+Çözüm:
+
+``` r
+		icon_num = makeAwesomeIcon(text = glue("{sqn - 1}"))
+``` 
+
+### Yeni noktaları eklerken eski markerları silelim
+
+İlk başlangıç noktasını for döngüsü dışında ekle
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34b01.R`
+
+### Aynı rengi kullanalım yol ve markerda
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34c01.R`
+
+``` r
+	pal = c("red", "purple", "darkblue", "orange", "cadetblue", "green", "darkred", "pink", "gray", "darkgreen", "black")
+	col = rep(pal, times = 1 + (nrow(routes) / length(pal)))
+	...
+		icon_num = makeAwesomeIcon(text = sqn, markerColor = col[sqn])
+	...
+			addPolylines(data = ph, label = route_label(rt), color = col[sqn], opacity=1, weight = 3) %>%
+``` 
+

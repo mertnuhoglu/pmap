@@ -106,4 +106,6 @@ https://auth0.com/blog/adding-authentication-to-shiny-server/
 
 ## Examples
 
+Ref: `login ekranı koyalım <url:/Users/mertnuhoglu/projects/itr/peyman/pmap/doc/study/leaflet_rota_cizimi_20190530.md#tn=login ekranı koyalım>`
+
 
