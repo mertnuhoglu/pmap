@@ -1730,3 +1730,90 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34c0
 			addPolylines(data = ph, label = route_label(rt), color = col[sqn], opacity=1, weight = 3) %>%
 ``` 
 
+## birden çok satıcının günlük rotalarını bir arada göstermek
+
+### birden çok satıcıyı bir arada göstermek
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a.R`
+
+#### widgetı `multiple` yapalım
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a01.R`
+
+``` r
+	refresh_salesman_id = function() {
+		state$smn = (dplyr::filter(salesman, salesman_id %in% state$smi))$salesman_no
+		...
+get_routes_by_smi_wkd = function(routes, smi, wkd) {
+	rt01 = routes %>%
+		dplyr::filter(salesman_id %in% smi & week_day %in% wkd) 
+		...
+``` 
+
+Çalışıyor, fakat farklı kümelere ait rotaların noktalarını ardışık bir şekildeymiş gibi numaralandırıyor. 
+
+##### opt01: make_map içinde her bir kümeyi ayrı bir şekilde döngüye sok
+
+make_map şurada çağrılıyor:
+
+``` r
+  routeS = reactive({ get_route_upto_sequence_no(state$routes, state$sqn) })
+  output$map = renderLeaflet({ make_map(routeS()) })
+``` 
+
+`routeS` objesini bir inceleyelim.
+
+``` r
+routes_all = get_routes_verbal()
+r0 = get_routes_by_smi_wkd(routes_all, c(7,12), 0)
+r1 = get_route_upto_sequence_no(r0, 0)
+r2 = r1 %>%
+	dplyr::group_by(salesman_id, week_day) %>%
+	dplyr::group_split()
+  ##> [[1]]
+  ##> # A tibble: 1 x 9
+  ##>   salesman_id week_day from_point_id to_point_id from_lat from_lng to_lat to_lng sequence_no
+  ##>         <dbl>    <dbl>         <dbl>       <dbl>    <dbl>    <dbl>  <dbl>  <dbl>       <dbl>
+  ##> 1           7        0             1         183     40.9     29.2   41.0   29.1           0
+  ##> 
+  ##> [[2]]
+  ##> # A tibble: 1 x 9
+  ##>   salesman_id week_day from_point_id to_point_id from_lat from_lng to_lat to_lng sequence_no
+  ##>         <dbl>    <dbl>         <dbl>       <dbl>    <dbl>    <dbl>  <dbl>  <dbl>       <dbl>
+  ##> 1          12        0             1        2662     40.9     29.2   41.0   29.3           0
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a02.R`
+
+#### birden çok günü seçebilelim
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a03.R`
+
+``` r
+...
+				, selectInput("wkd_select", "Gün", choices = wkd_init, selected = wkd_selected, selectize = F, multiple = T)
+``` 
+
+#### tüm rotalar görünsün çoklu seçim durumunda
+
+birden çok seçildiğini nasıl anlayacağım?
+
+Burada kontrol edicem:
+
+``` r
+  routeSS = reactive({ get_route_upto_sequence_no(state$routes, state$sqn) })
+``` 
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a04.R`
+
+### marker iconlarını küçült
+
+Çalışmadı düzgün bir şekilde.
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35b01.R`
+
+Run `~/projects/study/r/shiny/ex/study_shiny/ex01/05.R`
+
+### rota navigasyon butonlarını pasifleştir
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35c01.R`
