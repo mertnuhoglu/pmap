@@ -13,13 +13,13 @@ source("login.R")
 
 routes_all = get_routes_verbal()
 salesman = get_salesman()
-init_sqn_selected = 0
-init_smn_selected = 1
-init_smi_selected = 7
-init_wkd_selected = 0
-init_sqn_choices = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected)
-init_smi_choices = salesman$salesman_id
-init_wkd_choices = routes_all$week_day %>% unique %>% sort
+sqn_selected = 0
+smn_selected = 1
+smi_selected = 7
+wkd_selected = 0
+sqn_init = get_routes_by_smi_wkd(routes_all, smi_selected, wkd_selected)
+smi_init = salesman$salesman_id
+wkd_init = routes_all$week_day %>% unique %>% sort
 
 ui <- dashboardPage(
   dashboardHeader(title = "Rota Navigatör"
@@ -69,16 +69,15 @@ server = function(input, output, session) {
 		req(credentials()$user_auth)
 		fluidRow(
 			column( width = 12
-				, actionButton("reset", "Sıfırla")
 				, actionButton("sqn_prev", "Önceki")
 				, actionButton("sqn_next", "Sonraki")
-				, selectInput("sqn_select", "Rota sırası", choices = init_sqn_choices, selected = init_sqn_selected, selectize = F)
+				, selectInput("sqn_select", "Rota sırası", choices = sqn_init, selected = sqn_selected, selectize = F)
 				, actionButton("smn_prev", "Önceki Satıcı")
 				, actionButton("smn_next", "Sonraki Satıcı")
-				, selectInput("smi_select", "Satıcı", choices = init_smi_choices, selected = init_smi_selected, selectize = F, multiple = T)
+				, selectInput("smi_select", "Satıcı", choices = smi_init, selected = smi_selected, selectize = F, multiple = T)
 				, actionButton("wkd_prev", "Önceki Gün")
 				, actionButton("wkd_next", "Sonraki Gün")
-				, selectInput("wkd_select", "Gün", choices = init_wkd_choices, selected = init_wkd_selected, selectize = F, multiple = T)
+				, selectInput("wkd_select", "Gün", choices = wkd_init, selected = wkd_selected, selectize = F, multiple = T)
 			)
 		)
 	})
@@ -95,8 +94,7 @@ server = function(input, output, session) {
     )
 	})
 
-	state = reactiveValues(sqn = init_sqn_selected, routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected), smn = init_smn_selected, wkd = init_wkd_selected, smi = init_smi_selected)
-
+	state = reactiveValues(sqn = sqn_selected, routes = get_routes_by_smi_wkd(routes_all, smi_selected, wkd_selected), smn = smn_selected, wkd = wkd_selected, smi = smi_selected)
 	observeEvent(input$sqn_next, { state$sqn = state$sqn + 1 })
 	observeEvent(input$sqn_prev, { state$sqn = state$sqn - 1 })
 	observeEvent(input$sqn_select, { state$sqn = as.numeric(input$sqn_select) })

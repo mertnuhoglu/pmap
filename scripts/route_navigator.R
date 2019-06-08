@@ -96,6 +96,13 @@ server = function(input, output, session) {
 	})
 
 	state = reactiveValues(sqn = init_sqn_selected, routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected), smn = init_smn_selected, wkd = init_wkd_selected, smi = init_smi_selected)
+	observeEvent(input$reset, { 
+		state$sqn = init_sqn_selected
+		state$smn = init_smn_selected
+		state$wkd = init_wkd_selected
+		state$smi = init_smi_selected
+		state$routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected)
+	})
 
 	observeEvent(input$sqn_next, { state$sqn = state$sqn + 1 })
 	observeEvent(input$sqn_prev, { state$sqn = state$sqn - 1 })

@@ -1732,6 +1732,8 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34c0
 
 ## birden çok satıcının günlük rotalarını bir arada göstermek
 
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35.R`
+
 ### birden çok satıcıyı bir arada göstermek
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a.R`
@@ -1817,3 +1819,7 @@ Run `~/projects/study/r/shiny/ex/study_shiny/ex01/05.R`
 ### rota navigasyon butonlarını pasifleştir
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35c01.R`
+
+### Sıfırlama butonu olsun seçimleri başa çeviren
+
+Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35d01.R`
