@@ -16,10 +16,11 @@ salesman = get_salesman()
 init_sqn_selected = 0
 init_smn_selected = 1
 init_smi_selected = 7
-init_wkd_selected = 0
+init_gun_selected = days$gun[1]
+init_wkd_selected = gun2week_day(init_gun_selected)
 init_sqn_choices = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected)
 init_smi_choices = salesman$salesman_id
-init_wkd_choices = routes_all$week_day %>% unique %>% sort
+init_gun_choices = days$gun
 
 ui <- dashboardPage(
   dashboardHeader(title = "Rota Navigatör"
@@ -76,9 +77,9 @@ server = function(input, output, session) {
 				, actionButton("smn_prev", "Önceki Satıcı")
 				, actionButton("smn_next", "Sonraki Satıcı")
 				, selectInput("smi_select", "Satıcı", choices = init_smi_choices, selected = init_smi_selected, selectize = T, multiple = T)
-				, actionButton("wkd_prev", "Önceki Gün")
-				, actionButton("wkd_next", "Sonraki Gün")
-				, selectInput("wkd_select", "Gün", choices = init_wkd_choices, selected = init_wkd_selected, selectize = T, multiple = T)
+				, actionButton("gun_prev", "Önceki Gün")
+				, actionButton("gun_next", "Sonraki Gün")
+				, selectInput("gun_select", "Gün", choices = init_gun_choices, selected = init_gun_selected, selectize = T, multiple = T)
 			)
 		)
 	})
@@ -89,19 +90,19 @@ server = function(input, output, session) {
 				, leafletOutput("map")
 				, textOutput("sqn_out")
 				, textOutput("smn_out")
-				, tableOutput("wkd_out")
+				, tableOutput("gun_out")
 				, tableOutput("routes")
       )
     )
 	})
 
-	state = reactiveValues(sqn = init_sqn_selected, routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected), smn = init_smn_selected, wkd = init_wkd_selected, smi = init_smi_selected)
+	state = reactiveValues(sqn = init_sqn_selected, routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected), smn = init_smn_selected, gun = init_gun_selected, smi = init_smi_selected)
 	observeEvent(input$reset, { 
 		state$sqn = init_sqn_selected
 		state$smn = init_smn_selected
-		state$wkd = init_wkd_selected
+		state$gun = init_gun_selected
 		state$smi = init_smi_selected
-		state$routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected)
+		state$routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, wkd())
 	})
 
 	observeEvent(input$sqn_next, { state$sqn = state$sqn + 1 })
@@ -125,21 +126,22 @@ server = function(input, output, session) {
 		refresh_salesman_id()
 	})
 	observe({ updateSelectInput(session, "smi_select", selected = state$smi)})
-	observeEvent(input$wkd_next, {
-		state$wkd = state$wkd + 1
+	observeEvent(input$gun_next, {
+		state$gun = days[ days$gun == state$gun, ]$next_gun
 		refresh_salesman_routes()
 	})
-	observeEvent(input$wkd_prev, {
-		state$wkd = state$wkd - 1
+	observeEvent(input$gun_prev, {
+		state$gun = days[ days$gun == state$gun, ]$prev_gun
 		refresh_salesman_routes()
 	})
-	observeEvent(input$wkd_select, {
-		state$wkd = as.numeric(input$wkd_select)
+	wkd = reactive({ gun2week_day(state$gun) })
+	observeEvent(input$gun_select, {
+		state$gun = input$gun_select
 		refresh_salesman_routes()
 	})
-	observe({ updateSelectInput(session, "wkd_select", selected = state$wkd) })
+	observe({ updateSelectInput(session, "gun_select", selected = state$gun) })
 	observe({ 
-		if (length(state$smi) * length(state$wkd) > 1) {
+		if (length(state$smi) * length(wkd()) > 1) {
 			# we cannot navigate stops in a route group when multiple different route groups are selected
 			shinyjs::disable("sqn_prev") 
 			shinyjs::disable("sqn_next") 
@@ -151,7 +153,7 @@ server = function(input, output, session) {
 		}
 	})
   routeSS = reactive({ 
-		if (length(state$smi) * length(state$wkd) > 1) {
+		if (length(state$smi) * length(wkd()) > 1) {
 			# if multiple smi/wkd selected, then put all routes
       return(state$routes)
 		} else {
@@ -163,7 +165,7 @@ server = function(input, output, session) {
 
   output$sqn_out = renderText({ state$sqn })
   output$smn_out = renderText({ state$smn })
-  output$wkd_out = renderText({ state$wkd })
+  output$gun_out = renderText({ state$gun })
 
 	refresh_salesman_no = function() {
 		state$smi = (dplyr::filter(salesman, salesman_no == state$smn))$salesman_id
@@ -174,7 +176,7 @@ server = function(input, output, session) {
 		refresh_salesman_routes()
 	}
 	refresh_salesman_routes = function() {
-		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, state$wkd)
+		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, wkd())
 		state$sqn = 0
 		return(state)
 	}

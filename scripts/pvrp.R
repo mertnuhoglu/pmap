@@ -12,4 +12,14 @@ get_salesman = function() {
 		dplyr::select( salesman_id, salesman_no )
 }
 
+days = dplyr::tibble(
+	week_day = 0:5
+	, day = c("monday", "tuesday", "wednesday", "thursday", "friday", "saturday")
+	, gun = c("PAZARTESİ", "SALI", "ÇARŞAMBA", "PERŞEMBE", "CUMA", "CUMARTESİ")
+	, next_gun = c("SALI", "ÇARŞAMBA", "PERŞEMBE", "CUMA", "CUMARTESİ", "PAZARTESİ")
+	, prev_gun = c("CUMARTESİ", "PAZARTESİ", "SALI", "ÇARŞAMBA", "PERŞEMBE", "CUMA")
+)
 
+gun2week_day = function(gun) {
+	days[ days$gun == gun, ]$week_day
+}

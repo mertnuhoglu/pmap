@@ -1823,3 +1823,12 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35c0
 ### Sıfırlama butonu olsun seçimleri başa çeviren
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35d01.R`
+
+### Çoklu seçim yazılı olsun
+
+		[master 4a73e1a] multiple selection by writing input using selectize
+
+### haftanın günlerinin isimleri görünsün
+
+iki tane state wkd tutalım. biri numerik diğeri gün ismi olsun. fakat bu durumda bir duplikasyon oluyor. onun yerine wkd değerini reactive() bir stream olarak tutalım. 
+
