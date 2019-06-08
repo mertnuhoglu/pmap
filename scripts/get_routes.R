@@ -18,7 +18,7 @@ make_map = function(routes) {
 		addTiles() %>%
 		addAwesomeMarkers(lng=orig$lng, lat=orig$lat)
 
-	for (gr in 1:length(route_groups)) {
+	for (gr in seq_along(route_groups)) {
 		m = make_map_with_markers(m, route_groups[[gr]])
 	}
 	return(m)
@@ -29,7 +29,7 @@ make_map_with_markers = function(map, route_group) {
 	#pal = (colorNumeric(c('#2e86c1' , '#5dade2' , '#8e44ad' , '#9b59b6' , '#a93226' , '#ec7063'), 1:6))(1:6)
 	col = rep(pal, times = 1 + (nrow(routes) / length(pal)))
 
-	for (sqn in 1:nrow(routes)) {
+	for (sqn in seq_len(nrow(routes))) {
 		orig = routes[sqn, ] %>%
 			dplyr::select(lng = from_lng, lat = from_lat)
 		dest = routes[sqn, ] %>%
@@ -68,7 +68,12 @@ get_routes_verbal = function() {
 			, to_lat
 			, to_lng
 			, sequence_no
-		)
+		) %>%
+		dplyr::group_by(salesman_id, week_day) %>%
+		dplyr::mutate(
+			prev_sequence_no = dplyr::lag(sequence_no, default = dplyr::last(sequence_no))
+			, next_sequence_no = dplyr::lead(sequence_no, default = dplyr::first(sequence_no))
+		) 
 	return(routes)
 }
 

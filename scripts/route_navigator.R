@@ -105,8 +105,14 @@ server = function(input, output, session) {
 		state$routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, wkd())
 	})
 
-	observeEvent(input$sqn_next, { state$sqn = state$sqn + 1 })
-	observeEvent(input$sqn_prev, { state$sqn = state$sqn - 1 })
+	observeEvent(input$sqn_next, { 
+		#state$sqn = state$sqn + 1 
+		state$sqn = state$routes[ state$routes$sequence_no == state$sqn, ]$next_sequence_no
+	})
+	observeEvent(input$sqn_prev, { 
+		#state$sqn = state$sqn - 1 
+		state$sqn = state$routes[ state$routes$sequence_no == state$sqn, ]$prev_sequence_no
+	})
 	observeEvent(input$sqn_select, { state$sqn = as.numeric(input$sqn_select) })
 	observe({
 		updateSelectInput(session, "sqn_select",
@@ -114,12 +120,16 @@ server = function(input, output, session) {
 			, selected = state$sqn
 	)})
 	observeEvent(input$smn_next, {
-		state$smn = state$smn + 1
-		refresh_salesman_no()
+		#state$smn = state$smn + 1
+		state$smi = salesman[ salesman$salesman_id == state$smi, ]$next_salesman_id
+		#refresh_salesman_no()
+		refresh_salesman_id()
 	})
 	observeEvent(input$smn_prev, {
-		state$smn = state$smn - 1
-		refresh_salesman_no()
+		#state$smn = state$smn - 1
+		state$smi = salesman[ salesman$salesman_id == state$smi, ]$prev_salesman_id
+		#refresh_salesman_no()
+		refresh_salesman_id()
 	})
 	observeEvent(input$smi_select, {
 		state$smi = as.numeric(input$smi_select)

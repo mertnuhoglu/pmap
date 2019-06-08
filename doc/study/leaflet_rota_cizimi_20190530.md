@@ -1832,3 +1832,209 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35d0
 
 iki tane state wkd tutalım. biri numerik diğeri gün ismi olsun. fakat bu durumda bir duplikasyon oluyor. onun yerine wkd değerini reactive() bir stream olarak tutalım. 
 
+		[master d9347ae] show week_day names into Gün dropdown
+
+### önceki/sonraki ilk/son değerden sonra tur atsın
+
+Son değerden sonra tur atmasını istiyoruz.
+
+Gün seçiminde yaptığımız gibi yapabiliriz:
+
+``` r
+days = dplyr::tibble(
+	week_day = 0:5
+	, day = c("monday", "tuesday", "wednesday", "thursday", "friday", "saturday")
+	, gun = c("PAZARTESİ", "SALI", "ÇARŞAMBA", "PERŞEMBE", "CUMA", "CUMARTESİ")
+	, next_gun = c("SALI", "ÇARŞAMBA", "PERŞEMBE", "CUMA", "CUMARTESİ", "PAZARTESİ")
+	...
+
+		state$gun = days[ days$gun == state$gun, ]$next_gun
+``` 
+
+`sqn` (`sequence_no`) doğrudan `routes` df'den alınıyor:
+
+``` r
+	observe({
+		updateSelectInput(session, "sqn_select",
+			choices = state$routes$sequence_no
+			, selected = state$sqn
+``` 
+
+`state$routes` burada güncelleniyor:
+
+``` r
+	refresh_salesman_routes = function() {
+		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, wkd())
+``` 
+
+Bunun kaynağı ise:
+
+``` r
+get_routes_by_smi_wkd = function(routes, smi, wkd) {
+	rt01 = routes %>%
+``` 
+
+Bunun da kaynağı:
+
+``` r
+get_routes_verbal = function() {
+	twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp/out/trips_with_costs.tsv")) 
+``` 
+
+opt01: lag ve lead
+
+``` r
+		) %>%
+		dplyr::mutate(
+			prev_sequence_no = dplyr::lag(sequence_no)
+			, next_sequence_no = dplyr::lead(sequence_no)
+		)
+``` 
+
+Ancak bu durumda baş ve son değerler hatalı. İlk değerde lag NA koyuyor.
+
+opt02: önce gruplandır sonra özel bir işlem yap kaydırma için
+
+``` r
+	twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp/out/trips_with_costs.tsv")) 
+	routes = twc %>%
+		dplyr::select(
+			salesman_id
+			, week_day
+			, from_point_id
+			, to_point_id
+			, from_lat
+			, from_lng
+			, to_lat
+			, to_lng
+			, sequence_no
+		) 
+r0 = routes %>%
+	dplyr::group_by(salesman_id, week_day) %>%
+	dplyr::group_split()
+r1 = r0[[1]] %>%
+	select(sequence_no)
+r2 = r1 %>%
+	dplyr::mutate(
+		prev_sequence_no = dplyr::lag(sequence_no)
+		, next_sequence_no = dplyr::lead(sequence_no)
+	) 
+  ##>    sequence_no prev_sequence_no next_sequence_no
+  ##>          <dbl>            <dbl>            <dbl>
+  ##>  1           0               NA                1
+  ##>  2           1                0                2
+``` 
+
+Use `default` arg of `lag`
+
+``` r
+r3 = r1 %>%
+	dplyr::mutate(
+		prev_sequence_no = dplyr::lag(sequence_no, default = dplyr::last(sequence_no))
+		, next_sequence_no = dplyr::lead(sequence_no, default = dplyr::first(sequence_no))
+	) 
+  ##>    sequence_no prev_sequence_no next_sequence_no
+  ##>          <dbl>            <dbl>            <dbl>
+  ##>  1           0               17                1
+  ##>  2           1                0                2
+``` 
+
+Do this for all groups now:
+
+``` r
+r4 = routes %>%
+	dplyr::group_by(salesman_id, week_day) %>%
+	dplyr::mutate(
+		prev_sequence_no = dplyr::lag(sequence_no, default = dplyr::last(sequence_no))
+		, next_sequence_no = dplyr::lead(sequence_no, default = dplyr::first(sequence_no))
+	) 
+``` 
+
+Result:
+
+``` r
+	observeEvent(input$sqn_next, { 
+		state$sqn = state$routes[ state$routes$sequence_no == state$sqn, ]$next_sequence_no
+	})
+	observeEvent(input$sqn_prev, { 
+		state$sqn = state$routes[ state$routes$sequence_no == state$sqn, ]$prev_sequence_no
+	})
+``` 
+
+#### salesman_no için de yapalım
+
+salesman_no nerede tanımlanmış?
+
+``` r
+get_salesman = function() {
+	readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/stlistesi.tsv")) %>%
+	...
+		dplyr::mutate(
+			prev_salesman_id = dplyr::lag(salesman_id, default = dplyr::last(salesman_id))
+			, next_salesman_id = dplyr::lead(salesman_id, default = dplyr::first(salesman_id))
+		) 
+``` 
+
+##### Error: Warning: Error in [[: subscript out of bounds
+
+		routes_all: 2962
+		wkd: 0
+		state$smi: 97
+		state$routes: 0
+		[1] 97
+		Adding missing grouping variables: `salesman_id`, `week_day`
+		Warning in validateCoords(lng, lat, funcName) :
+			Data contains 1 rows with either missing or invalid lat/lon values and will be ignored
+		Warning: Error in [[: subscript out of bounds
+			101: make_map_with_markers [get_routes.R#22]
+			100: make_map [get_routes.R#22]
+			 99: func [route_navigator.R#176]
+
+97 ve sonrasindaki tüm satıcılarda hata veriyor. Neden acaba?
+
+Elle bunu test edelim. 
+
+``` r
+r0 = get_routes_by_smi_wkd(routes_all, 97, 0)
+``` 
+
+Demek ki, bu satıcıların o gün hiçbir rotası bulunmuyor.
+
+Bu hata üretmesin. Sadece harita oluşturmamak yeterli.
+
+Nerede hata üretiyor:
+
+``` r
+	for (gr in 1:length(route_groups)) {
+		m = make_map_with_markers(m, route_groups[[gr]])
+	}
+``` 
+
+Neden for loop içine giriyor:
+
+``` r
+	route_groups = r0 %>%
+		dplyr::group_by(salesman_id, week_day) %>%
+		dplyr::group_split()
+	for (gr in 1:length(route_groups)) {
+	  print(gr)
+	}
+  ##> [1] 1
+  ##> [1] 0
+``` 
+
+Use `seq_along` instead:
+
+``` r
+	for (gr in seq_along(route_groups)) {
+	  print(gr)
+	}
+	##> no looping
+``` 
+
+Use `seq_len` for dataframes:
+
+``` r
+	for (sqn in seq_len(nrow(routes))) {
+``` 
+

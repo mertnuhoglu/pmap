@@ -9,7 +9,11 @@ get_salesman = function() {
 	readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/stlistesi.tsv")) %>%
 		dplyr::rename( salesman_id = TerritoryId) %>%
 		dplyr::mutate( salesman_no = dplyr::row_number() ) %>%
-		dplyr::select( salesman_id, salesman_no )
+		dplyr::select( salesman_id, salesman_no ) %>%
+		dplyr::mutate(
+			prev_salesman_id = dplyr::lag(salesman_id, default = dplyr::last(salesman_id))
+			, next_salesman_id = dplyr::lead(salesman_id, default = dplyr::first(salesman_id))
+		) 
 }
 
 days = dplyr::tibble(
