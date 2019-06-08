@@ -9,12 +9,10 @@ source("login.R")
 # name mappings:
 # sequence_no = sqn
 # salesman_id = smi
-# salesman_no = smn
 
 routes_all = get_routes_verbal()
 salesman = get_salesman()
 init_sqn_selected = 0
-init_smn_selected = 1
 init_smi_selected = 7
 init_gun_selected = days$gun[1]
 init_wkd_selected = gun2week_day(init_gun_selected)
@@ -74,8 +72,8 @@ server = function(input, output, session) {
 				, actionButton("sqn_prev", "Önceki")
 				, actionButton("sqn_next", "Sonraki")
 				, selectInput("sqn_select", "Rota sırası", choices = init_sqn_choices, selected = init_sqn_selected, selectize = F)
-				, actionButton("smn_prev", "Önceki Satıcı")
-				, actionButton("smn_next", "Sonraki Satıcı")
+				, actionButton("smi_prev", "Önceki Satıcı")
+				, actionButton("smi_next", "Sonraki Satıcı")
 				, selectInput("smi_select", "Satıcı", choices = init_smi_choices, selected = init_smi_selected, selectize = T, multiple = T)
 				, actionButton("gun_prev", "Önceki Gün")
 				, actionButton("gun_next", "Sonraki Gün")
@@ -89,28 +87,25 @@ server = function(input, output, session) {
       column( width = 12
 				, leafletOutput("map")
 				, textOutput("sqn_out")
-				, textOutput("smn_out")
+				, textOutput("smi_out")
 				, tableOutput("gun_out")
 				, tableOutput("routes")
       )
     )
 	})
 
-	state = reactiveValues(sqn = init_sqn_selected, routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected), smn = init_smn_selected, gun = init_gun_selected, smi = init_smi_selected)
+	state = reactiveValues(sqn = init_sqn_selected, routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected), gun = init_gun_selected, smi = init_smi_selected)
 	observeEvent(input$reset, { 
 		state$sqn = init_sqn_selected
-		state$smn = init_smn_selected
 		state$gun = init_gun_selected
 		state$smi = init_smi_selected
 		state$routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, wkd())
 	})
 
 	observeEvent(input$sqn_next, { 
-		#state$sqn = state$sqn + 1 
 		state$sqn = state$routes[ state$routes$sequence_no == state$sqn, ]$next_sequence_no
 	})
 	observeEvent(input$sqn_prev, { 
-		#state$sqn = state$sqn - 1 
 		state$sqn = state$routes[ state$routes$sequence_no == state$sqn, ]$prev_sequence_no
 	})
 	observeEvent(input$sqn_select, { state$sqn = as.numeric(input$sqn_select) })
@@ -119,21 +114,17 @@ server = function(input, output, session) {
 			choices = state$routes$sequence_no
 			, selected = state$sqn
 	)})
-	observeEvent(input$smn_next, {
-		#state$smn = state$smn + 1
+	observeEvent(input$smi_next, {
 		state$smi = salesman[ salesman$salesman_id == state$smi, ]$next_salesman_id
-		#refresh_salesman_no()
-		refresh_salesman_id()
+		refresh_salesman_routes()
 	})
-	observeEvent(input$smn_prev, {
-		#state$smn = state$smn - 1
+	observeEvent(input$smi_prev, {
 		state$smi = salesman[ salesman$salesman_id == state$smi, ]$prev_salesman_id
-		#refresh_salesman_no()
-		refresh_salesman_id()
+		refresh_salesman_routes()
 	})
 	observeEvent(input$smi_select, {
 		state$smi = as.numeric(input$smi_select)
-		refresh_salesman_id()
+		refresh_salesman_routes()
 	})
 	observe({ updateSelectInput(session, "smi_select", selected = state$smi)})
 	observeEvent(input$gun_next, {
@@ -174,17 +165,9 @@ server = function(input, output, session) {
   output$map = renderLeaflet({ make_map(routeSS()) })
 
   output$sqn_out = renderText({ state$sqn })
-  output$smn_out = renderText({ state$smn })
+  output$smi_out = renderText({ state$smi })
   output$gun_out = renderText({ state$gun })
 
-	refresh_salesman_no = function() {
-		state$smi = (dplyr::filter(salesman, salesman_no == state$smn))$salesman_id
-		refresh_salesman_routes()
-	}
-	refresh_salesman_id = function() {
-		state$smn = (dplyr::filter(salesman, salesman_id %in% state$smi))$salesman_no
-		refresh_salesman_routes()
-	}
 	refresh_salesman_routes = function() {
 		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, wkd())
 		state$sqn = 0
