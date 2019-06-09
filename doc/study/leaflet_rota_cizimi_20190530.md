@@ -1808,7 +1808,7 @@ Burada kontrol edicem:
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a04.R`
 
-### marker iconlarını küçült
+## marker iconlarını küçült
 
 Çalışmadı düzgün bir şekilde.
 
@@ -1816,25 +1816,25 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35b0
 
 Run `~/projects/study/r/shiny/ex/study_shiny/ex01/05.R`
 
-### rota navigasyon butonlarını pasifleştir
+## rota navigasyon butonlarını pasifleştir
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35c01.R`
 
-### Sıfırlama butonu olsun seçimleri başa çeviren
+## Sıfırlama butonu olsun seçimleri başa çeviren
 
 Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35d01.R`
 
-### Çoklu seçim yazılı olsun
+## Çoklu seçim yazılı olsun
 
 		[master 4a73e1a] multiple selection by writing input using selectize
 
-### haftanın günlerinin isimleri görünsün
+## haftanın günlerinin isimleri görünsün
 
 iki tane state wkd tutalım. biri numerik diğeri gün ismi olsun. fakat bu durumda bir duplikasyon oluyor. onun yerine wkd değerini reactive() bir stream olarak tutalım. 
 
 		[master d9347ae] show week_day names into Gün dropdown
 
-### önceki/sonraki ilk/son değerden sonra tur atsın
+## önceki/sonraki ilk/son değerden sonra tur atsın
 
 Son değerden sonra tur atmasını istiyoruz.
 
@@ -1961,7 +1961,7 @@ Result:
 	})
 ``` 
 
-#### salesman_no için de yapalım
+### salesman_no için de yapalım
 
 salesman_no nerede tanımlanmış?
 
@@ -1975,7 +1975,7 @@ get_salesman = function() {
 		) 
 ``` 
 
-##### Error: Warning: Error in [[: subscript out of bounds
+#### Error: Warning: Error in [[: subscript out of bounds
 
 		routes_all: 2962
 		wkd: 0
@@ -2037,4 +2037,36 @@ Use `seq_len` for dataframes:
 ``` r
 	for (sqn in seq_len(nrow(routes))) {
 ``` 
+
+## market isimlerini gösterelim
+
+`trips_with_costs.tsv` dosyası `customer_name` içermeli
+
+Dosyayı güncelle:
+
+``` r
+twc = read_tsv("~/projects/itr/peyman/pvrp/out/trips_with_costs.tsv")
+c0 = readr::read_tsv("~/projects/itr/peyman/pvrp_data/normal/customers.tsv") %>%
+	select(customer_id, customer_name)
+twc1 = twc %>%
+	left_join(c0, by = "customer_id") %>%
+	mutate(customer_name = 
+		case_when(
+			is.na(customer_name) ~ "Depo")
+			, TRUE ~ customer_name
+	)
+twc2 = twc %>%
+	left_join(c0, by = "customer_id") %>%
+	mutate_if(customer_name = 
+		case_when(
+			is.na(customer_name) ~ "Depo")
+			, TRUE ~ customer_name
+	)
+twc3 = twc %>%
+	left_join(c0, by = "customer_id") %>%
+	dplyr::mutate_at("customer_name", tidyr::replace_na, "Depo")
+readr::write_tsv(twc3, "~/projects/itr/peyman/pvrp/out/trips_with_costs.tsv")
+``` 
+
+
 

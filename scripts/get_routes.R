@@ -31,15 +31,15 @@ make_map_with_markers = function(map, route_group) {
 
 	for (sqn in seq_len(nrow(routes))) {
 		orig = routes[sqn, ] %>%
-			dplyr::select(lng = from_lng, lat = from_lat)
+			dplyr::select(lng = from_lng, lat = from_lat, customer_name)
 		dest = routes[sqn, ] %>%
-			dplyr::select(lng = to_lng, lat = to_lat)
+			dplyr::select(lng = to_lng, lat = to_lat, customer_name)
 		rt = route(orig, dest)
 		ph = path(rt)
 		icon_num = makeAwesomeIcon(text = sqn, markerColor = col[sqn])
 		map = map %>% 
 			addPolylines(data = ph, label = route_label(rt), color = col[sqn], opacity=1, weight = 3) %>%
-			addAwesomeMarkers(lng=dest$lng, lat=dest$lat, icon = icon_num, popup=glue("Market {sqn}"), label = glue("{sqn}")) 
+			addAwesomeMarkers(lng=dest$lng, lat=dest$lat, icon = icon_num, popup=dest$customer_name, label = glue("{sqn} - {dest$customer_name}")) 
 	}
 	return(map)
 }
@@ -68,6 +68,7 @@ get_routes_verbal = function() {
 			, to_lat
 			, to_lng
 			, sequence_no
+			, customer_name
 		) %>%
 		dplyr::group_by(salesman_id, week_day) %>%
 		dplyr::mutate(
