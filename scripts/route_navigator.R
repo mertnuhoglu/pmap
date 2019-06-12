@@ -94,7 +94,12 @@ server = function(input, output, session) {
     )
 	})
 
-	state = reactiveValues(sqn = init_sqn_selected, routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected), gun = init_gun_selected, smi = init_smi_selected)
+	state = reactiveValues(
+		sqn = init_sqn_selected
+		, routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected)
+		, gun = init_gun_selected
+		, smi = init_smi_selected
+	)
 	observeEvent(input$reset, { 
 		state$sqn = init_sqn_selected
 		state$gun = init_gun_selected
@@ -142,7 +147,7 @@ server = function(input, output, session) {
 	})
 	observe({ updateSelectInput(session, "gun_select", selected = state$gun) })
 	observe({ 
-		if (length(state$smi) * length(wkd()) > 1) {
+		if (is_multiple_route_sets_selected()) {
 			# we cannot navigate stops in a route group when multiple different route groups are selected
 			shinyjs::disable("sqn_prev") 
 			shinyjs::disable("sqn_next") 
@@ -154,13 +159,14 @@ server = function(input, output, session) {
 		}
 	})
   routeSS = reactive({ 
-		if (length(state$smi) * length(wkd()) > 1) {
+		if (is_multiple_route_sets_selected()) {
 			# if multiple smi/wkd selected, then put all routes
       return(state$routes)
 		} else {
 			return(get_route_upto_sequence_no(state$routes, state$sqn))
 		}
 	})
+	is_multiple_route_sets_selected = reactive({ length(state$smi) * length(wkd()) > 1 })
   output$routes = renderTable({ routeSS() })
   output$map = renderLeaflet({ make_map(routeSS()) })
 
