@@ -69,6 +69,7 @@ server = function(input, output, session) {
 		fluidRow(
 			column( width = 12
 				, actionButton("reset", "Sıfırla")
+				, checkboxInput("marker_toggle", "Markerları Gizle/Göster", TRUE)
 				, actionButton("sqn_prev", "Önceki")
 				, actionButton("sqn_next", "Sonraki")
 				, selectInput("sqn_select", "Rota sırası", choices = init_sqn_choices, selected = init_sqn_selected, selectize = F)
@@ -107,6 +108,23 @@ server = function(input, output, session) {
 		state$routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, wkd())
 	})
 
+	observe({
+		is_show_markers = input$marker_toggle
+		if(is.null(is_show_markers)) {
+			# when app first runs, input$marker_toggle is NULL probably because of the login screen
+			return()
+		}
+		if (is_multiple_route_sets_selected()) {
+			state$routeSS = state$routes
+		} else {
+			state$routeSS = get_route_upto_sequence_no(state$routes, state$sqn)
+		}
+		map = make_map(state$routeSS)
+		if (!is_show_markers) {
+			map = remove_markers(map, state$routeSS)
+		} 
+		state$map = map
+	})
 	observeEvent(input$sqn_next, { 
 		state$sqn = state$routes[ state$routes$sequence_no == state$sqn, ]$next_sequence_no
 	})
@@ -158,17 +176,19 @@ server = function(input, output, session) {
 			shinyjs::enable("sqn_select") 
 		}
 	})
-  routeSS = reactive({ 
-		if (is_multiple_route_sets_selected()) {
-			# if multiple smi/wkd selected, then put all routes
-      return(state$routes)
-		} else {
-			return(get_route_upto_sequence_no(state$routes, state$sqn))
-		}
-	})
+  #routeSS = reactive({ 
+		#if (is_multiple_route_sets_selected()) {
+			## if multiple smi/wkd selected, then put all routes
+      #return(state$routes)
+		#} else {
+			#return(get_route_upto_sequence_no(state$routes, state$sqn))
+		#}
+	#})
+	#map = reactive({ make_map(routeSS()) })
 	is_multiple_route_sets_selected = reactive({ length(state$smi) * length(wkd()) > 1 })
-  output$routes = renderTable({ routeSS() })
-  output$map = renderLeaflet({ make_map(routeSS()) })
+  output$routes = renderTable({ state$routeSS })
+  #output$map = renderLeaflet({ map() })
+  output$map = renderLeaflet({ state$map })
 
   output$sqn_out = renderText({ state$sqn })
   output$smi_out = renderText({ state$smi })

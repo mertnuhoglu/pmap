@@ -7,6 +7,23 @@ library("glue")
 
 osrm_server = Sys.getenv("OSRM_SERVER")
 
+remove_markers = function(map, routes) {
+	route_groups = routes %>%
+		dplyr::group_by(salesman_id, week_day) %>%
+		dplyr::group_split()
+
+	for (gr in seq_along(route_groups)) {
+		route_group = route_groups[[gr]]
+		for (sqn in seq_len(nrow(routes))) {
+			dest = routes[sqn, ] %>%
+				dplyr::select(lng = to_lng, lat = to_lat, customer_name, to_point_id)
+			map = map %>%
+				removeMarker( layerId = as.character(dest$to_point_id) )
+		}
+	}
+	return(map)
+
+}
 make_map = function(routes) {
 	route_groups = routes %>%
 		dplyr::group_by(salesman_id, week_day) %>%
@@ -33,13 +50,13 @@ make_map_with_markers = function(map, route_group) {
 		orig = routes[sqn, ] %>%
 			dplyr::select(lng = from_lng, lat = from_lat, customer_name)
 		dest = routes[sqn, ] %>%
-			dplyr::select(lng = to_lng, lat = to_lat, customer_name)
+			dplyr::select(lng = to_lng, lat = to_lat, customer_name, to_point_id)
 		rt = route(orig, dest)
 		ph = path(rt)
 		icon_num = makeAwesomeIcon(text = sqn, markerColor = col[sqn])
 		map = map %>% 
 			addPolylines(data = ph, label = route_label(rt), color = col[sqn], opacity=1, weight = 3) %>%
-			addAwesomeMarkers(lng=dest$lng, lat=dest$lat, icon = icon_num, popup=dest$customer_name, label = glue("{sqn} - {dest$customer_name}")) 
+			addAwesomeMarkers( layerId = as.character(dest$to_point_id), lng=dest$lng, lat=dest$lat, icon = icon_num, popup=dest$customer_name, label = glue("{sqn} - {dest$customer_name}")) 
 	}
 	return(map)
 }
