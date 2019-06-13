@@ -255,6 +255,8 @@ addAwesomeMarkers( layerId = as.character(dest$to_point_id), lng=dest$lng, lat=d
 
 ## tüm triplerin rengi aynı olsun
 
+Ref: [master 41b923c] all the trips in one route group can become single color
+
 opt:
 
 		opt01: yine bir toggle butonu olsun
@@ -340,3 +342,19 @@ make_map = function(routes, is_multiple_color_route = T) {
 ``` 
 
 `is_multiple_color_route` kullanıcı girişinden gelmeli.
+
+### deploy et
+
+Error: Error in .f(.x[[i]], ...) : object 'customer_name' not found
+
+Elle çalıştır
+
+``` r
+routes_all = get_routes_verbal()
+``` 
+
+Sebebi: `trips_with_costs.tsv` bunun güncellenmesi lazım.
+
+Bu dosyayı da pvrp_data içine alalım.
+
+
