@@ -22,9 +22,8 @@ remove_markers = function(map, routes) {
 		}
 	}
 	return(map)
-
 }
-make_map = function(routes) {
+make_map = function(routes, is_multiple_color_route = T) {
 	route_groups = routes %>%
 		dplyr::group_by(salesman_id, week_day) %>%
 		dplyr::group_split()
@@ -35,16 +34,20 @@ make_map = function(routes) {
 		addTiles() %>%
 		addAwesomeMarkers(lng=orig$lng, lat=orig$lat)
 
+	pal = c("red", "purple", "darkblue", "orange", "cadetblue", "green", "darkred", "pink", "gray", "darkgreen", "black")
 	for (gr in seq_along(route_groups)) {
-		m = make_map_with_markers(m, route_groups[[gr]])
+		route_group = route_groups[[gr]]
+		if (is_multiple_color_route) {
+			col = rep(pal, times = 1 + (nrow(route_group) / length(pal)))
+		} else {
+			col = rep(pal[gr], times = nrow(route_group))
+		}
+		m = make_map_with_markers(m, route_group, col)
 	}
 	return(m)
 }
-make_map_with_markers = function(map, route_group) {
+make_map_with_markers = function(map, route_group, col) {
 	routes = route_group
-	pal = c("red", "purple", "darkblue", "orange", "cadetblue", "green", "darkred", "pink", "gray", "darkgreen", "black")
-	#pal = (colorNumeric(c('#2e86c1' , '#5dade2' , '#8e44ad' , '#9b59b6' , '#a93226' , '#ec7063'), 1:6))(1:6)
-	col = rep(pal, times = 1 + (nrow(routes) / length(pal)))
 
 	for (sqn in seq_len(nrow(routes))) {
 		orig = routes[sqn, ] %>%

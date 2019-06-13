@@ -70,6 +70,7 @@ server = function(input, output, session) {
 			column( width = 12
 				, actionButton("reset", "Sıfırla")
 				, checkboxInput("marker_toggle", "Markerları Gizle/Göster", TRUE)
+				, checkboxInput("multiple_color_route_toggle", "Çok Renk/Tek Renk", TRUE)
 				, actionButton("sqn_prev", "Önceki")
 				, actionButton("sqn_next", "Sonraki")
 				, selectInput("sqn_select", "Rota sırası", choices = init_sqn_choices, selected = init_sqn_selected, selectize = F)
@@ -110,7 +111,8 @@ server = function(input, output, session) {
 
 	observe({
 		is_show_markers = input$marker_toggle
-		if(is.null(is_show_markers)) {
+		is_multiple_color_route = input$multiple_color_route_toggle
+		if(is.null(is_show_markers) | is.null(is_multiple_color_route)) {
 			# when app first runs, input$marker_toggle is NULL probably because of the login screen
 			return()
 		}
@@ -119,7 +121,7 @@ server = function(input, output, session) {
 		} else {
 			state$routeSS = get_route_upto_sequence_no(state$routes, state$sqn)
 		}
-		map = make_map(state$routeSS)
+		map = make_map(state$routeSS, is_multiple_color_route)
 		if (!is_show_markers) {
 			map = remove_markers(map, state$routeSS)
 		} 

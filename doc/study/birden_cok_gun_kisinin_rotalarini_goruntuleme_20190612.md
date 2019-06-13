@@ -143,6 +143,8 @@ map = reactive({ make_map(routeSS()) })
 
 ### şimdi markerları kaldıralım 
 
+Ref: [master b24ea2a] toggle markers visibility button: show/hide them
+
 #### Error
 
 		Adding missing grouping variables: `salesman_id`, `week_day`
@@ -251,3 +253,90 @@ addAwesomeMarkers( layerId = as.character(dest$to_point_id), lng=dest$lng, lat=d
 
 Çalıştı. Sorun buymuş
 
+## tüm triplerin rengi aynı olsun
+
+opt:
+
+		opt01: yine bir toggle butonu olsun
+
+### opt01: yine bir toggle butonu olsun renkleri sabit veya değişken yapacak
+
+Şurada rengi ekliyoruz triplere:
+
+``` r
+addPolylines(data = ph, label = route_label(rt), color = col[sqn], opacity=1, weight = 3) %>%
+``` 
+
+Nasıl yapabiliriz?
+
+		opt01: Dynamic Legend'da kullanılan yöntem: leafletProxy() kullan
+		opt02: Sıfırdan haritayı tekrar oluştur
+
+#### opt01: Dynamic Legend'da kullanılan yöntem: leafletProxy() kullan
+
+https://github.com/cenuno/shiny/tree/master/Interactive_UI/Dynamic_Legend
+
+##### basit bir örnek yapalım leafletProxy() kullanarak
+
+Ref: `use leafletProxy() instead of leaflet() <url:/Users/mertnuhoglu/projects/study/r/shiny/study_leaflet.Rmd#tn=use leafletProxy() instead of leaflet()>`
+
+##### leaflet() doğrudan kullanmak yerine leafletProxy() kullanalım
+
+Bunu nasıl yapacağımı bulamadım. Sonra bakarız buna.
+
+###### bizdeki map ve state$map modelini basit örnekte uygulayalım önce
+
+Ref: `03: use state$map and a local map <url:/Users/mertnuhoglu/projects/study/r/shiny/study_leaflet.Rmd#tn=03: use state$map and a local map>`
+
+---
+
+#### başka ne yöntemler var?
+
+``` r
+addPolylines(data = ph, label = route_label(rt), color = col[sqn], opacity=1, weight = 3) %>%
+``` 
+
+#### opt02: Sıfırdan haritayı tekrar oluştur
+
+Bu durumda `make_map_with_markers` fonksiyonuna arg olarak renk gösterme seçeneğini göndermeliyiz.
+
+		opt01: is_single_color argümanı gönder
+		opt02: renk paletini argüman olarak gönder
+		opt03: routes içine bir kolon olarak renkleri ekle
+		opt04: her zaman tek renk kullan, fazladan renk hiç kullanma zaten
+		opt05: renkleri routes tablosunda iki farklı kolonda tut
+
+opt02: renk paletini argüman olarak gönder
+
+Ancak mevcut durumda renkleri col[sqn] ile alıyorum. Dolayısıyla renk paleti routes ile aynı büyüklükte olmak zorunda.
+
+opt05: renkleri routes tablosunda iki farklı kolonda tut
+
+Bu durumda `dest$marker_color` ve `dest$route_set_color` kullanmak yeterli olur
+
+Ancak bu defa da bu renklerin en baştan herkes için farklılığı temin edilebilir mi?
+
+##### opt01: is_single_color argümanı gönder
+
+Çok renkliyse, col şimdiki gibi olmalı. Değilse nasıl olmalı?
+
+		opt01: sqn'e bağlı olmasın
+		opt02: sqn'e bağlı olsun
+
+`make_map_with_markers` sadece bir rota kümesini içerdiğinden diğerlerinin ne olduğunu bilemiyoruz. Bu durumda, renk paletini dışarıdan vermemiz gerekiyor.
+
+``` r
+make_map = function(routes, is_multiple_color_route = T) {
+...
+	pal = c("red", "purple", "darkblue", "orange", "cadetblue", "green", "darkred", "pink", "gray", "darkgreen", "black")
+	for (gr in seq_along(route_groups)) {
+		route_group = route_groups[[gr]]
+		if (is_multiple_color_route) {
+			col = rep(pal, times = 1 + (nrow(route_group) / length(pal)))
+		} else {
+			col = rep(pal[gr], times = nrow(route_group))
+		}
+		m = make_map_with_markers(m, route_group, col)
+``` 
+
+`is_multiple_color_route` kullanıcı girişinden gelmeli.
