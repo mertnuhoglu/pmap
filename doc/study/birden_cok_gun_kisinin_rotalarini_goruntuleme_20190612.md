@@ -345,6 +345,11 @@ make_map = function(routes, is_multiple_color_route = T) {
 
 ### deploy et
 
+Ref: 
+
+		pmap: [master c688345] put trips_with_costs.tsv into pvrp_data
+		pvrp: [master 14821a0] put trips_with_costs.tsv into pvrp_data
+
 Error: Error in .f(.x[[i]], ...) : object 'customer_name' not found
 
 Elle çalıştır
@@ -357,4 +362,8 @@ Sebebi: `trips_with_costs.tsv` bunun güncellenmesi lazım.
 
 Bu dosyayı da pvrp_data içine alalım.
 
+Önce trips_with_costs.tsv dosyasını 00 routes.csv dosyasından tekrar oluşturalım.
+
+`~/projects/itr/peyman/pvrp/out/trips_with_costs.tsv`
+`/Users/mertnuhoglu/projects/itr/peyman/pvrp_data/out/report_20190526_00/trips_with_costs.tsv`
 

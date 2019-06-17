@@ -27,3 +27,7 @@ days = dplyr::tibble(
 gun2week_day = function(gun) {
 	days[ days$gun == gun, ]$week_day
 }
+
+get_plans = function() {
+  list.files(path = glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out"), include.dirs = T, pattern = "^report_\\d+.*")
+}

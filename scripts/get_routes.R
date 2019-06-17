@@ -75,8 +75,8 @@ get_route_for_sequence_no = function(routes, sequence_no) {
 		dplyr::filter(sequence_no %in% sqns) 
 }
 
-get_routes_verbal = function() {
-	twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/trips_with_costs.tsv")) 
+get_routes_verbal = function(plan_name) {
+	twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_costs.tsv")) 
 	routes = twc %>%
 		dplyr::select(
 			salesman_id

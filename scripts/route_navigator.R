@@ -1,22 +1,18 @@
-library(shiny)
-library(shinydashboard)
-library(leaflet)
-library(dplyr)
-source("get_routes.R")
-source("pvrp.R")
-source("login.R")
+source("source_libraries.R")
 
 # name mappings:
 # sequence_no = sqn
 # salesman_id = smi
 
-routes_all = get_routes_verbal()
 salesman = get_salesman()
+init_routes_all = get_routes_verbal("report_20190526_00")
+init_plan_choices = get_plans()
+init_plan_selected = init_plan_choices[1]
 init_sqn_selected = 0
 init_smi_selected = 7
 init_gun_selected = days$gun[1]
 init_wkd_selected = gun2week_day(init_gun_selected)
-init_sqn_choices = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected)
+init_sqn_choices = get_routes_by_smi_wkd(init_routes_all, init_smi_selected, init_wkd_selected)
 init_smi_choices = salesman$salesman_id
 init_gun_choices = days$gun
 
@@ -69,6 +65,7 @@ server = function(input, output, session) {
 		fluidRow(
 			column( width = 12
 				, actionButton("reset", "Sıfırla")
+				, selectInput("plan_select", "Rota Planı", choices = init_plan_choices, selected = init_plan_selected, selectize = F)
 				, checkboxInput("marker_toggle", "Markerları Gizle/Göster", TRUE)
 				, checkboxInput("multiple_color_route_toggle", "Çok Renk/Tek Renk", TRUE)
 				, actionButton("sqn_prev", "Önceki")
@@ -97,16 +94,25 @@ server = function(input, output, session) {
 	})
 
 	state = reactiveValues(
-		sqn = init_sqn_selected
-		, routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, init_wkd_selected)
+		routes_all = init_routes_all
+		, sqn = init_sqn_selected
+		, routes = get_routes_by_smi_wkd(init_routes_all, init_smi_selected, init_wkd_selected)
 		, gun = init_gun_selected
 		, smi = init_smi_selected
 	)
 	observeEvent(input$reset, { 
+		state$routes_all = init_routes_all
+		reset_routes(state$routes_all)
+	})
+	reset_routes = function(routes_all) {
 		state$sqn = init_sqn_selected
 		state$gun = init_gun_selected
 		state$smi = init_smi_selected
 		state$routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, wkd())
+	}
+	observeEvent(input$plan_select, { 
+		state$routes_all = get_routes_verbal(input$plan_select) 
+		reset_routes(state$routes_all)
 	})
 
 	observe({
@@ -197,7 +203,7 @@ server = function(input, output, session) {
   output$gun_out = renderText({ state$gun })
 
 	refresh_salesman_routes = function() {
-		state$routes = get_routes_by_smi_wkd(routes_all, state$smi, wkd())
+		state$routes = get_routes_by_smi_wkd(state$routes_all, state$smi, wkd())
 		state$sqn = 0
 		return(state)
 	}
