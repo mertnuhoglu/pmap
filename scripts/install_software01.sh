@@ -19,5 +19,9 @@ wget https://raw.githubusercontent.com/PaulC91/shinyauthr/master/inst/shiny-exam
 cd .. &&
 git clone git@bitbucket.org:mertnuhoglu/pvrp.git &&
 mkdir -p ~/pvrp/out &&
+echo '
+export OSRM_SERVER=35.204.111.216:5000
 export PEYMAN_PROJECT_DIR="$HOME"
+' >> ~/.bashrc &&
+source ~/.bashrc 
 

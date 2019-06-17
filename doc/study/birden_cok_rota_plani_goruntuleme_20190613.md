@@ -9,6 +9,8 @@ Mevcut planları ideal durumda veritabanından çekmeli, ama şimdilik pvrp_data
 
 ## Belli bir klasördeki tüm plan dosyalarını selectInput ile listele
 
+ref: [master 9e802e5] birden çok planı görüntüleyebilme
+
 `/Users/mertnuhoglu/projects/itr/peyman/pvrp_data/out`
 
 ``` bash
@@ -30,3 +32,6 @@ Bu durumda bu reactive bir değer olmalı.
 
 `state$routes_all` hiçbir şeyi etkilemiyor.
 
+## Kurulum yap
+
+pvrp_data/out dosyalarını da koymalıyım
