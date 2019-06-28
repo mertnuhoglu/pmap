@@ -2,17 +2,22 @@
 # sequence_no = sqn
 # salesman_id = smi
 
-salesman = get_salesman()
-init_routes_all = get_routes_verbal("report_20190526_00")
-init_plan_choices = get_plans()
-init_plan_selected = init_plan_choices[1]
-init_sqn_selected = 0
-init_smi_selected = 7
-init_gun_selected = days$gun[1]
-init_wkd_selected = gun2week_day(init_gun_selected)
-init_sqn_choices = get_routes_by_smi_wkd(init_routes_all, init_smi_selected, init_wkd_selected)
-init_smi_choices = salesman$salesman_id
-init_gun_choices = days$gun
+init_vars = function() {
+	result = list()
+	result$salesman = get_salesman()
+	result$init_routes_all = get_routes_verbal("report_20190526_00")
+	result$init_plan_choices = get_plans()
+	result$init_plan_selected = result$init_plan_choices[1]
+	result$init_sqn_selected = 0
+	result$init_smi_selected = 7
+	result$init_gun_selected = days$gun[1]
+	result$init_wkd_selected = gun2week_day(result$init_gun_selected)
+	result$init_sqn_choices = get_routes_by_smi_wkd(result$init_routes_all, result$init_smi_selected, result$init_wkd_selected)
+	result$init_smi_choices = result$salesman$salesman_id
+	result$init_gun_choices = days$gun
+	return(result)
+}
+v = init_vars()
 
 ui <- shinydashboard::dashboardPage(
   shinydashboard::dashboardHeader(title = "Rota Navigatör"
@@ -63,18 +68,18 @@ server = function(input, output, session) {
 		shiny::fluidRow(
 			shiny::column( width = 12
 				, shiny::actionButton("reset", "Sıfırla")
-				, shiny::selectInput("plan_select", "Rota Planı", choices = init_plan_choices, selected = init_plan_selected, selectize = F)
+				, shiny::selectInput("plan_select", "Rota Planı", choices = v$init_plan_choices, selected = v$init_plan_selected, selectize = F)
 				, shiny::checkboxInput("marker_toggle", "Markerları Gizle/Göster", TRUE)
 				, shiny::checkboxInput("multiple_color_route_toggle", "Çok Renk/Tek Renk", TRUE)
 				, shiny::actionButton("sqn_prev", "Önceki")
 				, shiny::actionButton("sqn_next", "Sonraki")
-				, shiny::selectInput("sqn_select", "Rota sırası", choices = init_sqn_choices, selected = init_sqn_selected, selectize = F)
+				, shiny::selectInput("sqn_select", "Rota sırası", choices = v$init_sqn_choices, selected = v$init_sqn_selected, selectize = F)
 				, shiny::actionButton("smi_prev", "Önceki Satıcı")
 				, shiny::actionButton("smi_next", "Sonraki Satıcı")
-				, shiny::selectInput("smi_select", "Satıcı", choices = init_smi_choices, selected = init_smi_selected, selectize = T, multiple = T)
+				, shiny::selectInput("smi_select", "Satıcı", choices = v$init_smi_choices, selected = v$init_smi_selected, selectize = T, multiple = T)
 				, shiny::actionButton("gun_prev", "Önceki Gün")
 				, shiny::actionButton("gun_next", "Sonraki Gün")
-				, shiny::selectInput("gun_select", "Gün", choices = init_gun_choices, selected = init_gun_selected, selectize = T, multiple = T)
+				, shiny::selectInput("gun_select", "Gün", choices = v$init_gun_choices, selected = v$init_gun_selected, selectize = T, multiple = T)
 			)
 		)
 	})
@@ -92,21 +97,21 @@ server = function(input, output, session) {
 	})
 
 	state = shiny::reactiveValues(
-		routes_all = init_routes_all
-		, sqn = init_sqn_selected
-		, routes = get_routes_by_smi_wkd(init_routes_all, init_smi_selected, init_wkd_selected)
-		, gun = init_gun_selected
-		, smi = init_smi_selected
+		routes_all = v$init_routes_all
+		, sqn = v$init_sqn_selected
+		, routes = get_routes_by_smi_wkd(v$init_routes_all, v$init_smi_selected, v$init_wkd_selected)
+		, gun = v$init_gun_selected
+		, smi = v$init_smi_selected
 	)
 	shiny::observeEvent(input$reset, { 
-		state$routes_all = init_routes_all
+		state$routes_all = v$init_routes_all
 		reset_routes(state$routes_all)
 	})
 	reset_routes = function(routes_all) {
-		state$sqn = init_sqn_selected
-		state$gun = init_gun_selected
-		state$smi = init_smi_selected
-		state$routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, wkd())
+		state$sqn = v$init_sqn_selected
+		state$gun = v$init_gun_selected
+		state$smi = v$init_smi_selected
+		state$routes = get_routes_by_smi_wkd(routes_all, v$init_smi_selected, wkd())
 	}
 	shiny::observeEvent(input$plan_select, { 
 		state$routes_all = get_routes_verbal(input$plan_select) 
@@ -144,11 +149,11 @@ server = function(input, output, session) {
 			, selected = state$sqn
 	)})
 	shiny::observeEvent(input$smi_next, {
-		state$smi = salesman[ salesman$salesman_id == state$smi, ]$next_salesman_id
+		state$smi = v$salesman[ v$salesman$salesman_id == state$smi, ]$next_salesman_id
 		refresh_salesman_routes()
 	})
 	shiny::observeEvent(input$smi_prev, {
-		state$smi = salesman[ salesman$salesman_id == state$smi, ]$prev_salesman_id
+		state$smi = v$salesman[ v$salesman$salesman_id == state$smi, ]$prev_salesman_id
 		refresh_salesman_routes()
 	})
 	shiny::observeEvent(input$smi_select, {
@@ -207,4 +212,6 @@ server = function(input, output, session) {
 	}
 }
 
-shiny::runApp(shiny::shinyApp(ui, server), host="0.0.0.0",port=5050)
+run_app = function() {
+	shiny::runApp(shiny::shinyApp(ui, server), host="0.0.0.0",port=5050)
+}

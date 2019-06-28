@@ -29,9 +29,9 @@ make_map = function(routes, is_multiple_color_route = T) {
 
 	orig = routes[1, ] %>%
 		dplyr::select(lng = from_lng, lat = from_lat)
-	m <- leaflet(width="100%") %>% 
-		addTiles() %>%
-		addAwesomeMarkers(lng=orig$lng, lat=orig$lat)
+	m <- leaflet::leaflet(width="100%") %>% 
+		leaflet::addTiles() %>%
+		leaflet::addAwesomeMarkers(lng=orig$lng, lat=orig$lat)
 
 	pal = c("red", "purple", "darkblue", "orange", "cadetblue", "green", "darkred", "pink", "gray", "darkgreen", "black")
 	for (gr in seq_along(route_groups)) {
@@ -41,11 +41,13 @@ make_map = function(routes, is_multiple_color_route = T) {
 		} else {
 			col = rep(pal[gr], times = nrow(route_group))
 		}
-		m = make_map_with_markers(m, route_group, col)
+		col = col[1:nrow(route_group)]
+		route_group$color = col
+		m = make_map_with_markers(m, route_group)
 	}
 	return(m)
 }
-make_map_with_markers = function(map, route_group, col) {
+make_map_with_markers = function(map, route_group) {
 	routes = route_group
 
 	for (sqn in seq_len(nrow(routes))) {
@@ -55,10 +57,10 @@ make_map_with_markers = function(map, route_group, col) {
 			dplyr::select(lng = to_lng, lat = to_lat, customer_name, to_point_id)
 		rt = route(orig, dest)
 		ph = path(rt)
-		icon_num = makeAwesomeIcon(text = sqn, markerColor = col[sqn])
+		icon_num = leaflet::makeAwesomeIcon(text = sqn, markerColor = route_group$color[sqn])
 		map = map %>% 
-			addPolylines(data = ph, label = route_label(rt), color = col[sqn], opacity=1, weight = 3) %>%
-			addAwesomeMarkers( layerId = as.character(dest$to_point_id), lng=dest$lng, lat=dest$lat, icon = icon_num, popup=dest$customer_name, label = glue("{sqn} - {dest$customer_name}")) 
+			leaflet::addPolylines(data = ph, label = route_label(rt), color = route_group$color[sqn], opacity=1, weight = 3) %>%
+			leaflet::addAwesomeMarkers( layerId = as.character(dest$to_point_id), lng=dest$lng, lat=dest$lat, icon = icon_num, popup=dest$customer_name, label = glue::glue("{sqn} - {dest$customer_name}")) 
 	}
 	return(map)
 }
