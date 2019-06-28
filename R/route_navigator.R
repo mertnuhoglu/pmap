@@ -1,5 +1,3 @@
-source("source_libraries.R")
-
 # name mappings:
 # sequence_no = sqn
 # salesman_id = smi
@@ -16,28 +14,28 @@ init_sqn_choices = get_routes_by_smi_wkd(init_routes_all, init_smi_selected, ini
 init_smi_choices = salesman$salesman_id
 init_gun_choices = days$gun
 
-ui <- dashboardPage(
-  dashboardHeader(title = "Rota Navigatör"
-		, tags$li(class = "dropdown", style = "padding: 8px;",
+ui <- shinydashboard::dashboardPage(
+  shinydashboard::dashboardHeader(title = "Rota Navigatör"
+		, shiny::tags$li(class = "dropdown", style = "padding: 8px;",
 			shinyauthr::logoutUI("Çıkış")
 		)
-		, tags$li(class = "dropdown", 
-			tags$a(icon("map-marker-alt"), 
+		, shiny::tags$li(class = "dropdown", 
+			shiny::tags$a(shiny::icon("map-marker-alt"), 
 			href = "https://i-terative.com",
 			title = "i-terative.com")
 		)
 	)
-  , dashboardSidebar(collapsed = TRUE
-		, uiOutput("sidebar")
+  , shinydashboard::dashboardSidebar(collapsed = TRUE
+		, shiny::uiOutput("sidebar")
 	)
-  , dashboardBody(
-    tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}")
+  , shinydashboard::dashboardBody(
+    shiny::tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}")
     , shinyjs::useShinyjs()
-    , tags$head(tags$style(".table{margin: 0 auto;}"),
-			tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.contentWindow.min.js", type="text/javascript"), includeScript("returnClick.js")
+    , shiny::tags$head(shiny::tags$style(".table{margin: 0 auto;}"),
+			shiny::tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.contentWindow.min.js", type="text/javascript"), shiny::includeScript("returnClick.js")
     )
 		, shinyauthr::loginUI("login")
-    , uiOutput("body")
+    , shiny::uiOutput("body")
   )
 )
 
@@ -48,11 +46,11 @@ server = function(input, output, session) {
                             user_col = user,
                             pwd_col = password_hash,
                             sodium_hashed = TRUE,
-                            log_out = reactive(logout_init()))
-  logout_init <- callModule(shinyauthr::logout, "logout", reactive(credentials()$user_auth))
-  user_info <- reactive({credentials()$info})
+                            log_out = shiny::reactive(logout_init()))
+  logout_init <- callModule(shinyauthr::logout, "logout", shiny::reactive(credentials()$user_auth))
+  user_info <- shiny::reactive({credentials()$info})
 
-  observe({
+  shiny::observe({
     if(credentials()$user_auth) {
 			shinyjs::removeClass(selector = "body", class = "sidebar-collapse")
     } else {
@@ -62,45 +60,45 @@ server = function(input, output, session) {
 
 	output$sidebar = renderUI({
 		req(credentials()$user_auth)
-		fluidRow(
-			column( width = 12
-				, actionButton("reset", "Sıfırla")
-				, selectInput("plan_select", "Rota Planı", choices = init_plan_choices, selected = init_plan_selected, selectize = F)
-				, checkboxInput("marker_toggle", "Markerları Gizle/Göster", TRUE)
-				, checkboxInput("multiple_color_route_toggle", "Çok Renk/Tek Renk", TRUE)
-				, actionButton("sqn_prev", "Önceki")
-				, actionButton("sqn_next", "Sonraki")
-				, selectInput("sqn_select", "Rota sırası", choices = init_sqn_choices, selected = init_sqn_selected, selectize = F)
-				, actionButton("smi_prev", "Önceki Satıcı")
-				, actionButton("smi_next", "Sonraki Satıcı")
-				, selectInput("smi_select", "Satıcı", choices = init_smi_choices, selected = init_smi_selected, selectize = T, multiple = T)
-				, actionButton("gun_prev", "Önceki Gün")
-				, actionButton("gun_next", "Sonraki Gün")
-				, selectInput("gun_select", "Gün", choices = init_gun_choices, selected = init_gun_selected, selectize = T, multiple = T)
+		shiny::fluidRow(
+			shiny::column( width = 12
+				, shiny::actionButton("reset", "Sıfırla")
+				, shiny::selectInput("plan_select", "Rota Planı", choices = init_plan_choices, selected = init_plan_selected, selectize = F)
+				, shiny::checkboxInput("marker_toggle", "Markerları Gizle/Göster", TRUE)
+				, shiny::checkboxInput("multiple_color_route_toggle", "Çok Renk/Tek Renk", TRUE)
+				, shiny::actionButton("sqn_prev", "Önceki")
+				, shiny::actionButton("sqn_next", "Sonraki")
+				, shiny::selectInput("sqn_select", "Rota sırası", choices = init_sqn_choices, selected = init_sqn_selected, selectize = F)
+				, shiny::actionButton("smi_prev", "Önceki Satıcı")
+				, shiny::actionButton("smi_next", "Sonraki Satıcı")
+				, shiny::selectInput("smi_select", "Satıcı", choices = init_smi_choices, selected = init_smi_selected, selectize = T, multiple = T)
+				, shiny::actionButton("gun_prev", "Önceki Gün")
+				, shiny::actionButton("gun_next", "Sonraki Gün")
+				, shiny::selectInput("gun_select", "Gün", choices = init_gun_choices, selected = init_gun_selected, selectize = T, multiple = T)
 			)
 		)
 	})
-	output$body = renderUI({
-		req(credentials()$user_auth)
-    fluidRow(
-      column( width = 12
-				, leafletOutput("map")
-				, textOutput("sqn_out")
-				, textOutput("smi_out")
-				, tableOutput("gun_out")
-				, tableOutput("routes")
+	output$body = shiny::renderUI({
+		shiny::req(credentials()$user_auth)
+    shiny::fluidRow(
+      shiny::column( width = 12
+				, leaflet::leafletOutput("map")
+				, shiny::textOutput("sqn_out")
+				, shiny::textOutput("smi_out")
+				, shiny::tableOutput("gun_out")
+				, shiny::tableOutput("routes")
       )
     )
 	})
 
-	state = reactiveValues(
+	state = shiny::reactiveValues(
 		routes_all = init_routes_all
 		, sqn = init_sqn_selected
 		, routes = get_routes_by_smi_wkd(init_routes_all, init_smi_selected, init_wkd_selected)
 		, gun = init_gun_selected
 		, smi = init_smi_selected
 	)
-	observeEvent(input$reset, { 
+	shiny::observeEvent(input$reset, { 
 		state$routes_all = init_routes_all
 		reset_routes(state$routes_all)
 	})
@@ -110,12 +108,12 @@ server = function(input, output, session) {
 		state$smi = init_smi_selected
 		state$routes = get_routes_by_smi_wkd(routes_all, init_smi_selected, wkd())
 	}
-	observeEvent(input$plan_select, { 
+	shiny::observeEvent(input$plan_select, { 
 		state$routes_all = get_routes_verbal(input$plan_select) 
 		reset_routes(state$routes_all)
 	})
 
-	observe({
+	shiny::observe({
 		is_show_markers = input$marker_toggle
 		is_multiple_color_route = input$multiple_color_route_toggle
 		if(is.null(is_show_markers) | is.null(is_multiple_color_route)) {
@@ -133,46 +131,46 @@ server = function(input, output, session) {
 		} 
 		state$map = map
 	})
-	observeEvent(input$sqn_next, { 
+	shiny::observeEvent(input$sqn_next, { 
 		state$sqn = state$routes[ state$routes$sequence_no == state$sqn, ]$next_sequence_no
 	})
-	observeEvent(input$sqn_prev, { 
+	shiny::observeEvent(input$sqn_prev, { 
 		state$sqn = state$routes[ state$routes$sequence_no == state$sqn, ]$prev_sequence_no
 	})
-	observeEvent(input$sqn_select, { state$sqn = as.numeric(input$sqn_select) })
-	observe({
+	shiny::observeEvent(input$sqn_select, { state$sqn = as.numeric(input$sqn_select) })
+	shiny::observe({
 		updateSelectInput(session, "sqn_select",
 			choices = state$routes$sequence_no
 			, selected = state$sqn
 	)})
-	observeEvent(input$smi_next, {
+	shiny::observeEvent(input$smi_next, {
 		state$smi = salesman[ salesman$salesman_id == state$smi, ]$next_salesman_id
 		refresh_salesman_routes()
 	})
-	observeEvent(input$smi_prev, {
+	shiny::observeEvent(input$smi_prev, {
 		state$smi = salesman[ salesman$salesman_id == state$smi, ]$prev_salesman_id
 		refresh_salesman_routes()
 	})
-	observeEvent(input$smi_select, {
+	shiny::observeEvent(input$smi_select, {
 		state$smi = as.numeric(input$smi_select)
 		refresh_salesman_routes()
 	})
-	observe({ updateSelectInput(session, "smi_select", selected = state$smi)})
-	observeEvent(input$gun_next, {
+	shiny::observe({ updateSelectInput(session, "smi_select", selected = state$smi)})
+	shiny::observeEvent(input$gun_next, {
 		state$gun = days[ days$gun == state$gun, ]$next_gun
 		refresh_salesman_routes()
 	})
-	observeEvent(input$gun_prev, {
+	shiny::observeEvent(input$gun_prev, {
 		state$gun = days[ days$gun == state$gun, ]$prev_gun
 		refresh_salesman_routes()
 	})
-	wkd = reactive({ gun2week_day(state$gun) })
-	observeEvent(input$gun_select, {
+	wkd = shiny::reactive({ gun2week_day(state$gun) })
+	shiny::observeEvent(input$gun_select, {
 		state$gun = input$gun_select
 		refresh_salesman_routes()
 	})
-	observe({ updateSelectInput(session, "gun_select", selected = state$gun) })
-	observe({ 
+	shiny::observe({ updateSelectInput(session, "gun_select", selected = state$gun) })
+	shiny::observe({ 
 		if (is_multiple_route_sets_selected()) {
 			# we cannot navigate stops in a route group when multiple different route groups are selected
 			shinyjs::disable("sqn_prev") 
@@ -184,7 +182,7 @@ server = function(input, output, session) {
 			shinyjs::enable("sqn_select") 
 		}
 	})
-  #routeSS = reactive({ 
+  #routeSS = shiny::reactive({ 
 		#if (is_multiple_route_sets_selected()) {
 			## if multiple smi/wkd selected, then put all routes
       #return(state$routes)
@@ -192,8 +190,8 @@ server = function(input, output, session) {
 			#return(get_route_upto_sequence_no(state$routes, state$sqn))
 		#}
 	#})
-	#map = reactive({ make_map(routeSS()) })
-	is_multiple_route_sets_selected = reactive({ length(state$smi) * length(wkd()) > 1 })
+	#map = shiny::reactive({ make_map(routeSS()) })
+	is_multiple_route_sets_selected = shiny::reactive({ length(state$smi) * length(wkd()) > 1 })
   output$routes = renderTable({ state$routeSS })
   #output$map = renderLeaflet({ map() })
   output$map = renderLeaflet({ state$map })
@@ -209,4 +207,4 @@ server = function(input, output, session) {
 	}
 }
 
-runApp(shinyApp(ui, server), host="0.0.0.0",port=5050)
+shiny::runApp(shiny::shinyApp(ui, server), host="0.0.0.0",port=5050)

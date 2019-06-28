@@ -2,7 +2,6 @@ library("leaflet")
 library("rjson")
 library("bitops")
 library("sp")
-source("decode.R")
 library("glue")
 
 osrm_server = Sys.getenv("OSRM_SERVER")
