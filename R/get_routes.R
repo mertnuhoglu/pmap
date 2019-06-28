@@ -22,7 +22,7 @@ remove_markers = function(map, routes) {
 	}
 	return(map)
 }
-make_map = function(routes, is_multiple_color_route = T) {
+make_map = function(routes, coloring_select = "Her rota ayrı renk") {
 	route_groups = routes %>%
 		dplyr::group_by(salesman_id, week_day) %>%
 		dplyr::group_split()
@@ -36,17 +36,25 @@ make_map = function(routes, is_multiple_color_route = T) {
 	pal = c("red", "purple", "darkblue", "orange", "cadetblue", "green", "darkred", "pink", "gray", "darkgreen", "black")
 	for (gr in seq_along(route_groups)) {
 		route_group = route_groups[[gr]]
-		if (is_multiple_color_route) {
-			col = rep(pal, times = 1 + (nrow(route_group) / length(pal)))
-		} else {
-			col = rep(pal[gr], times = nrow(route_group))
+		col_per_route = rep(pal, times = 1 + (nrow(route_group) / length(pal)))
+		col_per_route = col_per_route[1:nrow(route_group)]
+		col_per_smi_wkd = rep(pal[gr], times = nrow(route_group))
+		col_per_smi = rep(pal[gr], times = nrow(route_group))
+		route_group$col_per_route = col_per_route
+		route_group$col_per_smi_wkd = col_per_smi_wkd
+		route_group$col_per_smi = col_per_smi
+		if (coloring_select == "Her rota ayrı renk") { 
+			route_group$color = route_group$col_per_route
+		} else if (coloring_select == "Her gün x satıcı ayrı renk") { 
+			route_group$color = route_group$col_per_smi_wkd
+		} else if (coloring_select == "Her satıcı ayrı renk") {  
+			route_group$color = route_group$col_per_smi
 		}
-		col = col[1:nrow(route_group)]
-		route_group$color = col
 		m = make_map_with_markers(m, route_group)
 	}
 	return(m)
 }
+
 make_map_with_markers = function(map, route_group) {
 	routes = route_group
 

@@ -8,6 +8,8 @@ init_vars = function() {
 	result$init_routes_all = get_routes_verbal("report_20190526_00")
 	result$init_plan_choices = get_plans()
 	result$init_plan_selected = result$init_plan_choices[1]
+	result$init_coloring_choices = c("Her rota ayrı renk", "Her gün x satıcı ayrı renk", "Her satıcı ayrı renk")
+	result$init_coloring_selected = "Her rota ayrı renk"
 	result$init_sqn_selected = 0
 	result$init_smi_selected = 7
 	result$init_gun_selected = days$gun[1]
@@ -70,7 +72,7 @@ server = function(input, output, session) {
 				, shiny::actionButton("reset", "Sıfırla")
 				, shiny::selectInput("plan_select", "Rota Planı", choices = v$init_plan_choices, selected = v$init_plan_selected, selectize = F)
 				, shiny::checkboxInput("marker_toggle", "Markerları Gizle/Göster", TRUE)
-				, shiny::checkboxInput("multiple_color_route_toggle", "Çok Renk/Tek Renk", TRUE)
+				, shiny::selectInput("coloring_select", "Renk", choices = v$init_coloring_choices, selected = v$init_coloring_selected, selectize = F)
 				, shiny::actionButton("sqn_prev", "Önceki")
 				, shiny::actionButton("sqn_next", "Sonraki")
 				, shiny::selectInput("sqn_select", "Rota sırası", choices = v$init_sqn_choices, selected = v$init_sqn_selected, selectize = F)
@@ -120,8 +122,8 @@ server = function(input, output, session) {
 
 	shiny::observe({
 		is_show_markers = input$marker_toggle
-		is_multiple_color_route = input$multiple_color_route_toggle
-		if(is.null(is_show_markers) | is.null(is_multiple_color_route)) {
+		coloring_select = input$coloring_select
+		if(is.null(is_show_markers) | is.null(coloring_select)) {
 			# when app first runs, input$marker_toggle is NULL probably because of the login screen
 			return()
 		}
@@ -130,7 +132,7 @@ server = function(input, output, session) {
 		} else {
 			state$routeSS = get_route_upto_sequence_no(state$routes, state$sqn)
 		}
-		map = make_map(state$routeSS, is_multiple_color_route)
+		map = make_map(state$routeSS, coloring_select)
 		if (!is_show_markers) {
 			map = remove_markers(map, state$routeSS)
 		} 

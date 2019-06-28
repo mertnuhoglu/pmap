@@ -26,7 +26,7 @@ test_that("get_routes setup", {
 })
 
 test_that("make_map arguments", {
-	# map = make_map(state$routeSS, is_multiple_color_route)
+	# map = make_map(state$routeSS, coloring_select)
 	state = init_state()
 	is_multiple_route_sets_selected = F
 	if (is_multiple_route_sets_selected) {
@@ -39,7 +39,7 @@ test_that("make_map arguments", {
 })
 
 test_that("debug state$routes_all", {
-	# map = make_map(state$routeSS, is_multiple_color_route)
+	# map = make_map(state$routeSS, coloring_select)
 	state = init_state()
 	state$routes_all
 	state$routes_all$salesman_id %>% unique()
@@ -47,12 +47,12 @@ test_that("debug state$routes_all", {
 })
 
 test_that("make_map called with multiple salesman and weekdays", {
-	# map = make_map(state$routeSS, is_multiple_color_route)
+	# map = make_map(state$routeSS, coloring_select)
 	state = init_state()
 	state$routes = get_routes_by_smi_wkd(v$init_routes_all, c(7,12), v$init_wkd_selected)
 	state$routeSS = state$routes
 	routes = state$routeSS
-	is_multiple_color_route = T
+	coloring_select = "Her rota ayrı renk"
 
 	# make_map implementation
 	route_groups = routes %>%
@@ -67,14 +67,7 @@ test_that("make_map called with multiple salesman and weekdays", {
 	pal = c("red", "purple", "darkblue", "orange", "cadetblue", "green", "darkred", "pink", "gray", "darkgreen", "black")
 	gr = 1
 	route_group = route_groups[[gr]]
-	if (is_multiple_color_route) {
-		t = 1 + (nrow(route_group) / length(pal)) # 2.64
-		col = rep(pal, times = t)
-		length(pal) # 11
-		length(col) # 22
-	} else {
-		col = rep(pal[gr], times = nrow(route_group))
-	}
+
 	m = make_map_with_markers(m, route_group, col)
   expect_equal(2 * 2, 4)
 })

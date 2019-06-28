@@ -216,3 +216,51 @@ devtools::load_all()
 run_app()
 ``` 
 
+##### her bir grup için farklı bir renk olsun
+
+tek renk, çok renk vs. renk grupları olsun
+
+``` r
+		col_per_route = rep(pal, times = 1 + (nrow(route_group) / length(pal)))
+		col_per_route = col_per_route[1:nrow(route_group)]
+		col_per_smi_wkd = rep(pal[gr], times = nrow(route_group))
+		col_per_smi = rep(pal[gr], times = nrow(route_group))
+		route_group$col_per_route = col_per_route
+		route_group$col_per_smi_wkd = col_per_smi_wkd
+		route_group$col_per_smi = col_per_smi
+``` 
+
+###### bu durumda peki renk değiştirmeyi nasıl yapacağız?
+
+Renk parametresi hangi değerlere sahip olabilir:
+
+- Her rota için ayrı renk
+- Her gün x satıcı için ayrı renk
+- Her satıcı için ayrı renk
+
+Dolayısıyla bu bir dropdown olmalı.
+
+``` r
+				, shiny::selectInput("coloring_select", "Renk", choices = v$init_coloring_choices, selected = v$init_coloring_selected, selectize = F)
+``` 
+
+###### her satıcı ayrı renk olsun
+
+opt01: route_groups group_by 
+
+`dplyr::group_by(salesman_id)` yaparsak, zaten `route_groups` satıcı bazında oluşturulur.
+
+``` r
+	route_groups = routes %>%
+		dplyr::group_by(salesman_id) %>%
+		dplyr::group_split()
+``` 
+
+opt05: for loop kullanmadan renklendirmeyi yap
+
+mutate by group var mı?
+
+`group_indices` var
+
+####### group_indices kullanarak mevcut işlevselliği sağla
+
