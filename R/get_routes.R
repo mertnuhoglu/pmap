@@ -55,6 +55,31 @@ make_map = function(routes, coloring_select = "Her rota ayrı renk") {
 	return(m)
 }
 
+make_map2 = function(routes, coloring_select = "Her rota ayrı renk") {
+	routes$col_per_route = 1:nrow(routes)
+	routes$col_per_smi_wkd = group_indices(routes, salesman_id, week_day)
+	routes$col_per_smi = group_indices(routes, salesman_id)
+
+	orig = routes[1, ] %>%
+		dplyr::select(lng = from_lng, lat = from_lat)
+	m <- leaflet::leaflet(width="100%") %>% 
+		leaflet::addTiles() %>%
+		leaflet::addAwesomeMarkers(lng=orig$lng, lat=orig$lat)
+
+	if (coloring_select == "Her rota ayrı renk") { 
+		r1 = routes %>%
+			left_join(colors, by = c("col_per_route" = "color_id"))
+	} else if (coloring_select == "Her gün x satıcı ayrı renk") { 
+		r1 = routes %>%
+			left_join(colors, by = c("col_per_smi_wkd" = "color_id"))
+	} else if (coloring_select == "Her satıcı ayrı renk") {  
+		r1 = routes %>%
+			left_join(colors, by = c("col_per_smi" = "color_id"))
+	}
+	m = make_map_with_markers(m, r1)
+	return(m)
+}
+
 make_map_with_markers = function(map, route_group) {
 	routes = route_group
 

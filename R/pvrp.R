@@ -24,6 +24,10 @@ days = dplyr::tibble(
 	, prev_gun = c("CUMARTESİ", "PAZARTESİ", "SALI", "ÇARŞAMBA", "PERŞEMBE", "CUMA")
 )
 
+color_palette = c("red", "purple", "darkblue", "orange", "cadetblue", "green", "darkred", "pink", "gray", "darkgreen", "black")
+colors = dplyr::tibble(color = rep(color_palette, times = 1000)) %>%
+	dplyr::mutate(color_id = dplyr::row_number())
+
 gun2week_day = function(gun) {
 	days[ days$gun == gun, ]$week_day
 }

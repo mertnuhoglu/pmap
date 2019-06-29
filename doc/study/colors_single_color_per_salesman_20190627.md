@@ -264,3 +264,71 @@ mutate by group var mı?
 
 ####### group_indices kullanarak mevcut işlevselliği sağla
 
+``` r
+mtcars %>% mutate(g = group_indices(., cyl))
+routes %>% mutate(g = group_indices(., salesman_id))
+x = group_indices(routes, salesman_id)
+routes %>% mutate(g = x)
+``` 
+
+Şimdilik bunlar çalışmıyor.
+
+``` r
+routes$col_per_route = 1:nrow(routes)
+routes$col_per_smi_wkd = group_indices(routes, salesman_id, week_day)
+routes$col_per_smi = group_indices(routes, salesman_id)
+``` 
+
+######## Bu grup idlerini kullanarak renk ataması yap
+
+opt01: sınırlı bir renk kümesinden başlayarak yap
+
+opt02: sınırsız renk kümesi kullan
+
+######### opt01: sınırlı bir renk kümesinden başlayarak yap
+
+opt01: bir join işlemiyle renk tanımla
+
+Renk tablosu oluştur
+
+``` r
+colors = tibble::tibble(color = rep(pal, times = 1000)) %>%
+	dplyr::mutate(color_id = dplyr::row_number())
+``` 
+
+join işlemini nasıl yapacağız?
+
+Rstudio ile incele
+
+Ancak environment variablelar zshenv dosyasından okunmuyor. Rprofile içinde bunları tanımla.
+
+``` r
+init_state = function() {
+	v = init_vars()
+
+	state = list(
+		routes_all = v$init_routes_all
+		, sqn = v$init_sqn_selected
+		, routes = get_routes_by_smi_wkd(v$init_routes_all, v$init_smi_selected, v$init_wkd_selected)
+		, gun = v$init_gun_selected
+		, smi = v$init_smi_selected
+	)
+	#state$routeSS = get_route_upto_sequence_no(state$routes, state$sqn)
+	#state$map = make_map(state$routeSS)
+	return(state)
+}
+
+	state = init_state()
+	state$routes = get_routes_by_smi_wkd(v$init_routes_all, c(7,12), v$init_wkd_selected)
+	state$routeSS = state$routes
+	routes = state$routeSS
+
+	# make_map2
+	routes$col_per_route = 1:nrow(routes)
+	routes$col_per_smi_wkd = group_indices(routes, salesman_id, week_day)
+	routes$col_per_smi = group_indices(routes, salesman_id)
+	r0 = routes %>%
+		left_join(colors, by = c("col_per_route" = "color_id"))
+``` 
+
+

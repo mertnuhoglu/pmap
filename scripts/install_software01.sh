@@ -32,3 +32,7 @@ export PEYMAN_FILES_DIR="$PEYMAN_PROJECT_DIR/files"
 source ~/.bashrc 
 mkdir -p $PEYMAN_FILES_DIR/gen
 
+# for .Rprofile in osx
+#Sys.setenv("OSRM_SERVER"="35.204.111.216:5000")
+#Sys.setenv("PEYMAN_PROJECT_DIR"="/Users/mertnuhoglu/projects/itr/peyman")
+#Sys.setenv("PEYMAN_FILES_DIR"="/Users/mertnuhoglu/gdrive/mynotes/prj/itr/iterative_mert/peyman")
