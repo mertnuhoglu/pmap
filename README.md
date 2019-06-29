@@ -3,6 +3,8 @@
 
 ## Install
 
+Prerequisite: `~/projects/itr/peyman/pvrp/scripts/install_software_common.sh`
+
 Run `~/projects/itr/peyman/pmap/scripts/install_software01.sh`
 
 ``` bash
