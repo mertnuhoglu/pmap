@@ -101,19 +101,19 @@ server = function(input, output, session) {
 	state = shiny::reactiveValues(
 		routes_all = v$init_routes_all
 		, sqn = v$init_sqn_selected
-		, routes = get_routes_by_smi_wkd(v$init_routes_all, v$init_smi_selected, v$init_wkd_selected)
 		, gun = v$init_gun_selected
 		, smi = v$init_smi_selected
+		, routes = get_routes_by_smi_wkd(v$init_routes_all, v$init_smi_selected, v$init_wkd_selected)
 	)
 	shiny::observeEvent(input$reset, { 
-		state$routes_all = v$init_routes_all
-		reset_routes(state$routes_all)
+		reset_routes()
 	})
-	reset_routes = function(routes_all) {
+	reset_routes = function() {
+		state$routes_all = v$init_routes_all
 		state$sqn = v$init_sqn_selected
 		state$gun = v$init_gun_selected
 		state$smi = v$init_smi_selected
-		state$routes = get_routes_by_smi_wkd(routes_all, v$init_smi_selected, wkd())
+		state$routes = get_routes_by_smi_wkd(state$routes_all, v$init_smi_selected, v$init_wkd_selected)
 	}
 	shiny::observeEvent(input$plan_select, { 
 		state$routes_all = get_routes_verbal(input$plan_select) 
