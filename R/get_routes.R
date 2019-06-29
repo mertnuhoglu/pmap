@@ -22,40 +22,8 @@ remove_markers = function(map, routes) {
 	}
 	return(map)
 }
+
 make_map = function(routes, coloring_select = "Her rota ayrı renk") {
-	route_groups = routes %>%
-		dplyr::group_by(salesman_id, week_day) %>%
-		dplyr::group_split()
-
-	orig = routes[1, ] %>%
-		dplyr::select(lng = from_lng, lat = from_lat)
-	m <- leaflet::leaflet(width="100%") %>% 
-		leaflet::addTiles() %>%
-		leaflet::addAwesomeMarkers(lng=orig$lng, lat=orig$lat)
-
-	pal = c("red", "purple", "darkblue", "orange", "cadetblue", "green", "darkred", "pink", "gray", "darkgreen", "black")
-	for (gr in seq_along(route_groups)) {
-		route_group = route_groups[[gr]]
-		col_per_route = rep(pal, times = 1 + (nrow(route_group) / length(pal)))
-		col_per_route = col_per_route[1:nrow(route_group)]
-		col_per_smi_wkd = rep(pal[gr], times = nrow(route_group))
-		col_per_smi = rep(pal[gr], times = nrow(route_group))
-		route_group$col_per_route = col_per_route
-		route_group$col_per_smi_wkd = col_per_smi_wkd
-		route_group$col_per_smi = col_per_smi
-		if (coloring_select == "Her rota ayrı renk") { 
-			route_group$color = route_group$col_per_route
-		} else if (coloring_select == "Her gün x satıcı ayrı renk") { 
-			route_group$color = route_group$col_per_smi_wkd
-		} else if (coloring_select == "Her satıcı ayrı renk") {  
-			route_group$color = route_group$col_per_smi
-		}
-		m = make_map_with_markers(m, route_group)
-	}
-	return(m)
-}
-
-make_map2 = function(routes, coloring_select = "Her rota ayrı renk") {
 	routes$col_per_route = 1:nrow(routes)
 	routes$col_per_smi_wkd = group_indices(routes, salesman_id, week_day)
 	routes$col_per_smi = group_indices(routes, salesman_id)
