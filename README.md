@@ -28,3 +28,13 @@ Open in browser:
 		https://peymandev.i-terative.com
 		http://localhost:5050
 
+## Test scripts to reproduce data
+
+Check `~/projects/itr/peyman/pmap/tests/testthat/test-get_routes.R`
+
+## Run automated tests
+
+``` r
+devtools::test()
+``` 
+

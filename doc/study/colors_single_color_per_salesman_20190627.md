@@ -287,6 +287,8 @@ opt02: sınırsız renk kümesi kullan
 
 ######### opt01: sınırlı bir renk kümesinden başlayarak yap
 
+Ref: [master b8be5bd] her satıcıya ayrı renk
+
 opt01: bir join işlemiyle renk tanımla
 
 Renk tablosu oluştur
