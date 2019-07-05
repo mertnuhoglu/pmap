@@ -1,4 +1,14 @@
-decode <- function(str, multiplier=1e5){
+library(dplyr)
+library(readr)
+library(sf)
+library(bitops)
+library(sp)
+
+decode_sf <- function(geom, multiplier=1e5){
+	st_as_sf(decode(geom, multiplier))
+}
+   
+decode <- function(geom, multiplier=1e5){
    
    if (!require(bitops)) stop("Package: bitops required.")
    if (!require(sp)) stop("Package: sp required.")
@@ -7,8 +17,8 @@ decode <- function(str, multiplier=1e5){
    trucks <- c()
    carriage_q <- 0
    
-   for (i in 0:(nchar(str)-1)){
-      ch <- substr(str, (i+1), (i+1))
+   for (i in 0:(nchar(geom)-1)){
+      ch <- substr(geom, (i+1), (i+1))
       x <- as.numeric(charToRaw(ch)) - 63
       x5 <- bitShiftR(bitShiftL(x, 32-5), 32-5)
       truck <- bitOr(truck, bitShiftL(x5, carriage_q))
@@ -45,7 +55,6 @@ route = function(orig, dest) {
 
 path = function(route) {
 	return(decode(route$routes[[1]]$geometry, multiplier=1e5))
-	#return(decode(route$geometry_enc, multiplier=1e5))
 }
 
 route_label = function(route) {

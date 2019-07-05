@@ -57,10 +57,11 @@ make_map_with_markers = function(map, route_group) {
 		dest = routes[sqn, ] %>%
 			dplyr::select(lng = to_lng, lat = to_lat, customer_name, to_point_id)
 		rt = route(orig, dest)
-		ph = path(rt)
-		icon_num = leaflet::makeAwesomeIcon(text = sqn, markerColor = route_group$color[sqn])
+		#ph = path(rt)
+		ph = routes$geometry[sqn]
+		icon_num = leaflet::makeAwesomeIcon(text = sqn, markerColor = routes$color[sqn])
 		map = map %>% 
-			leaflet::addPolylines(data = ph, label = route_label(rt), color = route_group$color[sqn], opacity=1, weight = 3) %>%
+			leaflet::addPolylines(data = ph, label = route_label(rt), color = routes$color[sqn], opacity=1, weight = 3) %>%
 			leaflet::addAwesomeMarkers( layerId = as.character(dest$to_point_id), lng=dest$lng, lat=dest$lat, icon = icon_num, popup=dest$customer_name, label = glue::glue("{sqn} - {dest$customer_name}")) 
 	}
 	return(map)
@@ -78,7 +79,10 @@ get_route_for_sequence_no = function(routes, sequence_no) {
 }
 
 get_routes_verbal = function(plan_name) {
-	twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_costs.tsv")) 
+	#twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.tsv")) 
+	twc = readr::read_csv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.csv")) %>%
+		dplyr::mutate(geometry = sf::st_as_sfc(geometry_wkt)) %>%
+		sf::st_sf()
 	routes = twc %>%
 		dplyr::select(
 			salesman_id
@@ -91,6 +95,7 @@ get_routes_verbal = function(plan_name) {
 			, to_lng
 			, sequence_no
 			, customer_name
+			, geometry
 		) %>%
 		dplyr::group_by(salesman_id, week_day) %>%
 		dplyr::mutate(

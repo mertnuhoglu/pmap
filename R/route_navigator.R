@@ -14,7 +14,7 @@ init_vars = function() {
 	result$init_smi_selected = 7
 	result$init_gun_selected = days$gun[1]
 	result$init_wkd_selected = gun2week_day(result$init_gun_selected)
-	result$init_sqn_choices = get_routes_by_smi_wkd(result$init_routes_all, result$init_smi_selected, result$init_wkd_selected)
+	result$init_sqn_choices = get_routes_by_smi_wkd(result$init_routes_all, result$init_smi_selected, result$init_wkd_selected)$sequence_no
 	result$init_smi_choices = result$salesman$salesman_id
 	result$init_gun_choices = days$gun
 	return(result)
@@ -93,7 +93,7 @@ server = function(input, output, session) {
 				, shiny::textOutput("sqn_out")
 				, shiny::textOutput("smi_out")
 				, shiny::tableOutput("gun_out")
-				, shiny::tableOutput("routes")
+				, shiny::tableOutput("routes_table")
       )
     )
 	})
@@ -199,11 +199,18 @@ server = function(input, output, session) {
 	#})
 	#map = shiny::reactive({ make_map(routeSS()) })
 	is_multiple_route_sets_selected = shiny::reactive({ length(state$smi) * length(wkd()) > 1 })
-  output$routes = renderTable({ state$routeSS })
+  #output$routes_table = renderTable({ dplyr::select(state$routeSS, -geometry) })
+	routeSS_verbal <- shiny::reactive({
+		result = state$routeSS
+		sf::st_geometry(result) <- NULL
+		result
+	})
+  output$routes_table = renderTable({ routeSS_verbal() })
   #output$map = renderLeaflet({ map() })
   output$map = renderLeaflet({ state$map })
 
-  output$sqn_out = renderText({ state$sqn })
+  #output$sqn_out = renderText({ state$sqn })
+  output$sqn_out = renderText({ state$routeSS %>% names() })
   output$smi_out = renderText({ state$smi })
   output$gun_out = renderText({ state$gun })
 
