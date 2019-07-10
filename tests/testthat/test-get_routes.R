@@ -78,3 +78,14 @@ test_that("make_map called with multiple salesman and weekdays", {
 	m = make_map_with_markers(m, r1)
   expect_equal(2 * 2, 4)
 })
+
+test_that("make_map with multiple days and salesman", {
+	state = init_state()
+	state$routes = get_routes_by_smi_wkd(v$init_routes_all, c(7,12, 20, 21), v$init_wkd_selected)
+	state$routeSS = state$routes
+	routes = state$routeSS
+	coloring_select = "Her rota ayrı renk"
+
+	map = make_map(routes, coloring_select)
+  expect_equal(2 * 2, 4)
+})

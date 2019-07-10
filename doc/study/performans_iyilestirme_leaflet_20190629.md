@@ -811,4 +811,21 @@ Fix: sf'i tekrar düz df'e çevir
 			r0
 		})
 
+### shiny'nin aşırı hızlı request göndermesinden yavaşlık kaynaklanıyor olabilir mi?
+
+#### test fonksiyonundan taklit et
+
+Ref: 
+
+		test_that("make_map with multiple days and salesman", <url:/Users/mertnuhoglu/projects/itr/peyman/pmap/tests/testthat/test-get_routes.R#tn=make_map with multiple days and salesman>
+
+Yavaşlık burada:
+
+``` bash
+map = make_map(routes, coloring_select)
+``` 
+
+bug reproduce: aynı anda bir satıcı ekleyip başka bir satıcıyı çıkartınca sorun çıkıyor
+
+### bug: aynı anda satıcı ekleyip çıkartınca sonsuz döngüye giriyor
 
