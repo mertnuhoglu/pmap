@@ -82,6 +82,7 @@ server = function(input, output, session) {
 				, shiny::actionButton("gun_prev", "Önceki Gün")
 				, shiny::actionButton("gun_next", "Sonraki Gün")
 				, shiny::selectInput("gun_select", "Gün", choices = v$init_gun_choices, selected = v$init_gun_selected, selectize = T, multiple = T)
+				, shiny::actionButton("submit", "Gönder")
 			)
 		)
 	})
@@ -158,10 +159,6 @@ server = function(input, output, session) {
 		state$smi = v$salesman[ v$salesman$salesman_id == state$smi, ]$prev_salesman_id
 		refresh_salesman_routes()
 	})
-	shiny::observeEvent(input$smi_select, {
-		state$smi = as.numeric(input$smi_select)
-		refresh_salesman_routes()
-	})
 	shiny::observe({ updateSelectInput(session, "smi_select", selected = state$smi)})
 	shiny::observeEvent(input$gun_next, {
 		state$gun = days[ days$gun == state$gun, ]$next_gun
@@ -172,10 +169,6 @@ server = function(input, output, session) {
 		refresh_salesman_routes()
 	})
 	wkd = shiny::reactive({ gun2week_day(state$gun) })
-	shiny::observeEvent(input$gun_select, {
-		state$gun = input$gun_select
-		refresh_salesman_routes()
-	})
 	shiny::observe({ updateSelectInput(session, "gun_select", selected = state$gun) })
 	shiny::observe({ 
 		if (is_multiple_route_sets_selected()) {
@@ -204,6 +197,11 @@ server = function(input, output, session) {
 		result = state$routeSS
 		sf::st_geometry(result) <- NULL
 		result
+	})
+	shiny::observeEvent(input$submit, { 
+		state$smi = as.numeric(input$smi_select)
+		state$gun = input$gun_select
+		refresh_salesman_routes()
 	})
   output$routes_table = renderTable({ routeSS_verbal() })
   #output$map = renderLeaflet({ map() })

@@ -829,3 +829,81 @@ bug reproduce: aynı anda bir satıcı ekleyip başka bir satıcıyı çıkartı
 
 ### bug: aynı anda satıcı ekleyip çıkartınca sonsuz döngüye giriyor
 
+opt01: leaflet haritası sabit olsun hep
+
+``` r
+		map = make_map(v$tmp_routes, coloring_select)
+``` 
+
+yine aynı döngüye giriyor
+
+opt02: leaflet haritası hiç olmasın
+
+``` r
+		#map = make_map(state$routeSS, coloring_select)
+		#map = make_map(v$tmp_routes, coloring_select)
+		#if (!is_show_markers) {
+			#map = remove_markers(map, state$routeSS)
+		#} 
+		#state$map = map
+``` 
+
+o zaman düzgün çalışıyor
+
+opt03: acaba beklemeye sebep olan her şeyde aynı mı durum?
+
+``` r
+		Sys.sleep(5)
+``` 
+
+Evet, yine sonsuz döngüye giriyor.
+
+Solutions
+
+opt01: isolate kullan
+
+Bir actionButton olsun. Buna basılınca select inputların değerleri kullanılarak, harita yeniden hesaplansın.
+
+select inputları nerede kullanılıyor?
+
+``` r
+	shiny::observeEvent(input$sqn_select, { state$sqn = as.numeric(input$sqn_select) })
+	shiny::observe({
+		updateSelectInput(session, "sqn_select",
+			choices = state$routes$sequence_no
+			, selected = state$sqn
+	)})
+``` 
+
+``` r
+	shiny::observeEvent(input$smi_select, {
+		state$smi = as.numeric(input$smi_select)
+		refresh_salesman_routes()
+	})
+	shiny::observe({ updateSelectInput(session, "smi_select", selected = state$smi)})
+	refresh_salesman_routes = function() {
+		state$routes = get_routes_by_smi_wkd(state$routes_all, state$smi, wkd())
+		state$sqn = 0
+		return(state)
+	}
+``` 
+
+select bileşenlerinin veri bağlantılarını kaldır. sadece submit butonuyla veri bağlantısı gerçekleşsin:
+
+``` r
+	#shiny::observeEvent(input$smi_select, {
+		#state$smi = as.numeric(input$smi_select)
+		#refresh_salesman_routes()
+	#})
+	#shiny::observeEvent(input$gun_select, {
+		#state$gun = input$gun_select
+		#refresh_salesman_routes()
+	#})
+	shiny::observeEvent(input$submit, { 
+		state$smi = as.numeric(input$smi_select)
+		state$gun = input$gun_select
+		refresh_salesman_routes()
+	})
+``` 
+
+
