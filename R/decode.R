@@ -48,10 +48,3 @@ path = function(route) {
 	#return(decode(route$geometry_enc, multiplier=1e5))
 }
 
-route_label = function(route) {
-	s <- route$routes[[1]]$duration
-	kms <- round(route$routes[[1]]$distance/1000, 1)
-	result = glue::glue("{s%/%60}m {round(s%%60, 0)}s {kms}km")
-	return(result)
-}
-

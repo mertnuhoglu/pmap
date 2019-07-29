@@ -65,7 +65,13 @@ make_map_with_markers = function(map, route_group) {
 		ph = routes$geometry[sqn]
 		icon_num = leaflet::makeAwesomeIcon(text = routes$sequence_no[sqn], markerColor = routes$color[sqn])
 		map = map %>% 
-			leaflet::addPolylines(data = ph, label = route_label(rt), color = routes$color[sqn], opacity=1, weight = 3) %>%
+			leaflet::addPolylines(data = ph
+				, popup=glue::glue("{dest$customer_name} <br> salesman: {routes$salesman_id[sqn]} - day: {routes$week_day[sqn]} <br> sequence_no: {routes$sequence_no[sqn]}")
+				, label = route_label(rt, routes, sqn, dest)
+				, color = routes$color[sqn]
+				, opacity=1
+				, weight = 3
+			) %>%
 			leaflet::addAwesomeMarkers( 
 				layerId = as.character(dest$to_point_id)
 				, lng=dest$lng
@@ -76,6 +82,14 @@ make_map_with_markers = function(map, route_group) {
 			)
 	}
 	return(map)
+}
+
+route_label = function(route, routes, sqn, dest) {
+	s <- route$routes[[1]]$duration
+	kms <- round(route$routes[[1]]$distance/1000, 1)
+	#result = glue::glue("{s%/%60}m {round(s%%60, 0)}s {kms}km")
+	result = glue::glue("{kms}km - {routes$sequence_no[sqn]} - {dest$customer_name} ")
+	return(result)
 }
 
 get_route_upto_sequence_no = function(routes, sqn) {
