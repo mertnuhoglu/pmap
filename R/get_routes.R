@@ -25,8 +25,12 @@ remove_markers = function(map, routes) {
 
 make_map = function(routes, coloring_select = "Her rota ayrı renk") {
 	routes$col_per_route = 1:nrow(routes)
-	routes$col_per_smi_wkd = group_indices(routes, salesman_id, week_day)
-	routes$col_per_smi = group_indices(routes, salesman_id)
+	routes$col_per_smi_wkd = dplyr::group_indices(routes, salesman_id, week_day)
+
+	#routes$col_per_smi = dplyr::group_indices(routes, salesman_id)
+	routes$col_per_smi = dplyr::ungroup(routes) %>%
+		dplyr::group_by(salesman_id) %>%
+		dplyr::group_indices(salesman_id)
 
 	orig = routes[1, ] %>%
 		dplyr::select(lng = from_lng, lat = from_lat)
