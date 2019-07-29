@@ -59,10 +59,17 @@ make_map_with_markers = function(map, route_group) {
 		rt = route(orig, dest)
 		#ph = path(rt)
 		ph = routes$geometry[sqn]
-		icon_num = leaflet::makeAwesomeIcon(text = sqn, markerColor = routes$color[sqn])
+		icon_num = leaflet::makeAwesomeIcon(text = routes$sequence_no[sqn], markerColor = routes$color[sqn])
 		map = map %>% 
 			leaflet::addPolylines(data = ph, label = route_label(rt), color = routes$color[sqn], opacity=1, weight = 3) %>%
-			leaflet::addAwesomeMarkers( layerId = as.character(dest$to_point_id), lng=dest$lng, lat=dest$lat, icon = icon_num, popup=dest$customer_name, label = glue::glue("{sqn} - {dest$customer_name}")) 
+			leaflet::addAwesomeMarkers( 
+				layerId = as.character(dest$to_point_id)
+				, lng=dest$lng
+				, lat=dest$lat
+				, icon = icon_num
+				, popup=glue::glue("{dest$customer_name} <br> salesman: {routes$salesman_id[sqn]} - day: {routes$week_day[sqn]} <br> sequence_no: {routes$sequence_no[sqn]}")
+				, label = glue::glue("{routes$sequence_no[sqn]} - {dest$customer_name} ")
+			)
 	}
 	return(map)
 }

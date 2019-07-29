@@ -34,6 +34,8 @@ Open in browser:
 
 Check `~/projects/itr/peyman/pmap/tests/testthat/test-get_routes.R`
 
+Run test scripts interactively. Source init functions manually.
+
 ## Run automated tests
 
 ``` r

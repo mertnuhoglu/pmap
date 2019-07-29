@@ -87,5 +87,14 @@ test_that("make_map with multiple days and salesman", {
 	coloring_select = "Her rota ayrı renk"
 
 	map = make_map(routes, coloring_select)
+	coloring_select == "Her satıcı ayrı renk"
+	map = make_map(routes, coloring_select)
+	coloring_select == "Her gün x satıcı ayrı renk"
+	map = make_map(routes, coloring_select)
   expect_equal(2 * 2, 4)
+})
+
+test_that("marker numbers are reset for each different route_group", {
+	state = init_state()
+	state$routes = get_routes_by_smi_wkd(v$init_routes_all, c(7,12), v$init_wkd_selected)
 })
