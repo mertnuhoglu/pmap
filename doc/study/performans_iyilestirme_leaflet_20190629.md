@@ -829,6 +829,8 @@ bug reproduce: aynı anda bir satıcı ekleyip başka bir satıcıyı çıkartı
 
 ### bug: aynı anda satıcı ekleyip çıkartınca sonsuz döngüye giriyor
 
+Ref: [master c430bd9] error: aynı anda hem bir satıcı ekleyip başkasını çıkartınca sonsuz döngüye giriyordu
+
 opt01: leaflet haritası sabit olsun hep
 
 ``` r

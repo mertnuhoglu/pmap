@@ -13,4 +13,5 @@ cd pmap &&
 wget https://raw.githubusercontent.com/PaulC91/shinyauthr/master/inst/shiny-examples/shinyauthr_example/returnClick.js -O doc/study/ex/leaflet_rota_cizimi_20190530/returnClick.js &&
 cd .. &&
 git clone git@bitbucket.org:mertnuhoglu/pvrp.git &&
+git clone git@bitbucket.org:mertnuhoglu/pvrpr.git &&
 mkdir -p ~/pvrp/out 
