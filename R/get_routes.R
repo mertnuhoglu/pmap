@@ -63,10 +63,13 @@ make_map_with_markers = function(map, route_group) {
 		rt = route(orig, dest)
 		#ph = path(rt)
 		ph = routes$geometry[sqn]
-		icon_num = leaflet::makeAwesomeIcon(text = routes$sequence_no[sqn], markerColor = routes$color[sqn])
+		icon_num = leaflet::makeAwesomeIcon(text = routes$next_sequence_no[sqn], markerColor = routes$color[sqn])
 		map = map %>% 
 			leaflet::addPolylines(data = ph
-				, popup=glue::glue("{dest$customer_name} <br> salesman: {routes$salesman_id[sqn]} - day: {routes$week_day[sqn]} <br> sequence_no: {routes$sequence_no[sqn]}")
+				, popup=glue::glue( "
+						from: {routes$customer_name[sqn]} - to: {routes$to_customer_name[sqn]} 
+						<br> salesman: {routes$salesman_id[sqn]} - day: {routes$week_day[sqn]} 
+						<br> sequence_no: {routes$next_sequence_no[sqn]}")
 				, label = route_label(rt, routes, sqn, dest)
 				, color = routes$color[sqn]
 				, opacity=1
@@ -77,8 +80,11 @@ make_map_with_markers = function(map, route_group) {
 				, lng=dest$lng
 				, lat=dest$lat
 				, icon = icon_num
-				, popup=glue::glue("{dest$customer_name} <br> salesman: {routes$salesman_id[sqn]} - day: {routes$week_day[sqn]} <br> sequence_no: {routes$sequence_no[sqn]}")
-				, label = glue::glue("{routes$sequence_no[sqn]} - {dest$customer_name} ")
+				, popup=glue::glue( "
+						{routes$to_customer_name[sqn]} 
+						<br> salesman: {routes$salesman_id[sqn]} - day: {routes$week_day[sqn]} 
+						<br> sequence_no: {routes$next_sequence_no[sqn]}")
+				, label = glue::glue("{routes$next_sequence_no[sqn]} - {routes$to_customer_name[sqn]} ")
 			)
 	}
 	return(map)
@@ -88,7 +94,7 @@ route_label = function(route, routes, sqn, dest) {
 	s <- route$routes[[1]]$duration
 	kms <- round(route$routes[[1]]$distance/1000, 1)
 	#result = glue::glue("{s%/%60}m {round(s%%60, 0)}s {kms}km")
-	result = glue::glue("{kms}km - {routes$sequence_no[sqn]} - {dest$customer_name} ")
+	result = glue::glue("{kms}km - {routes$next_sequence_no[sqn]} - {routes$to_customer_name[sqn]} ")
 	return(result)
 }
 
@@ -120,6 +126,8 @@ get_routes_verbal = function(plan_name) {
 			, to_lng
 			, sequence_no
 			, customer_name
+			, to_customer_id
+			, to_customer_name
 			, geometry
 		) %>%
 		dplyr::group_by(salesman_id, week_day) %>%

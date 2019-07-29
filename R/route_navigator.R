@@ -5,7 +5,8 @@
 init_vars = function() {
 	result = list()
 	result$salesman = get_salesman()
-	result$init_routes_all = get_routes_verbal("report_20190526_00")
+	plan_name = "report_20190528_00_3"
+	result$init_routes_all = get_routes_verbal(plan_name)
 	result$init_plan_choices = get_plans()
 	result$init_plan_selected = result$init_plan_choices[1]
 	result$init_coloring_choices = c("Her rota ayrı renk", "Her gün x satıcı ayrı renk", "Her satıcı ayrı renk")
