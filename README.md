@@ -33,18 +33,30 @@ Prerequisite: `~/projects/itr/peyman/pvrp/scripts/install_software_common.sh`
 
 Run `~/projects/itr/peyman/pmap/scripts/install_software01.sh`
 
-# Run pmap app
-
 ``` bash
 cd ~/pmap
+make build
+``` 
+
+# Run pmap app
+
+Run `~/projects/itr/peyman/pmap/R/route_navigator.R`
+
+``` bash
 R --vanilla
 ``` 
 
-Run `~/projects/itr/peyman/pmap/R/route_navigator.R`
+opt01: using `devtools`
 
 ``` r
 devtools::load_all()
 run_app()
+``` 
+
+opt02: as R package
+
+``` r
+pmap::run_app()
 ``` 
 
 Open in browser: 
