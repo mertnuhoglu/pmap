@@ -3,7 +3,7 @@
 echo 'export OSRM_SERVER=35.204.111.216:5000' >> ~/.bashrc
 export OSRM_SERVER=35.204.111.216:5000
 sudo -i R -e 'install.packages(c("shiny", "rmarkdown", "shinydashboard", "usethis", "testthat"))' &&
-sudo -i R -e 'install.packages(c("leaflet", "rjson", "bitops", "sp"))' &&
+sudo -i R -e 'install.packages(c("leaflet", "rjson", "bitops", "sp", "sf"))' &&
 sudo -i R -e 'install.packages(c("sodium", "curl", "devtools", "shinyjs"))' &&
 sudo apt-get -y install libsodium-dev &&
 sudo -i R -e 'devtools::install_github("paulc91/shinyauthr")' &&

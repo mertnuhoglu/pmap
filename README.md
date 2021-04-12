@@ -3,9 +3,9 @@
 
 ## Setup nginx
 
-Ref: `Run nginx <url:/Users/mertnuhoglu/projects/itr/vrp_doc/dentas/process_setup_dentas.Rmd#tn=Run nginx>`
+Ref: `Run nginx <url:/Users/mertnuhoglu/projects/itr/vrp/vrp_doc/dentas/process_setup_dentas.Rmd#tn=Run nginx>`
 
-Edit `nginx.conf` in `~/projects/itr/vrp/nginx/nginx.conf` for reverse proxy
+Edit `nginx.conf` in `~/projects/itr/vrp/vrp/nginx/nginx.conf` for reverse proxy
 
         location / {
             proxy_pass http://peymandev.i-terative.com:5050;
