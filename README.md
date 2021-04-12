@@ -78,4 +78,3 @@ Run test scripts interactively. Source init functions manually.
 devtools::test()
 ``` 
 
-
