@@ -7,7 +7,7 @@ library("glue")
 
 osrm_server = Sys.getenv("OSRM_SERVER")
 
-twc = readr::read_tsv("~/projects/itr/peyman/pvrp/out/trips_with_costs.tsv")
+twc = readr::read_tsv("~/projects/itr/fmcgvrp/pvrp/out/trips_with_costs.tsv")
 
 rt07 = twc %>%
 	dplyr::filter(salesman_id == 7 & week_day == 0) %>%

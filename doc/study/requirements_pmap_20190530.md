@@ -1,7 +1,7 @@
 
 # Requirements for PMAP 20190530 
 
-Ref: `~/projects/itr/peyman/pvrp/doc/study/meeting_hakan_avsar_20190528.md`
+Ref: `~/projects/itr/fmcgvrp/pvrp/doc/study/meeting_hakan_avsar_20190528.md`
 
 1. Bir rotayı seçince noktaların sıra numaraları görünsün: 1, 2, 3
 

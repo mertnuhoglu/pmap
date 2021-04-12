@@ -41,7 +41,7 @@ get_route_for_sequence_no = function(routes, sequence_no) {
 }
 
 get_routes_verbal = function() {
-	twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp/out/trips_with_costs.tsv")) 
+	twc = readr::read_tsv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp/out/trips_with_costs.tsv")) 
 	routes = twc %>%
 		dplyr::select(
 			salesman_id

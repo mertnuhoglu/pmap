@@ -3,8 +3,8 @@ ex01_fun = function() {
 }
 
 get_routes_verbal = function(plan_name) {
-	PEYMAN_PROJECT_DIR = Sys.getenv("PEYMAN_PROJECT_DIR")
-	twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_costs.tsv")) 
+	FMCGVRP_PROJECT_DIR = Sys.getenv("FMCGVRP_PROJECT_DIR")
+	twc = readr::read_tsv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_costs.tsv")) 
 	routes = twc %>%
 		dplyr::select(
 			salesman_id

@@ -20,7 +20,7 @@ route = function(orig, dest) {
 
 driving servisinin kullanıldığı önceki kodlar:
 
-Code: `~/projects/itr/peyman/pvrp/doc/study/ex/peyman_osrm_kurulumu_20190521/ex18.sh`
+Code: `~/projects/itr/fmcgvrp/pvrp/doc/study/ex/fmcgvrp_osrm_kurulumu_20190521/ex18.sh`
 
 ``` bash
 curl "http://$HOST/route/v1/driving/29.208498,40.890795;29.246330,40.989400?steps=true" | jq . > ex06.json
@@ -35,7 +35,7 @@ SERVICE=table
 curl "http://${HOST}/${SERVICE}/v1/driving/${COORDINATES}?annotations=distance,duration" | jq . > ex18.json
 ``` 
 
-Output: `~/projects/itr/peyman/pvrp/doc/study/ex/peyman_osrm_kurulumu_20190521/ex06.json`
+Output: `~/projects/itr/fmcgvrp/pvrp/doc/study/ex/fmcgvrp_osrm_kurulumu_20190521/ex06.json`
 
 ``` json
 {
@@ -55,7 +55,7 @@ od_table dosyasını çekiyor, çünkü table servisini kullanıyor
 
 #### ex11.sh birden çok noktanın rotasını çekince ne oluyor?
 
-`~/projects/itr/peyman/pvrp/doc/study/ex/peyman_osrm_kurulumu_20190521/ex11.sh`
+`~/projects/itr/fmcgvrp/pvrp/doc/study/ex/fmcgvrp_osrm_kurulumu_20190521/ex11.sh`
 
 ``` bash
 COORDINATES='29.208498,40.890795;29.24633,40.9894;29.08812,40.99462'
@@ -64,7 +64,7 @@ curl "http://${DEMO}/route/v1/driving/${COORDINATES}" | jq . > ex11.json
 
 Bu durumda 3 noktadan geçen rotayı tek bir geometry objesi olarak dönüyor:
 
-`~/projects/itr/peyman/pvrp/doc/study/ex/peyman_osrm_kurulumu_20190521/ex11.json`
+`~/projects/itr/fmcgvrp/pvrp/doc/study/ex/fmcgvrp_osrm_kurulumu_20190521/ex11.json`
 
 #### url'leri oluşturalım
 
@@ -93,7 +93,7 @@ Bir join operasyonuyla yapalım bunu.
 
 Mevcut tabloyu önce bir dataframe'e çevirelim
 
-Edit `/Users/mertnuhoglu/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex01.R`
+Edit `/Users/mertnuhoglu/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex01.R`
 
 Her birine bir id ver
 
@@ -101,7 +101,7 @@ point_id zaten points tablosunda olmalı
 
 ``` r
 read_points = function() {
-	pt = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/normal/points.tsv"))
+	pt = readr::read_tsv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/normal/points.tsv"))
 }
 ``` 
 
@@ -109,7 +109,7 @@ Bu durumda önce rotaların hangi noktalardan oluştuğuna ihtiyacım var.
 
 Bu bilgi de trips_with_costs.tsv dosyasında var.
 
-Check `~/projects/itr/peyman/pvrp/out/trips_with_costs.tsv`
+Check `~/projects/itr/fmcgvrp/pvrp/out/trips_with_costs.tsv`
 
 Verileri buradan okuyalım
 
@@ -136,7 +136,7 @@ c1$route_url[1]
 curl http://35.204.111.216:5000/route/v1/driving/29.208498,40.890795;29.27214,40.96378?overview=full | jq . > t01.json
 ``` 
 
-Result: `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/t01.json`
+Result: `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/t01.json`
 
 #### bash veya R içinden curl ile tüm urlleri çekip kaydet
 
@@ -144,7 +144,7 @@ Result: `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_
 
 opt01: curl çağrısı yap
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex02.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex02.R`
 
 ``` r
 curl_download(c1$route_url[1], "t02.json")
@@ -152,7 +152,7 @@ curl_download(c1$route_url[1], "t02.json")
 
 opt02: fromJSON kullan
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex03.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex03.R`
 
 ``` r
 c3 = c2 %>%
@@ -165,20 +165,20 @@ c3 = c2 %>%
 
 başka fonksiyonların kullanımında da mı böyle oluyor?
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex04.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex04.R`
 
 ##### opt02: json dosyalarını kaydet
 
 ###### opt01: curl komutlarını hazırla > filename.json çıktılarıyla birlikte
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex05.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex05.R`
 
 ``` r
 c3 = c2 %>%
 	dplyr::mutate(curl_cmd = glue::glue("curl {route_url} > {from_point_id}_{to_point_id}.json"))
 ``` 
 
-curl komutlarını çıktıla: `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/curl_cmd.sh`
+curl komutlarını çıktıla: `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/curl_cmd.sh`
 
 ``` r
 writeLines(c3$curl_cmd, "curl_cmd.sh")
@@ -189,7 +189,7 @@ system("bash curl_cmd.sh", intern=T)
 
 json dosyalarını okuyup bir tabloda birleştir çıktıları
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex06.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex06.R`
 
 ``` r
 for (f in c3$file_name) {
@@ -201,7 +201,7 @@ for (f in c3$file_name) {
 
 #### geometry verilerini dfye ekle
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex07.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex07.R`
 
 ``` r
 geometry = lapply(c3$file_name, function(f) {
@@ -219,13 +219,13 @@ c4 = c3 %>%
 
 ##### opt02: path() fonksiyonuyla spatyel formata çevir kullanım sırasında
 
-Edit `~/projects/itr/peyman/pvrp/scripts/write_route_geometry.R`
+Edit `~/projects/itr/fmcgvrp/pvrp/scripts/write_route_geometry.R`
 
 Önce tüm data için geometry verisini oluşturalım ilk adımda.
 
 Bunu raporlama sırasında yapalım. yani trips_with_costs.tsv dosyasını oluştururken:
 
-		trips_with_costs = function(routes, customers, od_table, end_points, points) { <url:/Users/mertnuhoglu/projects/itr/peyman/pvrp/scripts/write_performance_reports.R#tn=trips_with_costs = function(routes, customers, od_table, end_points, points) {>
+		trips_with_costs = function(routes, customers, od_table, end_points, points) { <url:/Users/mertnuhoglu/projects/itr/fmcgvrp/pvrp/scripts/write_performance_reports.R#tn=trips_with_costs = function(routes, customers, od_table, end_points, points) {>
 
 Bunun için bir main fonksiyonu oluşturalım
 
@@ -250,8 +250,8 @@ routes.csv dosyasını kopyalayıp tekrar main fonksiyonunu çalıştır.
 ``` bash
 ./main_rotalar_to_routes_algo.R
 ./main_routes_algo_to_routes_normal.R
-  ##> /Users/mertnuhoglu/projects/itr/peyman/pvrp_data/out/report_20190526_00/routes_algo.csv
-cp /Users/mertnuhoglu/projects/itr/peyman/pvrp_data/out/report_20190526_00/routes_algo.csv ~/projects/itr/peyman/pvrp/routes.csv
+  ##> /Users/mertnuhoglu/projects/itr/fmcgvrp/pvrp_data/out/report_20190526_00/routes_algo.csv
+cp /Users/mertnuhoglu/projects/itr/fmcgvrp/pvrp_data/out/report_20190526_00/routes_algo.csv ~/projects/itr/fmcgvrp/pvrp/routes.csv
 ``` 
 
 02: Şimdi trips_with_costs.csv dosyasını oluştur
@@ -268,7 +268,7 @@ source("write_route_geometry.R")
 write_route_geometry()
 ``` 
 
-Output: `~/projects/itr/peyman/pvrp/out/trips_with_route_geometry.tsv`
+Output: `~/projects/itr/fmcgvrp/pvrp/out/trips_with_route_geometry.tsv`
 
 ####### Logs
 
@@ -284,9 +284,9 @@ path yanlış
 
 Result: 
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b06.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b06.R`
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex09.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex09.R`
 
 ###### Logs
 
@@ -324,17 +324,17 @@ c4 = c0 %>%
 
 Adım adım debug ederek gidelim
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/decode_sf/ex01.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/decode_sf/ex01.R`
 
-Kullanımı: `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex10.R`
+Kullanımı: `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex10.R`
 
 ####### normal df ile sf objelerini nasıl birleştireceğim?
 
 Result: 
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b06.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b06.R`
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex01.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex01.R`
 
 önce bir vektör oluşturalım
 
@@ -348,13 +348,13 @@ bu şekilde olmuyor.
 
 opt02: örnekleri incele
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/geo_data.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/geo_data.R`
 
 ``` r
 source("geo_data.R")
 ``` 
 
-Use `st_as_sf` in `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex02a01.R`
+Use `st_as_sf` in `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex02a01.R`
 
 ######## opt03: 
 
@@ -369,11 +369,11 @@ Plan:
 
 Follow https://cran.r-project.org/web/packages/googlePolylines/vignettes/sfencode.html
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03a01.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03a01.R`
 
 ########## Assign it to a df column
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03a02.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03a02.R`
 
 ``` r
 p0 = decode(polylines)
@@ -382,17 +382,17 @@ st_sfc(p0)
 
 Bu çalışmadı
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03a03.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03a03.R`
 
 Doğrudan encoded datayı kullan `addPolylines` içinde
 
 opt02: doğrudan st_as_sfc(route_geometry) kullan
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03a04.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03a04.R`
 
 opt05: follow https://gis.stackexchange.com/questions/253898/adding-a-linestring-by-st-read-in-shiny-leaflet
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03a05.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03a05.R`
 
 ``` r
 library(sf)
@@ -441,7 +441,7 @@ Follow https://gis.stackexchange.com/questions/222978/lon-lat-to-simple-features
 
 01: dataframe'den bir sf tablosu oluşturma:
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b01.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b01.R`
 
 ``` r
 DT <- data.table(
@@ -462,7 +462,7 @@ Bununla noktaları tek tek oluşturuyorum. Peki MultiLine nasıl oluşturacağı
 
 Follow https://cran.r-project.org/web/packages/sf/vignettes/sf1.html
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b02.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b02.R`
 
 03: kendi verimizle bu işlemleri tekrarlamak
 
@@ -470,15 +470,15 @@ decode çıktısı bir df fakat st_point türü fonksiyonlar matrix bekliyor. bu
 
 xy sıralaması olmalı dolayısıyla lon önce gelmeli
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b03.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b03.R`
 
 04: Refactor et
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b04.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b04.R`
 
 ########## 05: Tüm tablo için yapalım
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b05.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b05.R`
 
 ########### Logs
 
@@ -567,11 +567,11 @@ opt01: cbind kullan
 
 opt02: yeni tablo oluştur
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b06.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/df_sf/ex03b06.R`
 
 #### geometry datasını kaydet
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex11.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex11.R`
 
 opt01: csv
 
@@ -608,7 +608,7 @@ from_point_id,to_point_id,from_lng,from_lat,to_lng,to_lat,geometry_wkt
 
 #### geometry datasını csv dosyasından oku
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex12.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex12.R`
 
 ``` r
 c3 = st_read("trips_with_geometry04.csv")
@@ -620,9 +620,9 @@ c3 = st_read("trips_with_geometry04.csv")
 
 ##### opt01: sade bir dosya içinde rotaları çizdirmeyi test et
 
-Daha önceki örnek script: `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex04.R`
+Daha önceki örnek script: `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex04.R`
 
-Check: `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex13.R`
+Check: `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex13.R`
 
 Önce wkt'yi sfg'ye çevir: 
 
@@ -640,7 +640,7 @@ m
 
 sf objesine ekle bunu:
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex14.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/performans_iyilestirme_leaflet_20190629/ex14.R`
 
 ``` r
 c3 = st_read("trips_with_geometry04.csv") %>%
@@ -654,9 +654,9 @@ m <- leaflet(width="100%") %>%
 
 #### trips_with_geometry04.csv dosyasını raporların içine koy
 
-		twrg = trips_with_route_geometry(trips_w_curl_cmd) <url:/Users/mertnuhoglu/projects/itr/peyman/pvrp/scripts/write_route_geometry.R#tn=twrg = trips_with_route_geometry(trips_w_curl_cmd)>
+		twrg = trips_with_route_geometry(trips_w_curl_cmd) <url:/Users/mertnuhoglu/projects/itr/fmcgvrp/pvrp/scripts/write_route_geometry.R#tn=twrg = trips_with_route_geometry(trips_w_curl_cmd)>
 
-Check `~/projects/itr/peyman/pvrp/scripts/write_route_geometry.R`
+Check `~/projects/itr/fmcgvrp/pvrp/scripts/write_route_geometry.R`
 
 `write_route_geometry` fonksiyonunu test et
 
@@ -670,12 +670,12 @@ curl_cmd.sh dosyasına bağımlılık olmasın:
 
 #### get_routes.R üzerinde deneyelim
 
-		#twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.tsv")) <url:/Users/mertnuhoglu/projects/itr/peyman/pmap/R/get_routes.R#tn=#twc = readr::read_tsv(>
+		#twc = readr::read_tsv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.tsv")) <url:/Users/mertnuhoglu/projects/itr/fmcgvrp/pmap/R/get_routes.R#tn=#twc = readr::read_tsv(>
 
 ##### test get_routes.R ile rota çizimi
 
 ``` r
-PEYMAN_PROJECT_DIR = Sys.getenv("PEYMAN_PROJECT_DIR")
+FMCGVRP_PROJECT_DIR = Sys.getenv("FMCGVRP_PROJECT_DIR")
 plan_name = "report_20190526_00"
 routes = get_routes_verbal(plan_name)
 ``` 
@@ -694,7 +694,7 @@ Error: salesman_id missing
 			108: mapply
 			107: choicesWithNames
 			106: shiny::selectInput
-			 97: renderUI [/Users/mertnuhoglu/projects/itr/peyman/pmap/R/route_navigator.R#70]
+			 97: renderUI [/Users/mertnuhoglu/projects/itr/fmcgvrp/pmap/R/route_navigator.R#70]
 
 Muhtemelen neden:
 
@@ -710,14 +710,14 @@ Fix:
 
 message:
 
-		Reading layer `trips_with_route_geometry' from data source `/Users/mertnuhoglu/projects/itr/peyman/pvrp_data/out/report_20190526_00/trips_with_route_geometry.csv' using driver `CSV'
+		Reading layer `trips_with_route_geometry' from data source `/Users/mertnuhoglu/projects/itr/fmcgvrp/pvrp_data/out/report_20190526_00/trips_with_route_geometry.csv' using driver `CSV'
 		Warning: no simple feature geometries present: returning a data.frame or tbl_df
 		Warning in Ops.factor(sequence_no, sqn) : ‘<=’ not meaningful for factors
 		Warning: Error in [[<-.data.frame: replacement has 2 rows, data has 0
 			53: stop
 			52: [[<-.data.frame
 			48: $<-.sf
-			46: make_map [/Users/mertnuhoglu/projects/itr/peyman/pmap/R/get_routes.R#27]
+			46: make_map [/Users/mertnuhoglu/projects/itr/fmcgvrp/pmap/R/get_routes.R#27]
 
 ####### test scriptinden debug et make_map fonksiyonunu
 
@@ -743,7 +743,7 @@ faktör olarak okumuş lng ve lat değerlerini
 Dosyanın okunduğu yer:
 
 ``` r
-twc = sf::st_read(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.csv")) 
+twc = sf::st_read(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.csv")) 
 str(twc)
   ##> 'data.frame':   3000 obs. of  20 variables:
   ##>  $ salesman_id  : Factor w/ 27 levels "100","101","12",..: 11 11 11 11 11 11 11 11 11 11 ...
@@ -754,7 +754,7 @@ str(twc)
 Fix: `readr` kullan okumada
 
 ``` r
-twc = readr::read_csv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.csv")) 
+twc = readr::read_csv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.csv")) 
 str(twc)
   ##> Classes ‘spec_tbl_df’, ‘tbl_df’, ‘tbl’ and 'data.frame':    3000 obs. of  20 variables:
   ##>  $ salesman_id  : num  7 7 7 7 7 7 7 7 7 7 ...
@@ -766,7 +766,7 @@ str(twc)
 		Warning: Error in is.finite: default method not implemented for type 'list'
 			 82: output$routes
 				2: shiny::runApp
-				1: run_app [/Users/mertnuhoglu/projects/itr/peyman/pmap/R/route_navigator.R#218]
+				1: run_app [/Users/mertnuhoglu/projects/itr/fmcgvrp/pmap/R/route_navigator.R#218]
 
 		number of items to replace is not a multiple of replacement length
 
@@ -786,12 +786,12 @@ opt02: eski halini deneyebilir miyim?
 
 Bu ikisi çalışıyor:
 
-		twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_costs.tsv")) 
-		twc = readr::read_csv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.csv")) 
+		twc = readr::read_tsv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_costs.tsv")) 
+		twc = readr::read_csv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.csv")) 
 
 Bunda hata veriyor:
 
-		twc = readr::read_csv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.csv")) %>%
+		twc = readr::read_csv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.csv")) %>%
 			dplyr::mutate(geometry = sf::st_as_sfc(geometry_wkt)) %>%
 			sf::st_sf()
 
@@ -817,7 +817,7 @@ Fix: sf'i tekrar düz df'e çevir
 
 Ref: 
 
-		test_that("make_map with multiple days and salesman", <url:/Users/mertnuhoglu/projects/itr/peyman/pmap/tests/testthat/test-get_routes.R#tn=make_map with multiple days and salesman>
+		test_that("make_map with multiple days and salesman", <url:/Users/mertnuhoglu/projects/itr/fmcgvrp/pmap/tests/testthat/test-get_routes.R#tn=make_map with multiple days and salesman>
 
 Yavaşlık burada:
 

@@ -26,7 +26,7 @@
 
 #### reproduce ederek route_group nedir bul
 
-Check `~/projects/itr/peyman/pmap/tests/testthat/test-get_routes.R`
+Check `~/projects/itr/fmcgvrp/pmap/tests/testthat/test-get_routes.R`
 
 ##### unit testler hazırla reproduce etmek için
 
@@ -45,7 +45,7 @@ devtools::test()
 
 ###### get_routes() fonksiyonunu test scriptinden çağır
 
-Edit `~/projects/itr/peyman/pmap/tests/testthat/test-test01.R`
+Edit `~/projects/itr/fmcgvrp/pmap/tests/testthat/test-test01.R`
 
 ``` r
 test_that("get_routes works", {
@@ -54,7 +54,7 @@ test_that("get_routes works", {
 
 ``` r
 usethis::use_test("get_routes")
-  ##> ~/projects/itr/peyman/pmap/tests/testthat/test-get_routes.R
+  ##> ~/projects/itr/fmcgvrp/pmap/tests/testthat/test-get_routes.R
 devtools::test()
 ``` 
 
@@ -91,7 +91,7 @@ create_package("ex01")
 ``` r
 usethis::use_testthat()
 usethis::use_test("test01")
-  ##> ~/projects/itr/peyman/pmap/doc/study/ex/colors_single_color_per_salesman_20190627/ex01/tests/testthat/test-test01.R
+  ##> ~/projects/itr/fmcgvrp/pmap/doc/study/ex/colors_single_color_per_salesman_20190627/ex01/tests/testthat/test-test01.R
 ``` 
 
 ``` r

@@ -110,8 +110,8 @@ get_route_for_sequence_no = function(routes, sequence_no) {
 }
 
 get_routes_verbal = function(plan_name) {
-	#twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.tsv")) 
-	twc = readr::read_csv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.csv")) %>%
+	#twc = readr::read_tsv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.tsv")) 
+	twc = readr::read_csv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/out/{plan_name}/trips_with_route_geometry.csv")) %>%
 		dplyr::mutate(geometry = sf::st_as_sfc(geometry_wkt)) %>%
 		sf::st_sf()
 	routes = twc %>%

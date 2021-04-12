@@ -15,12 +15,12 @@ Ref:
 		5: get_routes_verbal() at route_navigator.R#13
 
 ``` r
-	twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp/out/trips_with_costs.tsv")) 
+	twc = readr::read_tsv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp/out/trips_with_costs.tsv")) 
 ``` 
 
 twc'de from_lat ve from_to niye yok?
 
-Belki düzgün oluşturulmadı dosya. Tekrar oluştur. Ref: `Excel dosyasını üret <url:/Users/mertnuhoglu/projects/itr/peyman/pvrp/doc/study/log_20190609.md#tn=Excel dosyasını üret>`
+Belki düzgün oluşturulmadı dosya. Tekrar oluştur. Ref: `Excel dosyasını üret <url:/Users/mertnuhoglu/projects/itr/fmcgvrp/pvrp/doc/study/log_20190609.md#tn=Excel dosyasını üret>`
 
 Cause: 
 
@@ -55,7 +55,7 @@ layerId olarak ne kullanalım?
 
 Doğrudan o satış noktasının point_id değeri olabilir.
 
-Ref: `~/projects/itr/peyman/pmap/scripts/test_route_navigator.R`
+Ref: `~/projects/itr/fmcgvrp/pmap/scripts/test_route_navigator.R`
 
 ``` r
 addAwesomeMarkers( layerId = dest$to_point_id, ...
@@ -364,6 +364,6 @@ Bu dosyayı da pvrp_data içine alalım.
 
 Önce trips_with_costs.tsv dosyasını 00 routes.csv dosyasından tekrar oluşturalım.
 
-`~/projects/itr/peyman/pvrp/out/trips_with_costs.tsv`
-`/Users/mertnuhoglu/projects/itr/peyman/pvrp_data/out/report_20190526_00/trips_with_costs.tsv`
+`~/projects/itr/fmcgvrp/pvrp/out/trips_with_costs.tsv`
+`/Users/mertnuhoglu/projects/itr/fmcgvrp/pvrp_data/out/report_20190526_00/trips_with_costs.tsv`
 

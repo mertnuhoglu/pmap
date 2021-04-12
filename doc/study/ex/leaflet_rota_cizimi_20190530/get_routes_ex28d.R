@@ -50,7 +50,7 @@ get_route_geometry_bw_points = function(routes) {
 }
 
 get_routes_verbal = function() {
-	twc = readr::read_tsv("~/projects/itr/peyman/pvrp/out/trips_with_costs.tsv")
+	twc = readr::read_tsv("~/projects/itr/fmcgvrp/pvrp/out/trips_with_costs.tsv")
   #twc = readr::read_tsv("~/pvrp/out/trips_with_costs.tsv")
 	routes = twc %>%
 		dplyr::select(

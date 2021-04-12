@@ -11,7 +11,7 @@ Mevcut planları ideal durumda veritabanından çekmeli, ama şimdilik pvrp_data
 
 ref: [master 9e802e5] birden çok planı görüntüleyebilme
 
-`/Users/mertnuhoglu/projects/itr/peyman/pvrp_data/out`
+`/Users/mertnuhoglu/projects/itr/fmcgvrp/pvrp_data/out`
 
 ``` bash
 ls out
@@ -21,7 +21,7 @@ ls out
 Klasörleri listeleyelim.
 
 ``` r
-list.files(path = glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/out"), include.dirs = T, pattern = "^report_\\d+.*")
+list.files(path = glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/out"), include.dirs = T, pattern = "^report_\\d+.*")
 ``` 
 
 `plan_select` değişince, `routes_all` da değişmeli.

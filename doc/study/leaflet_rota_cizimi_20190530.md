@@ -76,7 +76,7 @@ Ref
 
 ### ex05: Birden çok noktayı koyma
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex05.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex05.R`
 
 `decode()` is taken from https://cmhh.github.io/post/routing/
 
@@ -125,7 +125,7 @@ https://gis.stackexchange.com/questions/163286/how-do-i-create-a-spatiallinesdat
 
 ### ex08: 2d object as a column in a tibble
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex08.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex08.R`
 
 ``` r
 library(dplyr, warn.conflicts = FALSE)
@@ -160,7 +160,7 @@ df$x3
 
 ### ex09: for loop ile leaflet addPolylines çağır
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex09.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex09.R`
 
 ``` r
 m <- leaflet(width="100%") %>% 
@@ -182,7 +182,7 @@ m
 
 ### ex10: color palet kullanımını test et
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex10.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex10.R`
 
 ``` r
 pal <- colorNumeric(c("red", "green", "blue"), 1:10)
@@ -192,7 +192,7 @@ pal(1:10)
 
 ### ex11: renk paletini rotalarda kullan
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex11.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex11.R`
 
 ``` r
 no_routes = nrow(cs) - 1
@@ -204,10 +204,10 @@ col = pal(1:no_routes)
 
 ### ex12: bir satıcının tüm rotalarını çizdir
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex12.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex12.R`
 
 ``` r
-twc = readr::read_tsv("~/projects/itr/peyman/pvrp/out/trips_with_costs.tsv")
+twc = readr::read_tsv("~/projects/itr/fmcgvrp/pvrp/out/trips_with_costs.tsv")
 
 rt07 = twc %>%
 	dplyr::filter(salesman_id == 7 & week_day == 0) %>%
@@ -225,7 +225,7 @@ cs = dplyr::bind_rows(rt07, depot)
 
 https://rstudio.github.io/leaflet/shiny.html
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex13.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex13.R`
 
 Run from R:
 
@@ -243,15 +243,15 @@ Rscript ex13.R
 
 https://stackoverflow.com/questions/36469631/how-to-get-leaflet-for-r-use-100-of-shiny-dashboard-height
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex14.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex14.R`
 
 ### ex15: Kendi rotalarımızı bu appte gösterelim
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex15.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex15.R`
 
 ### ex16: Temel bir shiny uygulaması
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex16.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex16.R`
 
 Her yerden erişilebilir olması için: `host="0.0.0.0"` olmalı
 
@@ -359,11 +359,11 @@ Warning: Error in +: non-numeric argument to binary operator
 
 Wrap all input data inside `reactive`
 
-Experiment in `ex21: non-numeric argument problemi <url:/Users/mertnuhoglu/projects/itr/peyman/pmap/doc/study/leaflet_rota_cizimi_20190530.md#tn=ex21: non-numeric argument problemi>`
+Experiment in `ex21: non-numeric argument problemi <url:/Users/mertnuhoglu/projects/itr/fmcgvrp/pmap/doc/study/leaflet_rota_cizimi_20190530.md#tn=ex21: non-numeric argument problemi>`
 
 Use `as.numeric`
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18a.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18a.R`
 
 Still the same error.
 
@@ -371,7 +371,7 @@ Clean the code to isolate the problem.
 
 Debug with `class`
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18b.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18b.R`
 
 ``` r
 get_route_for_sequence_no = function(routes, seq) {
@@ -381,7 +381,7 @@ get_route_for_sequence_no = function(routes, seq) {
 
 Don't use `reactive`
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18c.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18c.R`
 
 ``` r
   output$routes <- renderTable({
@@ -394,7 +394,7 @@ get_route_for_sequence_no = function(routes, seq) {
 
 Works. 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18d.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex18d.R`
 
 Works. 
 
@@ -402,23 +402,23 @@ Works.
 
 Sadece verbal data. 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex19.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex19.R`
 
 #### ex21: non-numeric argument problemi
 
 Problemi en basit haliyle reproduce edelim.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21.R`
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21a.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21a.R`
 
 Seçilen öğeyi print et:
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21b.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21b.R`
 
 Seçilen öğeyle bir işlem yap
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21c.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21c.R`
 
 Error:
 
@@ -427,7 +427,7 @@ Error:
 
 Debug the problem with `class`
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21d.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21d.R`
 
 ``` r
 		print(class(input$numara))
@@ -436,7 +436,7 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21d.
 
 Convert to numeric
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21e.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex21e.R`
 
 Problem solved.
 
@@ -444,7 +444,7 @@ Problem solved.
 
 Previous step: ex18
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex22.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex22.R`
 
 Test `get_route_geometry`
 
@@ -461,7 +461,7 @@ It works.
 
 Use `reactive` expression
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex23.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex23.R`
 
 ### Navigasyon özellikleri
 
@@ -469,25 +469,25 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex23.R
 
 ##### ex24: iki buton koy. sequence_no dolaş.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex24.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex24.R`
 
 Counter örneği: https://gist.github.com/aagarw30/69feeeb7e813788a753b71ef8c0877eb as `counter`
 
 ##### ex25: bir satıcının rotalarını dolaş
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex25.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex25.R`
 
 ##### ex26: hızlı zıplama select ile
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26.R`
 
 ###### Error: başlangıçta NA dönüyor selectInput
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26a.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26a.R`
 
 Default value belirt
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26b.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26b.R`
 
 ``` r
       , selectInput("sequence_no", 'Rota sırası', choices = routes$sequence_no, selected = "0")
@@ -495,7 +495,7 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26b.
 
 Map olmadan düzeni test et:
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26c.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26c.R`
 
 ``` r
 	observeEvent(input$sequence_no, {
@@ -512,17 +512,17 @@ Başlangıç değeri: `NA` yine `seq_value` için
 
 selectize = F ile test et:
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26d.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26d.R`
  
 Ok, çalıştı.
 
 Haritayı da bağla.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26e.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex26e.R`
  
 ##### ex27: selectInput da güncellensin butona basılınca
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex27.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex27.R`
 
 ``` bash
 	observe({
@@ -533,17 +533,17 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex27.R
 
 Follow https://stackoverflow.com/questions/21465411/r-shiny-passing-reactive-to-selectinput-choices
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex27a.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex27a.R`
 
 #### Satıcılar arasında dolaşma
 
 ##### ex28: satıcı listesi ve rota listesi birlikte bulunsun
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28.R`
 
 Tüm satıcıları listele:
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28a.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28a.R`
 
 ``` r
 			, actionButton("prev_salesman", "Önceki Satıcı")
@@ -567,7 +567,7 @@ Refactoring: consistent names for all related variables
 		seq_no_counter -> state
 		seq_value -> seq_no
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28b.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28b.R`
 
 Salesman değişince haritadaki rotalar da değişsin
 
@@ -579,17 +579,17 @@ routes = get_routes_verbal()
 
 ->
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28c.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28c.R`
 
 `routes` tüm rotaları içersin. `filter()` yaparız her girdi eyleminde.
 
 Mevcut hali yeniden üret:
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28d.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28d.R`
 
 `routes` tümüyle reaktif olsun:
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28e.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28e.R`
 
 Bu durumda öncelikle selectInput içindeki routes reaktif olmalı:
 
@@ -607,7 +607,7 @@ Bu durumda öncelikle selectInput içindeki routes reaktif olmalı:
 	)})
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28f.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28f.R`
 
 Satıcı seçilince, `routes` değişmeli.
 
@@ -623,7 +623,7 @@ Bunun için observeEvent kullan:
   })
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28g.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28g.R`
 
 Satıcı seçilince, rota sırası seçimi sıfırlansın.
 
@@ -635,13 +635,13 @@ Satıcı seçilince, rota sırası seçimi sıfırlansın.
 	})
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28h.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28h.R`
 
 Satıcı dolaşma butonları da çalışsın
 
 Önce salesman_no listesi oluşturalım
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28i.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28i.R`
 
 Unduplicate code for `smi` and `smn`
 
@@ -660,7 +660,7 @@ Unduplicate code for `smi` and `smn`
 
 Nothing happens. 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28j.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex28j.R`
 
 ``` r
 	refresh_salesman = function() {
@@ -681,17 +681,17 @@ This works.
 
 ##### ex29: aynı satıcının farklı günleri arasında dolaşma
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex29.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex29.R`
 
 Refactoring: `route_input` yerine bir stream ismi olsun aynı `route$` gibi.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex29a.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex29a.R`
 
 ``` r
   routeS = reactive({ get_route_for_sequence_no(state$routes, state$sqn) })
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex29b.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex29b.R`
 
 Yeni butonları ekle
 
@@ -699,11 +699,11 @@ Select öğesini de senkronize et
 
 ## Birikimsel Navigasyon
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30.R`
 
 Önce `get_route_geometry` fonksiyonunu birikimsel harita üretecek şekilde güncelleyelim
 
-Edit `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/get_routes_ex30.R`
+Edit `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/get_routes_ex30.R`
 
 ``` r
 get_routes_all = function(routes) {
@@ -741,13 +741,13 @@ get_routes_all(r0)
 
 Bunu kullanalım. İlk etapta `get_routes_all()` fonksiyonuyla haritayı çizdirelim.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30a.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30a.R`
 
 ``` r
   output$map = renderLeaflet({ get_routes_all(routeS()) })
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30b.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex30b.R`
 
 Şimdi birden çok rotayı state içinde tutalım. Rotalar `routeS` tarafından oluşturuluyor.
 
@@ -762,7 +762,7 @@ Fakat tüm rotaları döndürdü bize.
 tsv dosyalarını yukarı yükle.
 
 ``` bash
-scp ~/gdrive/mynotes/prj/itr/iterative_mert/peyman/*.tsv itr01:~/peyman
+scp ~/gdrive/mynotes/prj/itr/iterative_mert/fmcgvrp/*.tsv itr01:~/fmcgvrp
 ``` 
 
 ``` bash
@@ -778,11 +778,11 @@ source("ex30b.R")
 
 ## Error: Son adım olarak depo tüm rotalara ekleniyor
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31.R`
 
 `get_routes_by_smi_wkd()` tarafından ekleniyor:
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31a.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31a.R`
 
 ``` r
 get_routes_by_smi_wkd = function(routes, smi, wkd) {
@@ -818,7 +818,7 @@ opt02: get_routes.R içinde from_point_id ve to_point_id kullanarak rotaları ta
 
 ### opt02: get_routes.R içinde from_point_id ve to_point_id kullanarak rotaları tanımla
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31b.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex31b.R`
 
 Test manually
 
@@ -1155,27 +1155,27 @@ Sebebi: `for (sqn in 1:0)` aslında iki tane döngü çalıştırıyor. İlkinde
 ## Dosya path'lerini env var'dan alalım
 
 ``` r
-PEYMAN_PROJECT_DIR = Sys.getenv("PEYMAN_PROJECT_DIR")
-if (PEYMAN_PROJECT_DIR == "") {
-	PEYMAN_PROJECT_DIR = "~"
+FMCGVRP_PROJECT_DIR = Sys.getenv("FMCGVRP_PROJECT_DIR")
+if (FMCGVRP_PROJECT_DIR == "") {
+	FMCGVRP_PROJECT_DIR = "~"
 }
 ``` 
 
 localhost:
 
 ``` bash
-export PEYMAN_PROJECT_DIR="$HOME/projects/itr/peyman"
+export FMCGVRP_PROJECT_DIR="$HOME/projects/itr/fmcgvrp"
 ``` 
 
 server:
 
 ``` bash
-export PEYMAN_PROJECT_DIR="$HOME"
+export FMCGVRP_PROJECT_DIR="$HOME"
 ``` 
 
 ## Tam ekran yapalım
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex32.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex32.R`
 
 ``` r
     tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}")
@@ -1199,7 +1199,7 @@ devtools::install_github("paulc91/shinyauthr")
 wget https://raw.githubusercontent.com/PaulC91/shinyauthr/master/inst/shiny-examples/shinyauthr_example/returnClick.js
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33.R`
 
 `ui` side doesn't contain actual ui widgets anymore:
 
@@ -1270,19 +1270,19 @@ server = function(input, output, session) {
 
 shinyauthr örneğindeki gibi yapalım:
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33a.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33a.R`
 
 user_info tablosunu kaldıralım. 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33b.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33b.R`
 
 fluidRow olmasa ne olur?
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33c.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33c.R`
 
 Harita objesini de login arkasına koyalım. `testUI` içine ekleyelim.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d.R`
 
 Error: harita görünmüyor
 
@@ -1290,15 +1290,15 @@ opt01: renderUI tek başına haritayı gösteriyor mu?
 
 Dışarı da koyalım `map` objesini.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d01.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d01.R`
 
 Bir tane daha `uiOutput` yapalım
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d02.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d02.R`
 
 Diğer renderUI'ları kaldıralım
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d03.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d03.R`
 
 ``` r
 	output$testUI2 = renderUI({
@@ -1314,7 +1314,7 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d0
 
 loginUI objesini kaldıralım
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d04.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d04.R`
 
 Yine aynı sadece `end` görünüyor.
 
@@ -1336,7 +1336,7 @@ end objesini de leafletOutput öncesine koyalım.
   output$ui6 = renderText({ "ui6" })
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d05.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d05.R`
 
 Sadece en sonuncusunu gösteriyor.
 
@@ -1351,7 +1351,7 @@ Bu davranış `leafletOutput`'tan mı kaynaklanıyor?
 	})
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d06.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d06.R`
 
 Hayır, leafletOutput'u kaldırınca da aynı durumu gözlemledim.
 
@@ -1370,21 +1370,21 @@ O yüzden mi fluidRow kullanmıştı acaba?
 	})
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d07.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d07.R`
 
 Tamam şimdi hepsi görünüyor.
 
 Şimdi haritayı koyalım. 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d08.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d08.R`
 
 Şimdi login arkasına atalım bunu.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d09.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33d09.R`
 
 sidebar komponentini de arkaya alalım.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e.R`
 
 Öbür kısımdaki gibi fluidRow kullanalım:
 
@@ -1397,7 +1397,7 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e.
       column( width = 3
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e01.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e01.R`
 
 Error: sidebar tamamen kayboldu
 
@@ -1405,27 +1405,27 @@ Tek bir `actionButton` koyalım sadece
 
 sidebar hiç görünmüyor hala.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e02.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e02.R`
 
 Aynı authr02 örneğindeki gibi yapalım. `div` içinde saralım komponenti
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e03.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e03.R`
 
 Yine olmadı.
 
 server tarafını da yapalım aynı şekilde.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e04.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e04.R`
 
 Yine olmadı. 
 
 Tüm kodu taşı birebir aynı şekilde. 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e05.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e05.R`
 
 Fazla kısımları silip dene
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e06.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e06.R`
 
 ``` r
   , dashboardSidebar(collapsed = TRUE
@@ -1443,13 +1443,13 @@ server = ...
 
 Şimdi tüm `, uiOutput("sidebar")` komponentini koyalım
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e07.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e07.R`
 
 Error: `selectInput` objeleri minicik hale gelmiş.
 
 Tek başına onları dene
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e08.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e08.R`
 
 ``` r
 	output$sidebar = renderUI({
@@ -1466,21 +1466,21 @@ column sayısını artır.
 			column( width = 12
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e09.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33e09.R`
 
 #### Refactoring: login kodlarını sadeleştirelim
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33f.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33f.R`
 
 user_base değişkenini dışarı al
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33f01.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33f01.R`
 
-Check `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/login.R`
+Check `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/login.R`
 
 credentials fonksiyonunu da dışarı al.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33f02.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex33f02.R`
 
 Bu durumda çalışmıyor
 
@@ -1490,13 +1490,13 @@ O zaman başka da yapılabilecek bir şey yok.
 
 ### addAwesomeMarcers kullan
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34.R`
 
 #### Logs
 
 Rakam kullan
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a01.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a01.R`
 
 ``` r
 		icon_num <- makeAwesomeIcon(text = (sqn - 1))
@@ -1509,7 +1509,7 @@ Error: Şekil çıkıyor, sayı çıkmıyor.
 
 Başka bir ikon dene
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a02.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a02.R`
 
 ``` r
 	icon_num = makeAwesomeIcon(icon = "flag", markerColor = "red", library = "fa", iconColor = "black", text = "1")
@@ -1521,7 +1521,7 @@ Düzgün çalışıyor. Bunun üzerinde değişiklik yap.
 
 Fazlalıkları sil.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a03.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a03.R`
 
 ``` r
 		icon_num = makeAwesomeIcon(text = 1)
@@ -1535,7 +1535,7 @@ Sayıları dinamik olarak oluştur.
 		icon_num = makeAwesomeIcon(text = sqn)
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a04.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34a04.R`
 
 Sayılar kayboluyor şöyle yapınca:
 
@@ -1553,11 +1553,11 @@ Sayılar kayboluyor şöyle yapınca:
 
 İlk başlangıç noktasını for döngüsü dışında ekle
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34b01.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34b01.R`
 
 ### Aynı rengi kullanalım yol ve markerda
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34c01.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34c01.R`
 
 ``` r
 	pal = c("red", "purple", "darkblue", "orange", "cadetblue", "green", "darkred", "pink", "gray", "darkgreen", "black")
@@ -1570,15 +1570,15 @@ Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex34c0
 
 ## birden çok satıcının günlük rotalarını bir arada göstermek
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35.R`
 
 ### birden çok satıcıyı bir arada göstermek
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a.R`
 
 #### widgetı `multiple` yapalım
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a01.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a01.R`
 
 ``` r
 	refresh_salesman_id = function() {
@@ -1623,11 +1623,11 @@ r2 = r1 %>%
   ##> 1          12        0             1        2662     40.9     29.2   41.0   29.3           0
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a02.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a02.R`
 
 #### birden çok günü seçebilelim
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a03.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a03.R`
 
 ``` r
 ...
@@ -1644,23 +1644,23 @@ Burada kontrol edicem:
   routeSS = reactive({ get_route_upto_sequence_no(state$routes, state$sqn) })
 ``` 
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a04.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35a04.R`
 
 ## marker iconlarını küçült
 
 Çalışmadı düzgün bir şekilde.
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35b01.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35b01.R`
 
 Run `~/projects/study/r/shiny/ex/study_shiny/ex01/05.R`
 
 ## rota navigasyon butonlarını pasifleştir
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35c01.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35c01.R`
 
 ## Sıfırlama butonu olsun seçimleri başa çeviren
 
-Run `~/projects/itr/peyman/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35d01.R`
+Run `~/projects/itr/fmcgvrp/pmap/doc/study/ex/leaflet_rota_cizimi_20190530/ex35d01.R`
 
 ## Çoklu seçim yazılı olsun
 
@@ -1716,7 +1716,7 @@ Bunun da kaynağı:
 
 ``` r
 get_routes_verbal = function() {
-	twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp/out/trips_with_costs.tsv")) 
+	twc = readr::read_tsv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp/out/trips_with_costs.tsv")) 
 ``` 
 
 opt01: lag ve lead
@@ -1734,7 +1734,7 @@ Ancak bu durumda baş ve son değerler hatalı. İlk değerde lag NA koyuyor.
 opt02: önce gruplandır sonra özel bir işlem yap kaydırma için
 
 ``` r
-	twc = readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp/out/trips_with_costs.tsv")) 
+	twc = readr::read_tsv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp/out/trips_with_costs.tsv")) 
 	routes = twc %>%
 		dplyr::select(
 			salesman_id
@@ -1805,7 +1805,7 @@ salesman_no nerede tanımlanmış?
 
 ``` r
 get_salesman = function() {
-	readr::read_tsv(glue::glue("{PEYMAN_PROJECT_DIR}/pvrp_data/stlistesi.tsv")) %>%
+	readr::read_tsv(glue::glue("{FMCGVRP_PROJECT_DIR}/pvrp_data/stlistesi.tsv")) %>%
 	...
 		dplyr::mutate(
 			prev_salesman_id = dplyr::lag(salesman_id, default = dplyr::last(salesman_id))
@@ -1883,8 +1883,8 @@ Use `seq_len` for dataframes:
 Dosyayı güncelle:
 
 ``` r
-twc = read_tsv("~/projects/itr/peyman/pvrp/out/trips_with_costs.tsv")
-c0 = readr::read_tsv("~/projects/itr/peyman/pvrp_data/normal/customers.tsv") %>%
+twc = read_tsv("~/projects/itr/fmcgvrp/pvrp/out/trips_with_costs.tsv")
+c0 = readr::read_tsv("~/projects/itr/fmcgvrp/pvrp_data/normal/customers.tsv") %>%
 	select(customer_id, customer_name)
 twc1 = twc %>%
 	left_join(c0, by = "customer_id") %>%
@@ -1903,7 +1903,7 @@ twc2 = twc %>%
 twc3 = twc %>%
 	left_join(c0, by = "customer_id") %>%
 	dplyr::mutate_at("customer_name", tidyr::replace_na, "Depo")
-readr::write_tsv(twc3, "~/projects/itr/peyman/pvrp/out/trips_with_costs.tsv")
+readr::write_tsv(twc3, "~/projects/itr/fmcgvrp/pvrp/out/trips_with_costs.tsv")
 ``` 
 
 
